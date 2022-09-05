@@ -1,0 +1,7 @@
+"Represents an error in the input of a mutation."
+interface DisplayableError {
+  "Path to the input field which caused the error."
+  field: [String!]
+  "The error message."
+  message: String!
+}

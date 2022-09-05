@@ -1,0 +1,7 @@
+"Represents an error in the input of a mutation."
+type UserError implements DisplayableError {
+  "The path to the input field that caused the error."
+  field: [String!]
+  "The error message."
+  message: String!
+}
