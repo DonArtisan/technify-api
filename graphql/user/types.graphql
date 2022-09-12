@@ -4,10 +4,10 @@ type User {
     id: ID!
 
     "User first name."
-    firstName: String! 
+    firstName: String! @rename(attribute: "first_name")
 
     "User last name."
-    lastName: String! 
+    lastName: String! @rename(attribute: "last_name")
 
     "Unique email address."
     email: String!
