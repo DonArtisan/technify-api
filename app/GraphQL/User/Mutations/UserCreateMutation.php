@@ -7,6 +7,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\GraphQL\Mutations\BaseMutation;
 use App\Models\User;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Hash;
 use Throwable;
 
 class UserCreateMutation extends BaseMutation
@@ -17,11 +18,15 @@ class UserCreateMutation extends BaseMutation
      */
     public function handle(mixed $root, array $args): array
     {
+
         try {
             $user = User::create(
+                array_merge(
                 Arr::only(
                     $args['input'],
-                    ['first_name', 'last_name', 'email', 'password']
+                    ['first_name', 'last_name', 'email']
+                ),
+                ['password' => Hash::make($args['input']['password'])],
                 )
             );
 
@@ -35,7 +40,8 @@ class UserCreateMutation extends BaseMutation
                 'cursor' => User::count(),
                 'node' => $user->fresh(),
             ],
-            // 'userErrors' => [],
+            'userErrors' => [],
+            'userToken' => $user->createToken('auth_token')->plainTextToken,
         ];
     }
 

@@ -18,8 +18,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->decimal('price_per_unit');
-            $table->decimal('tax_percentage');
+            $table->foreignId('model_id')->constrained('models');
+            $table->foreignId('category_id')->constrained('categories');
             $table->timestamps();
         });
 

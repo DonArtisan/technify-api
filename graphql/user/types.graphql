@@ -26,5 +26,6 @@ type User {
 
 type UserCreatePayload {
     userEdge: UserEdge
-    # userErrors: [UserErrors!]!
+    userErrors: [UserErrors!]!
+    userToken: String!
 }
