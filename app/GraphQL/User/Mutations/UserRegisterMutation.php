@@ -8,6 +8,7 @@ use App\GraphQL\Mutations\BaseMutation;
 use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 use Throwable;
 
 class UserRegisterMutation extends BaseMutation
@@ -51,7 +52,16 @@ class UserRegisterMutation extends BaseMutation
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
             'email' => ['required', 'email'],
-            'password' => ['required', 'min:2', 'max:20'],
+            'password' => ['required', Password::min(4)->letters()->mixedCase()->numbers()],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'first_name.string' => 'First name must be string type.',
+            'last_name.string' => 'Last name must be string type.',
+            'email.email' => 'It is not an email',
         ];
     }
 }

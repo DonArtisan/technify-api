@@ -1,0 +1,9 @@
+input SellerInput {
+    id: ID @globalId(decode: ID)
+    firstName: String @rename(attribute: "first_name")
+    lastName: String @rename(attribute: "last_name")
+    email: String
+    password: String 
+    carnet: String
+    hiredAt: Date @rename(attribute: "hired_at")
+}
