@@ -24,7 +24,7 @@ type User {
     updated_at: DateTime!
 }
 
-type UserCreatePayload {
+type UserRegisterPayload {
     userEdge: UserEdge
     userErrors: [UserErrors!]!
     userToken: String!
