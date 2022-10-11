@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('sellers', function (Blueprint $table) {
             $table->id();
-            $table->string('firstName');
-            $table->string('lastName');
+            $table->string('first_name');
+            $table->string('last_name');
             $table->string('email')->unique();
             $table->string('password');
             $table->string('carnet')->unique();
-            $table->dateTime('hired_at');
+            $table->date('hired_at');
             $table->timestamps();
         });
     }
