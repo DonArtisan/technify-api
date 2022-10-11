@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sales', function (Blueprint $table) {
+        Schema::create('product_sales', function (Blueprint $table) {
             $table->id();
-            $table->decimal('sale_amount');
+            $table->foreignId('buyer_id')->constrained('users');
+            $table->decimal('amount');
+            $table->decimal('tax');
+            $table->decimal('total');
             $table->timestamps();
         });
     }

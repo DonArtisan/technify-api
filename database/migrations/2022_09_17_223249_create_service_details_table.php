@@ -19,7 +19,6 @@ return new class extends Migration
             $table->decimal('price_per_unit');
             $table->decimal('price');
             $table->decimal('tax_amount');
-            $table->foreignId('sale_id')->constrained('sales');
             $table->foreignId('service_id')->constrained('services');
             $table->timestamps();
         });

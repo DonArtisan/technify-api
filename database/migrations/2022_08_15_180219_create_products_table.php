@@ -16,9 +16,10 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('discount_id')->constrained('discounts');
             $table->string('name');
             $table->string('description');
-            $table->foreignId('model_id')->constrained('models');
+            $table->foreignId('brand_id')->constrained('brands');
             $table->foreignId('category_id')->constrained('categories');
             $table->timestamps();
         });

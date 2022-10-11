@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('models', function (Blueprint $table) {
             $table->id();
             $table->string('model_name');
-            $table->foreignId('branch_id')->constrained('branches');
+            $table->foreignId('brand_id')->constrained('brands');
             $table->timestamps();
         });
     }
