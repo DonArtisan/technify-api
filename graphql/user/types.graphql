@@ -26,12 +26,12 @@ type User {
 
 type UserRegisterPayload {
     userEdge: UserEdge
-    userErrors: [UserErrors!]!
+    userErrors: [UserError]
     userToken: String!
 }
 
 type UserLoginPayload {
     userAuth: User
-    UserErrors: [userErrors!]!
+    userErrors: [UserError]
     userToken: String!
 }
