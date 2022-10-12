@@ -5,3 +5,8 @@ input UserInput {
     email: String
     password: String 
 }
+
+input UserLoginInput {
+    email: String!
+    password: String!
+}
