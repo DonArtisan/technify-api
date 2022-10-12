@@ -10,7 +10,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Throwable;
 
-class UserRegisterMutation extends BaseMutation
+class UserLoginMutation extends BaseMutation
 {
     /**
      * @param  null  $_
