@@ -2,6 +2,6 @@ extend type Mutation @namespace(field: "App\\GraphQL\\User\\Mutations") {
     userRegister(input: UserInput!): UserRegisterPayload
     @field(resolver: "UserRegisterMutation")
 
-    userLogin(inout: UserLogin!): UserLoginPayload
+    userLogin(input: UserLoginInput!): UserLoginPayload
     @field(resolver: "UserLoginMutation")
 }
