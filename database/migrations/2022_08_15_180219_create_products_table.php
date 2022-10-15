@@ -19,7 +19,10 @@ return new class extends Migration
             $table->foreignId('discount_id')->constrained('discounts');
             $table->string('name');
             $table->string('description');
-            $table->foreignId('brand_id')->constrained('brands');
+            $table->foreignId('model_id')->constrained('models');
+            $table->foreignId('attributes_id')->constrained('attributes');
+            $table->unsignedInteger('color_id')->nullable();
+            $table->foreign('color_id')->references('id')->on('colors');
             $table->foreignId('category_id')->constrained('categories');
             $table->timestamps();
         });
