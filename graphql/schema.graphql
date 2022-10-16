@@ -4,5 +4,6 @@ type Query
 #import ./base/*.graphql
 
 #import ./user/*.graphql
+#import ./seller/*.graphql
 
 
