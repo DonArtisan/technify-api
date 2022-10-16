@@ -1,0 +1,56 @@
+type Brand @model(class: "App\\Blog\\Models\\Brand") {
+    id: ID! @globalId
+    name: String!
+    model: Model! @hasMany
+    created_at: DateTime! @rename(attribute: "created_at")
+    updated_at: DateTime! @rename(attribute: "updated_at")
+}
+
+type Model @model(class: "App\\Blog\\Models\\Model") {
+    id: ID! @globalId
+    modelName: String! @rename(attribute: "model_name")
+    brand: Brand! @belongsTo
+    product: Product! @hasOne
+    created_at: DateTime! @rename(attribute: "created_at")
+    updated_at: DateTime! @rename(attribute: "updated_at")
+}
+
+type Category @model(class: "App\\Blog\\Models\\Category") {
+    id: ID! @globalId
+    name: String!
+    product: Product @hasOne
+    created_at: DateTime! @rename(attribute: "created_at")
+    updated_at: DateTime! @rename(attribute: "updated_at")
+}
+
+type Discount @model(class: "App\\Blog\\Models\\Discount") {
+    id: ID! @globalId
+    code: String!
+    name: String!
+    startAt: DateTime! @rename(attribute: "start_At")
+    endAt: DateTime! @rename(attribute: "end_at")
+    product: Product! @belongsTo
+    createdAt: DateTime! @rename(attribute: "created_at")
+    updatedAt: DateTime! @rename(attribute: "updated_at")
+}
+
+type Product @model(class: "App\\Blog\\Models\\Product") {
+    id: ID! @globalId
+    name: String!
+    description: String!
+    discount: Discount @hasOne
+    model: Model! @belongsTo
+    category: Category! @belongsTo
+    createdAt: DateTime! @rename(attribute: "created_at")
+    updatedAt: DateTime! @rename(attribute: "updated_at")
+}
+
+type ProductCreatePayload {
+    productEdge: ProductEdge
+    userErrors: [UserError]
+}
+
+type ProductUpdatePayload {
+    product: Product
+    userErrors: [UserError]
+}
