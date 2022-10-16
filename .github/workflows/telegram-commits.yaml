@@ -1,0 +1,34 @@
+name: telegram message
+on: [push]
+jobs:
+  no-master:
+    if: github.ref != 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+    - name: send default message
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        format: markdown
+        disable_web_page_preview: true
+        message: |
+            [${{ github.event.repository.name }}:${{ github.ref_name }}](https://github.com/${{ github.repository }}/tree/${{github.ref_name}}) new commit by ${{ github.actor }}:
+              `${{ github.event.commits[0].message }}`
+    
+  master-check:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+    - name: send default message
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        format: markdown
+        disable_web_page_preview: true
+        message: |
+            [${{ github.event.repository.name }}:${{ github.ref_name }}](https://github.com/${{ github.repository }}/commit/${{github.sha}}) new commit by ${{ github.actor }}:
+              `${{ github.event.commits[0].message }}`
+
+
