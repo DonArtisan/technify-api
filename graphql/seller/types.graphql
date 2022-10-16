@@ -1,0 +1,44 @@
+"A date string with format `Y-m-d`, e.g. `2011-05-23`."
+scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
+
+"Account of a person who utilizes this application."
+type Seller {
+    "Unique primary key."
+    id: ID!
+
+    "Seller first name."
+    firstName: String! @rename(attribute: "first_name")
+
+    "Seller last name."
+    lastName: String! @rename(attribute: "last_name")
+
+    "Unique email address."
+    email: String!
+
+    password: String!
+
+    carnet: String!
+
+    hiredAt: Date! @rename(attribute: "hired_at")
+
+    "When the email was verified."
+    email_verified_at: DateTime
+
+    "When the account was created."
+    created_at: DateTime!
+
+    "When the account was last updated."
+    updated_at: DateTime!
+}
+
+type SellerRegisterPayload {
+    seller: Seller
+    userErrors: [UserError]
+    sellerToken: String
+}
+
+type SellerLoginPayload {
+    seller: Seller
+    userErrors: [UserError]
+    sellerToken: String!
+}
