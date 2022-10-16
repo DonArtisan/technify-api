@@ -7,3 +7,8 @@ input SellerInput {
     carnet: String
     hiredAt: Date @rename(attribute: "hired_at")
 }
+
+input SellerLoginInput {
+    email: String!
+    password: String!
+}
