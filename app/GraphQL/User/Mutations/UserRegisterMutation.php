@@ -37,12 +37,9 @@ class UserRegisterMutation extends BaseMutation
         }
 
         return [
-            'userEdge' => [
-                'cursor' => User::count(),
-                'node' => $user->fresh(),
-            ],
+            'user' => $user,
             'userErrors' => [],
-            'userToken' => $user->createToken('auth_token')->plainTextToken,
+            'sellerToken' => $user->createToken('auth_token')->plainTextToken,
         ];
     }
 
