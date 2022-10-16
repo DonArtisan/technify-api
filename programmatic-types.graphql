@@ -24,13 +24,13 @@ values. Int can represent values between -(2^31) and 2^31 - 1.
 """
 scalar Int
 
-"""A paginated list of User edges."""
-type UserConnection {
+"""A paginated list of Seller edges."""
+type SellerConnection {
   """Pagination information about the list of edges."""
   pageInfo: PageInfo!
 
-  """A list of User edges."""
-  edges: [UserEdge!]!
+  """A list of Seller edges."""
+  edges: [SellerEdge!]!
 }
 
 """Information about pagination using a Relay style cursor connection."""
@@ -63,10 +63,10 @@ type PageInfo {
 """The `Boolean` scalar type represents `true` or `false`."""
 scalar Boolean
 
-"""An edge that contains a node of type User and a cursor."""
-type UserEdge {
-  """The User node."""
-  node: User!
+"""An edge that contains a node of type Seller and a cursor."""
+type SellerEdge {
+  """The Seller node."""
+  node: Seller!
 
   """A unique cursor that can be used for pagination."""
   cursor: String!
