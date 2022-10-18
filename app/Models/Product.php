@@ -11,11 +11,16 @@ class Product extends Model
 
     public function discount()
     {
-        return $this->belongsTo(Discount::class, 'id');
+        return $this->hasOne(Discount::class);
     }
 
     public function model()
     {
-        return $this->belongsTo(Model::class, 'id');
+        return $this->belongsTo(Model::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }
