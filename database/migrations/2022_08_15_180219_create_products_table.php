@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->foreignId('model_id')->constrained('models');
-            $table->foreignId('attributes_id')->constrained('attributes');
             $table->unsignedInteger('color_id')->nullable();
             $table->foreign('color_id')->references('id')->on('colors');
             $table->foreignId('category_id')->constrained('categories');

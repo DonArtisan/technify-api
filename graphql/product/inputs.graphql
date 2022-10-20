@@ -1,1 +1,7 @@
-
+input ProductInput {
+    id: ID @globalId(decode: ID)
+    discountId: ID @globalId(decode: ID)
+    name: String
+    description: String
+    modelId: ID @globalId(decode: ID)
+}
