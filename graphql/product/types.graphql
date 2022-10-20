@@ -34,12 +34,32 @@ type Discount @model(class: "App\\Blog\\Models\\Discount") {
     updatedAt: DateTime! @rename(attribute: "updated_at")
 }
 
+type Attributes {
+    id: ID! @globalId
+    product: Product @belongsTo
+    storage: Float
+    weight: Float
+    size: Float
+    createdAt: DateTime! @rename(attribute: "created_at")
+    updatedAt: DateTime! @rename(attribute: "updated_at")
+}
+
+type Color {
+    id: ID! @globalId
+    name: String
+    product: Product @belongsTo
+    createdAt: DateTime! @rename(attribute: "created_at")
+    updatedAt: DateTime! @rename(attribute: "updated_at")
+}
+
 type Product @model(class: "App\\Blog\\Models\\Product") {
     id: ID! @globalId
     name: String!
     description: String!
     discount: Discount @hasOne
     model: Model! @belongsTo
+    attributes: Attributes! @hasOne
+    color: Color! @hasOne
     category: Category! @belongsTo
     createdAt: DateTime! @rename(attribute: "created_at")
     updatedAt: DateTime! @rename(attribute: "updated_at")
