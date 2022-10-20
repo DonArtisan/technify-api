@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('attributes', function (Blueprint $table) {
             $table->id();
-            $table->decimal('storage', 2);
-            $table->decimal('weight', 2);
-            $table->decimal('size',2);
+            $table->foreignId('product_id')->constrained('products');
+            $table->decimal('storage', 2)->nullable();
+            $table->decimal('weight', 2)->nullable();
+            $table->decimal('size',2)->nullable();
             $table->timestamps();
         });
     }
