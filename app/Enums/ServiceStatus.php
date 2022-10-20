@@ -11,5 +11,6 @@ use BenSampo\Enum\Enum;
 final class ServiceStatus extends Enum
 {
     public const ACTIVE = 'active';
+
     public const INACTIVE = 'inactive';
 }

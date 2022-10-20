@@ -2,11 +2,8 @@
 
 namespace App\GraphQL\Mutations;
 
-use Error;
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use App\GraphQL\Mutations\BaseMutation;
 use App\Models\User;
-use Illuminate\Support\Arr;
+use Error;
 use Illuminate\Support\Facades\Hash;
 use Throwable;
 
@@ -18,13 +15,11 @@ class UserLoginMutation extends BaseMutation
      */
     public function handle(mixed $root, array $args): array
     {
-
         try {
             $user = User::whereEmail($args['email'])->firts();
 
-            return !$user ?: Hash::check($args['password'], $user->password);
+            return ! $user ?: Hash::check($args['password'], $user->password);
         } catch (Throwable $error) {
-
             throw new Error($error);
         }
 
@@ -39,7 +34,7 @@ class UserLoginMutation extends BaseMutation
     {
         return [
             'email' => ['required', Rule::exists(User::class, 'email')],
-            'password' => ['required']
+            'password' => ['required'],
         ];
     }
 
