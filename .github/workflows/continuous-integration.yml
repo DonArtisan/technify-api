@@ -43,12 +43,7 @@ jobs:
 
       - name: Run composer unused
         run: |
-          php composer-unused.phar --no-progress \
-            --excludePackage=hisorange/browser-detect \
-            --excludePackage=laravel/tinker \
-            --excludePackage=laravel/vapor-core \
-            --excludePackage=league/flysystem-aws-s3-v3 \
-            --excludePackage=sentry/sentry-laravel
+          php composer-unused.phar --no-progress
 
   static-code-analysis:
     name: Static code analysis
