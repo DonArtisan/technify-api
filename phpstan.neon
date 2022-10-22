@@ -1,0 +1,16 @@
+includes:
+  - vendor/bensampo/laravel-enum/extension.neon
+  - vendor/nesbot/carbon/extension.neon
+  - vendor/nunomaduro/larastan/extension.neon
+  - vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
+
+parameters:
+  checkMissingIterableValueType: false
+  checkModelProperties: true
+  level: 9
+
+  paths:
+    - app
+
+  stubFiles:
+    - vendor/nuwave/lighthouse/_ide_helper.php
