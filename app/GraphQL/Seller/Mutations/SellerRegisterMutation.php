@@ -17,9 +17,7 @@ class SellerRegisterMutation extends BaseMutation
      */
     public function handle(mixed $root, array $args): array
     {
-
         try {
-
             $seller = Seller::create(
                 array_merge(
                     Arr::only(
@@ -28,13 +26,11 @@ class SellerRegisterMutation extends BaseMutation
                     ),
                     [
                         'password' => Hash::make($args['input']['password']),
-                        'carnet' => now()->year. '-' . Str::random(5),
+                        'carnet' => now()->year.'-'.Str::random(5),
                     ]
                 )
             );
-
         } catch (Throwable $error) {
-
             throw new Error($error);
         }
 
