@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Brand;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,8 @@ class ModelFactory extends Factory
     public function definition()
     {
         return [
-            //
+           'model_name'=> fake()->word(),
+           'brand_id'=> Brand::factory(),
         ];
     }
 }
