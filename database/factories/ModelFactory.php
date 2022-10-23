@@ -18,8 +18,8 @@ class ModelFactory extends Factory
     public function definition()
     {
         return [
-           'model_name'=> fake()->word(),
-           'brand_id'=> Brand::factory(),
+            'model_name' => fake()->word(),
+            'brand_id' => Brand::factory(),
         ];
     }
 }
