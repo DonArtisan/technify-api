@@ -16,7 +16,8 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('discount_id')->constrained('discounts');
+            $table->unsignedInteger('discount_id')->nullable();
+            $table->foreign('discount_id')->references('id')->on('discounts');
             $table->string('name');
             $table->string('description');
             $table->foreignId('model_id')->constrained('models');
