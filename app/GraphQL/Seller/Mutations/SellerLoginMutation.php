@@ -15,13 +15,11 @@ class SellerLoginMutation extends BaseMutation
      */
     public function handle(mixed $root, array $args): array
     {
-
         try {
             $seller = Seller::whereEmail($args['email'])->firts();
 
-            return !$seller ?: Hash::check($args['password'], $seller->password);
+            return ! $seller ?: Hash::check($args['password'], $seller->password);
         } catch (Throwable $error) {
-
             throw new Error($error);
         }
 
@@ -36,7 +34,7 @@ class SellerLoginMutation extends BaseMutation
     {
         return [
             'email' => ['required', Rule::exists(Seller::class, 'email')],
-            'password' => ['required']
+            'password' => ['required'],
         ];
     }
 
