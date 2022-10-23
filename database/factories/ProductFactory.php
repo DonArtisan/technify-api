@@ -21,7 +21,7 @@ class ProductFactory extends Factory
     {
         return [
             'name' => fake()->sentence(2),
-            'description' => fake()->paragraph(),
+            'description' => fake()->paragraph(2),
             'category_id' => Category::factory(),
             'model_id' => Model::factory(),
             'status' => ProductStatus::getRandomValue(),
