@@ -5,6 +5,7 @@ namespace App\GraphQL\Mutations;
 use App\Models\User;
 use Error;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Throwable;
 
 class UserLoginMutation extends BaseMutation
@@ -16,9 +17,9 @@ class UserLoginMutation extends BaseMutation
     public function handle(mixed $root, array $args): array
     {
         try {
-            $user = User::whereEmail($args['email'])->firts();
+            $user = User::whereEmail($args['input']['email'])->first();
 
-            return ! $user ?: Hash::check($args['password'], $user->password);
+            return ! $user ?: Hash::check($args['input']['password'], $user->password);
         } catch (Throwable $error) {
             throw new Error($error);
         }
