@@ -5,6 +5,7 @@ namespace App\GraphQL\Mutations;
 use App\Models\User;
 use Error;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Throwable;
 
 class UserLoginMutation extends BaseMutation
