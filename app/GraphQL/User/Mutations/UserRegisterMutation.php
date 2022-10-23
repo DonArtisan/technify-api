@@ -34,7 +34,7 @@ class UserRegisterMutation extends BaseMutation
         return [
             'user' => $user,
             'userErrors' => [],
-            'sellerToken' => $user->createToken('auth_token')->plainTextToken,
+            'userToken' => $user->createToken('auth_token')->plainTextToken,
         ];
     }
 
