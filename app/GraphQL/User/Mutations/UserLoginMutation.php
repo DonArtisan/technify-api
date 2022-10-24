@@ -17,15 +17,13 @@ class UserLoginMutation extends BaseMutation
     public function handle(mixed $root, array $args): array
     {
         try {
-            $user = User::whereEmail($args['input']['email'])->first();
-
-            return ! $user ?: Hash::check($args['input']['password'], $user->password);
+            $user = User::whereEmail($args['input']['email'])->firts();
         } catch (Throwable $error) {
             throw new Error($error);
         }
 
         return [
-            'userAuth' => $user,
+            'userAuth' => ! $user ?: Hash::check($args['input']['password'], $user->password),
             'userErrors' => [],
             'userToken' => $user->createToken('auth_token')->plainTextToken,
         ];
