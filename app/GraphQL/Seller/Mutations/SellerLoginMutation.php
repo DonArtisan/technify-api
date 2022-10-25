@@ -4,24 +4,16 @@ namespace App\GraphQL\Seller\Mutations;
 
 use App\GraphQL\Mutations\BaseMutation;
 use App\Models\Seller;
+use Error;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Throwable;
 
 class SellerLoginMutation extends BaseMutation
 {
-    /**
-     * @param  null  $_
-     * @param  array{}  $args
-     */
     public function handle(mixed $root, array $args): array
     {
-        try {
-            $seller = Seller::whereEmail($args['email'])->firts();
-
-            return ! $seller ?: Hash::check($args['password'], $seller->password);
-        } catch (Throwable $error) {
-            throw new Error($error);
-        }
+        $seller = Seller::query()->where('email', $args['email'])->first();
 
         return [
             'seller' => $seller,

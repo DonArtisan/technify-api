@@ -4,31 +4,27 @@ namespace App\GraphQL\Seller\Mutations;
 
 use App\GraphQL\Mutations\BaseMutation;
 use App\Models\Seller;
+use Error;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
+use Throwable;
 
 class SellerRegisterMutation extends BaseMutation
 {
-    /**
-     * @param  null  $_
-     * @param  array{}  $args
-     */
     public function handle(mixed $root, array $args): array
     {
         try {
             $seller = Seller::create(
-                array_merge(
-                    Arr::only(
+                [
+                    'password' => Hash::make($args['input']['password']),
+                    'carnet' => now()->year.'-'.Str::random(5),
+                    ...Arr::only(
                         $args['input'],
                         ['first_name', 'last_name', 'email', 'hired_at']
                     ),
-                    [
-                        'password' => Hash::make($args['input']['password']),
-                        'carnet' => now()->year.'-'.Str::random(5),
-                    ]
-                )
+                ]
             );
         } catch (Throwable $error) {
             throw new Error($error);
@@ -47,7 +43,8 @@ class SellerRegisterMutation extends BaseMutation
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
             'email' => ['required', 'email'],
-            'password' => ['required', Password::min(4)->letters()->mixedCase()->numbers()],
+            'password' => ['required', 'confirmed', Password::min(4)->letters()->mixedCase()->numbers()],
+            'hired_at' => ['required', 'date']
         ];
     }
 
