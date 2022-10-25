@@ -44,7 +44,7 @@ class SellerRegisterMutation extends BaseMutation
             'last_name' => ['required', 'string'],
             'email' => ['required', 'email'],
             'password' => ['required', 'confirmed', Password::min(4)->letters()->mixedCase()->numbers()],
-            'hired_at' => ['required', 'date']
+            'hired_at' => ['required', 'date'],
         ];
     }
 
