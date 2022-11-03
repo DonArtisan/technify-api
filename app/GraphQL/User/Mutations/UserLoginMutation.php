@@ -16,11 +16,9 @@ class UserLoginMutation extends BaseMutation
      */
     public function handle(mixed $root, array $args): array
     {
-        try {
-            $user = User::whereEmail($args['input']['email'])->firts();
-        } catch (Throwable $error) {
-            throw new Error($error);
-        }
+        $user = User::whereEmail($args['input']['email'])->first();
+
+        logger($user);
 
         return [
             'userAuth' => ! $user ?: Hash::check($args['input']['password'], $user->password),
