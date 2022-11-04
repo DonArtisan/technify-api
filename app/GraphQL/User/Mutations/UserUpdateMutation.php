@@ -4,11 +4,11 @@ namespace App\GraphQL\User\Mutations;
 
 use App\GraphQL\Mutations\BaseMutation;
 use App\Models\User;
+use Error;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Throwable;
-use Error;
 
 class UserUpdateMutation extends BaseMutation
 {
