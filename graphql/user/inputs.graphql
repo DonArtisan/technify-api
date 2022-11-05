@@ -2,11 +2,13 @@ input UserInput {
     id: ID @globalId(decode: ID)
     firstName: String @rename(attribute: "first_name")
     lastName: String @rename(attribute: "last_name")
+    isBlocked: Boolean @rename(attribute: "is_blocked")
     email: String
-    password: String 
+    password: String
 }
 
 input UserLoginInput {
     email: String!
     password: String!
 }
+

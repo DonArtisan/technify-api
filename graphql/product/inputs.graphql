@@ -2,6 +2,7 @@ input ProductInput {
     id: ID @globalId(decode: ID)
     discountId: ID @globalId(decode: ID)
     name: String
+    status: ProductStatus
     description: String
     modelId: ID @globalId(decode: ID)
 }

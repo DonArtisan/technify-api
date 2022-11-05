@@ -1,0 +1,10 @@
+extend type Query {
+    product(
+        id: ID! @globalId(decode: ID) @eq
+    ): Product @find
+
+    products(
+        query: String @builder(method: "App\\GraphQL\\Product\\Builders\\ProductQueryBuilder")
+        status: ProductStatus @eq
+    ): [Product!]! @paginate(type: CONNECTION)
+}

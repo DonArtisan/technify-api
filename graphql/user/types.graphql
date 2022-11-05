@@ -1,7 +1,7 @@
 "Account of a person who utilizes this application."
 type User {
     "Unique primary key."
-    id: ID!
+    id: ID! @globalId
 
     "User first name."
     firstName: String! @rename(attribute: "first_name")
@@ -11,6 +11,8 @@ type User {
 
     "Unique email address."
     email: String!
+
+    isBlocked: Boolean @rename(attribute: "is_blocked")
 
     password: String!
 
@@ -35,3 +37,9 @@ type UserLoginPayload {
     userErrors: [UserError]
     userToken: String
 }
+
+type UserUpdatePayload {
+    user: User
+    userErrors: [UserError]
+}
+

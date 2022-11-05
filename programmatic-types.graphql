@@ -18,19 +18,22 @@ represent free-form human-readable text.
 """
 scalar String
 
+"""The `Boolean` scalar type represents `true` or `false`."""
+scalar Boolean
+
 """
 The `Int` scalar type represents non-fractional signed whole numeric
-values. Int can represent values between -(2^31) and 2^31 - 1. 
+values. Int can represent values between -(2^31) and 2^31 - 1.
 """
 scalar Int
 
-"""A paginated list of Seller edges."""
-type SellerConnection {
+"""A paginated list of User edges."""
+type UserConnection {
   """Pagination information about the list of edges."""
   pageInfo: PageInfo!
 
-  """A list of Seller edges."""
-  edges: [SellerEdge!]!
+  """A list of User edges."""
+  edges: [UserEdge!]!
 }
 
 """Information about pagination using a Relay style cursor connection."""
@@ -60,8 +63,23 @@ type PageInfo {
   lastPage: Int!
 }
 
-"""The `Boolean` scalar type represents `true` or `false`."""
-scalar Boolean
+"""An edge that contains a node of type User and a cursor."""
+type UserEdge {
+  """The User node."""
+  node: User!
+
+  """A unique cursor that can be used for pagination."""
+  cursor: String!
+}
+
+"""A paginated list of Seller edges."""
+type SellerConnection {
+  """Pagination information about the list of edges."""
+  pageInfo: PageInfo!
+
+  """A list of Seller edges."""
+  edges: [SellerEdge!]!
+}
 
 """An edge that contains a node of type Seller and a cursor."""
 type SellerEdge {
@@ -75,7 +93,7 @@ type SellerEdge {
 """
 The `Float` scalar type represents signed double-precision fractional
 values as specified by
-[IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). 
+[IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point).
 """
 scalar Float
 
@@ -278,6 +296,15 @@ enum __DirectiveLocation {
 
   """Location adjacent to an input object field definition."""
   INPUT_FIELD_DEFINITION
+}
+
+"""Product status"""
+enum ProductStatus {
+  """Active"""
+  ACTIVE
+
+  """Inactive"""
+  INACTIVE
 }
 
 """Directions for ordering a list of records."""
