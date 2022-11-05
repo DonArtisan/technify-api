@@ -58,6 +58,7 @@ type Product @model(class: "App\\Blog\\Models\\Product") {
     description: String!
     discount: Discount @hasOne
     model: Model! @belongsTo
+    status: ProductStatus
     attributes: Attributes! @hasOne
     color: Color! @hasOne
     category: Category! @belongsTo
