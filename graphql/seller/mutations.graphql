@@ -1,8 +1,11 @@
 extend type Mutation @namespace(field: "App\\GraphQL\\Seller\\Mutations") {
-    sellerRegister(input: SellerInput!): SellerRegisterPayload
-    @field(resolver: "SellerRegisterMutation")
+    sellerCreate(input: SellerInput!): SellerCreatePayload
+    @field(resolver: "SellerCreateMutation")
 
     sellerLogin(input: SellerLoginInput!): SellerLoginPayload
     @field(resolver: "SellerLoginMutation")
+
+    sellerUpdate(input: SellerInput): SellerUpdatePayload
+    @field(resolver: "SellerUpdateMutation")
 }
 

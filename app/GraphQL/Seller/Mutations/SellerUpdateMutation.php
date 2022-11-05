@@ -8,24 +8,25 @@ use Error;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Throwable;
 
-class SellerCreateMutation extends BaseMutation
+class SellerUpdateMutation extends BaseMutation
 {
     public function handle(mixed $root, array $args): array
     {
         try {
-            $seller = Seller::create(
-                [
-                    'password' => Hash::make($args['input']['password']),
-                    'carnet' => now()->year.'-'.Str::random(5),
-                    ...Arr::only(
-                        $args['input'],
-                        ['first_name', 'last_name', 'email', 'hired_at']
-                    ),
-                ]
-            );
+            $seller = Seller::query()->find($args['input']['id']);
+
+            $data = Arr::only($args['input'], ['first_name', 'last_name']);
+
+            if (isset($args['input']['password'])) {
+                $data['password'] = Hash::make($args['input']['password']);
+            }
+
+            /** @var Seller $seller */
+            $seller = $seller::update($data);
         } catch (Throwable $error) {
             throw new Error($error);
         }
@@ -40,11 +41,10 @@ class SellerCreateMutation extends BaseMutation
     public function rules(): array
     {
         return [
-            'first_name' => ['required', 'string'],
-            'last_name' => ['required', 'string'],
-            'email' => ['required', 'email'],
-            'password' => ['required', 'confirmed', Password::min(4)->letters()->mixedCase()->numbers()],
-            'hired_at' => ['required', 'date'],
+            'first_name' => ['sometimes', 'string'],
+            'id' => ['required', Rule::exists(Seller::class)],
+            'last_name' => ['sometimes', 'string'],
+            'password' => ['sometimes', 'confirmed', Password::min(4)->letters()->mixedCase()->numbers()],
         ];
     }
 

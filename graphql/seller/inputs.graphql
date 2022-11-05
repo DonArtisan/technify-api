@@ -1,11 +1,12 @@
 input SellerInput {
-    firstName: String! @rename(attribute: "first_name")
-    lastName: String! @rename(attribute: "last_name")
+    carnet: String!
     email: String!
+    firstName: String! @rename(attribute: "first_name")
+    hiredAt: Date! @rename(attribute: "hired_at")
+    id: ID @globalId(decode: ID)
+    lastName: String! @rename(attribute: "last_name")
     password: String!
     passwordConfirmed: String! @rename(attribute: "password_confirmation")
-    carnet: String!
-    hiredAt: Date! @rename(attribute: "hired_at")
 }
 
 input SellerLoginInput {
