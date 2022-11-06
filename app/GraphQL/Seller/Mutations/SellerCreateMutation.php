@@ -7,7 +7,6 @@ use App\Models\Seller;
 use Error;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 use Throwable;
 
