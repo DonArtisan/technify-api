@@ -18,9 +18,13 @@ class Sellers extends Component
 
     protected $queryString = ['search' => ['except' => '']];
 
+    public bool $isEdit = false;
+
     public string $search = '';
 
     public bool $showModal = false;
+
+    public int $sellerIdToDelete = 0;
 
     public array $data = [
         'first_name',
@@ -36,8 +40,20 @@ class Sellers extends Component
         'data.last_name' => ['required'],
     ];
 
-    public function addUser(): void
+    public ?Seller $sellerToEdit = null;
+
+    public function save(): void
     {
+        if ($this->isEdit) {
+            $this->sellerToEdit->update($this->data);
+
+            $this->reset();
+
+            $this->dispatchBrowserEvent('wire::message', ['message' => 'user updated']);
+
+            return;
+        }
+
         $this->validate();
 
         $data = Arr::only($this->data, ['first_name', 'last_name', 'hired_at', 'email']);
@@ -53,11 +69,52 @@ class Sellers extends Component
         $this->dispatchBrowserEvent('wire::message', ['message' => 'user saved.']);
     }
 
+    public function deleteUser(): void
+    {
+        /** @var Seller $seller */
+        $seller = Seller::find($this->sellerIdToDelete);
+
+        if (! $seller) {
+            return;
+        }
+
+        $seller->delete();
+
+        $this->dispatchBrowserEvent('wire::message', ['message' => 'user deleted.']);
+
+        $this->resetValues();
+    }
+
+    public function editUser(int $userId): void
+    {
+        $seller = Seller::find($userId);
+
+        if (! $seller) {
+            return;
+        }
+
+        $this->sellerToEdit = $seller;
+        $this->isEdit = true;
+        $this->showModal = true;
+
+        $this->data = $seller->only([
+            'email',
+            'first_name',
+            'hired_at',
+            'last_name',
+        ]);
+    }
+
     public function showUserModal(): void
     {
         $this->showModal = true;
 
         $this->resetExcept(['showModal']);
+    }
+
+    public function resetValues(): void
+    {
+        $this->reset();
     }
 
     public function render(): View

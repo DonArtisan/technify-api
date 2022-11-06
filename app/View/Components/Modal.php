@@ -7,7 +7,7 @@ use Illuminate\View\Component;
 
 class Modal extends Component
 {
-    public function __construct(public bool $open = false)
+    public function __construct(public bool $open = false, public string $size = 'md', public ?string $cleanAction = null)
     {
         //
     }
