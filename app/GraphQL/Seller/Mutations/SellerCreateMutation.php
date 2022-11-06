@@ -19,7 +19,7 @@ class SellerCreateMutation extends BaseMutation
             $seller = Seller::create(
                 [
                     'password' => Hash::make($args['input']['password']),
-                    'carnet' => now()->year.'-'.Str::random(5),
+                    'carnet' => getRandomCarnet(),
                     ...Arr::only(
                         $args['input'],
                         ['first_name', 'last_name', 'email', 'hired_at']

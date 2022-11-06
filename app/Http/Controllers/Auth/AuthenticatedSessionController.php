@@ -2,53 +2,84 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Auth\Concerns\AuthenticatesUsers;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DashboardController;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Providers\RouteServiceProvider;
+use Illuminate\Contracts\Auth\StatefulGuard;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Display the login view.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function create()
+    use AuthenticatesUsers;
+
+    public function create(): View
     {
         return view('auth.login');
     }
 
-    /**
-     * Handle an incoming authentication request.
-     *
-     * @param  \App\Http\Requests\Auth\LoginRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(LoginRequest $request)
+    public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        $this->validateLogin($request);
 
-        $request->session()->regenerate();
+        if ($this->attemptLogin($request)) {
+            return $this->sendLoginResponse($request);
+        }
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        throw ValidationException::withMessages([
+            'email' => [trans('auth.failed')],
+        ]);
     }
 
-    /**
-     * Destroy an authenticated session.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function destroy(Request $request)
+    public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        $this->guard()->logout();
+
+        $this->sellersGuard()->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        if ($response = $this->loggedOut($request)) {
+            return $response;
+        }
+
+        return redirect()->action([self::class, 'create']);
+    }
+
+    public function attemptLogin(LoginRequest $request)
+    {
+        $status = $this->guard()->attempt(
+            $request->only(['email', 'password']),
+            $request->boolean('remember')
+        );
+
+        if (! $status) {
+            return $this->sellersGuard()->attempt(
+                $request->only(['email', 'password']),
+                $request->boolean('remember')
+            );
+        }
+
+        return $status;
+    }
+
+    protected function guard(): StatefulGuard
+    {
+        return Auth::guard('users');
+    }
+
+    protected function sellersGuard(): StatefulGuard
+    {
+        return Auth::guard('sellers');
+    }
+
+    public function redirectTo(): string
+    {
+        return action([DashboardController::class, 'index']);
     }
 }
