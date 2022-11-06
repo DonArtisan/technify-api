@@ -12,7 +12,7 @@ use BenSampo\Enum\Enum;
  */
 final class AuthorizeEnum extends Enum
 {
-    const DECLINED = 0;
+    public const DECLINED = 0;
 
-    const APPROVED = 1;
+    public const APPROVED = 1;
 }
