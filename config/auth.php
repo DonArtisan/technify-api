@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'users',
         'passwords' => 'users',
     ],
 
@@ -36,6 +36,16 @@ return [
     */
 
     'guards' => [
+        'sellers' => [
+            'driver' => 'session',
+            'provider' => 'sellers',
+        ],
+
+        'users' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
@@ -60,11 +70,15 @@ return [
     */
 
     'providers' => [
+        'sellers' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Seller::class,
+        ],
+
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -87,6 +101,13 @@ return [
     */
 
     'passwords' => [
+        'sellers' => [
+            'provider' => 'sellers',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
         'users' => [
             'provider' => 'users',
             'table' => 'password_resets',

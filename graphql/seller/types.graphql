@@ -31,10 +31,15 @@ type Seller {
     updated_at: DateTime!
 }
 
-type SellerRegisterPayload {
+type SellerCreatePayload {
     seller: Seller
     userErrors: [UserError]
     sellerToken: String
+}
+
+type SellerUpdatePayload {
+    seller: Seller
+    userErrors: [UserError]
 }
 
 type SellerLoginPayload {

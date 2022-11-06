@@ -16,6 +16,7 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
+        "livewire/livewire": "^2.10",
         "mll-lab/laravel-graphql-playground": "^2.6",
         "moneyphp/money": "^4.0.5",
         "nuwave/lighthouse": "^5.58",
@@ -25,6 +26,7 @@
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.12",
         "fakerphp/faker": "^1.9.1",
+        "laravel/breeze": "^1.14",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",

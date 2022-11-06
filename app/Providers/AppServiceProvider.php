@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Model;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        include_once app_path('helpers.php');
     }
 
     /**
@@ -23,6 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Model::shouldBeStrict();
     }
 }
