@@ -14,11 +14,11 @@ use BenSampo\Enum\Enum;
  */
 final class OrderStatus extends Enum
 {
-    const PENDING = 1;
+    public const PENDING = 1;
 
-    const PROCESSING = 2;
+    public const PROCESSING = 2;
 
-    const REJECTED = 3;
+    public const REJECTED = 3;
 
-    const COMPLETED = 4;
+    public const COMPLETED = 4;
 }

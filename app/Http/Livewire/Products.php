@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Livewire\Component;
 use Livewire\WithPagination;
-use PhpParser\Node\Expr\AssignOp\Mod;
 
 class Products extends Component
 {
@@ -139,7 +138,7 @@ class Products extends Component
         $products = Product::query()
             ->addSelect([
                 'category_name' => Category::query()->select('name')->whereColumn('id', 'products.category_id')->take(1),
-                'model_name' => Model::query()->select('model_name')->whereColumn('id', 'products.model_id')->take(1)
+                'model_name' => Model::query()->select('model_name')->whereColumn('id', 'products.model_id')->take(1),
             ])
             ->when($this->search, function (Builder $query, $search) {
                 $query->where('name', 'ilike', "%$search%");
@@ -148,7 +147,10 @@ class Products extends Component
             ->paginate();
 
         return view('livewire.products', compact(
-            'brands', 'categories', 'colors', 'products'
+            'brands',
+            'categories',
+            'colors',
+            'products'
         ));
     }
 }
