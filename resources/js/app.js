@@ -11,7 +11,7 @@ Alpine.start();
 window.addEventListener('wire::message', ({ detail }) => {
   Toastify({
     text: detail.message,
-    gravity: 'bottom',
+    gravity: 'top',
     position: 'right',
   }).showToast()
 })

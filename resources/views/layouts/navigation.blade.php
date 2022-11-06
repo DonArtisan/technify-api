@@ -107,7 +107,7 @@
                 </li>
 
                 <li class="items-center">
-                    <a href="#" class="text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600">
+                    <a href="{{ action(\App\Http\Livewire\Products::class) }}" class="text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600">
                         <i class="fa-brands fa-product-hunt mr-2 text-sm text-slate-300"></i>
                         Products
                     </a>
