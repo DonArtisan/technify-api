@@ -19,10 +19,10 @@ class Seller extends Model
         'first_name',
         'hired_at',
         'last_name',
-        'password'
+        'password',
     ];
 
     protected $casts = [
-        'hired_at' => 'date'
+        'hired_at' => 'date',
     ];
 }

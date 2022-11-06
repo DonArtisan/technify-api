@@ -3,11 +3,8 @@
 namespace App\Http\Livewire;
 
 use App\Models\Seller;
-use App\Models\User;
-use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -45,7 +42,7 @@ class Sellers extends Component
         Seller::create([
             ...$data,
             'carnet' => getRandomCarnet(),
-            'password' => bcrypt('1234')
+            'password' => bcrypt('1234'),
         ]);
 
         $this->reset();
