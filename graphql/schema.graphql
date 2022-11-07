@@ -5,5 +5,4 @@ type Query
 
 #import ./user/*.graphql
 #import ./seller/*.graphql
-
-
+#import ./product/*.graphql
