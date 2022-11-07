@@ -3,5 +3,5 @@ extend type Query {
         id: ID! @globalId(decode: ID) @eq
     ): Category @find
 
-    categories: [Category!]! @all
+    categories: [Category!]! @paginate(type: CONNECTION)
 }

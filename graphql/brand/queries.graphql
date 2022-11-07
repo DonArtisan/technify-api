@@ -3,5 +3,5 @@ extend type Query {
         id: ID! @globalId(decode: ID) @eq
     ): Brand @find
 
-    brands: [Brand!]! @all
+    brands: [Brand!]! @paginate(type: CONNECTION)
 }
