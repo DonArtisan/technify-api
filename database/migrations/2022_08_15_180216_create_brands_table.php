@@ -24,11 +24,11 @@ return new class () extends Migration {
     public function setInitialValues(): void
     {
         $defaultNames = [
-            ['name' => 'Toshiba', 'created_at' => now(), 'updated_at' => now() ],
-            ['name' => 'MSI', 'created_at' => now(), 'updated_at' => now() ],
-            ['name' => 'Apple', 'created_at' => now(), 'updated_at' => now() ],
-            ['name' => 'Microsoft', 'created_at' => now(), 'updated_at' => now() ],
-            ['name' => 'Lenovo', 'created_at' => now(), 'updated_at' => now() ],
+            ['name' => 'Toshiba', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'MSI', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Apple', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Microsoft', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Lenovo', 'created_at' => now(), 'updated_at' => now()],
         ];
 
         \App\Models\Brand::query()->insert($defaultNames);
