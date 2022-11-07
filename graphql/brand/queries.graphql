@@ -1,0 +1,7 @@
+extend type Query {
+    brand(
+        id: ID! @globalId(decode: ID) @eq
+    ): Brand @find
+
+    brands: [Brand!]! @all
+}

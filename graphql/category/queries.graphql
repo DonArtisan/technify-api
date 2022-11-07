@@ -1,0 +1,7 @@
+extend type Query {
+    category(
+        id: ID! @globalId(decode: ID) @eq
+    ): Category @find
+
+    categories: [Category!]! @all
+}
