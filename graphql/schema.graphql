@@ -6,5 +6,7 @@ type Query
 #import ./user/*.graphql
 #import ./seller/*.graphql
 #import ./product/*.graphql
+#import ./category/*.graphql
+#import ./brand/*.graphql
 
 
