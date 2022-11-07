@@ -17,6 +17,7 @@ return new class () extends Migration {
             $table->string('name');
             $table->timestamps();
         });
+        $this->setInitialValues();
     }
 
     public function setInitialValues(): void
