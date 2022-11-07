@@ -21,9 +21,25 @@ scalar String
 """The `Boolean` scalar type represents `true` or `false`."""
 scalar Boolean
 
+"""Product status"""
+enum ProductStatus {
+  """Active"""
+  ACTIVE
+
+  """Inactive"""
+  INACTIVE
+}
+
+"""
+The `Float` scalar type represents signed double-precision fractional
+values as specified by
+[IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). 
+"""
+scalar Float
+
 """
 The `Int` scalar type represents non-fractional signed whole numeric
-values. Int can represent values between -(2^31) and 2^31 - 1.
+values. Int can represent values between -(2^31) and 2^31 - 1. 
 """
 scalar Int
 
@@ -90,12 +106,23 @@ type SellerEdge {
   cursor: String!
 }
 
-"""
-The `Float` scalar type represents signed double-precision fractional
-values as specified by
-[IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point).
-"""
-scalar Float
+"""A paginated list of Product edges."""
+type ProductConnection {
+  """Pagination information about the list of edges."""
+  pageInfo: PageInfo!
+
+  """A list of Product edges."""
+  edges: [ProductEdge!]!
+}
+
+"""An edge that contains a node of type Product and a cursor."""
+type ProductEdge {
+  """The Product node."""
+  node: Product!
+
+  """A unique cursor that can be used for pagination."""
+  cursor: String!
+}
 
 """
 A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all
@@ -296,15 +323,6 @@ enum __DirectiveLocation {
 
   """Location adjacent to an input object field definition."""
   INPUT_FIELD_DEFINITION
-}
-
-"""Product status"""
-enum ProductStatus {
-  """Active"""
-  ACTIVE
-
-  """Inactive"""
-  INACTIVE
 }
 
 """Directions for ordering a list of records."""

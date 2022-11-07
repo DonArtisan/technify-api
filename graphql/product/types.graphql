@@ -1,4 +1,4 @@
-type Brand @model(class: "App\\Blog\\Models\\Brand") {
+type Brand @model(class: "App\\Models\\Brand") {
     id: ID! @globalId
     name: String!
     model: Model! @hasMany
@@ -6,7 +6,7 @@ type Brand @model(class: "App\\Blog\\Models\\Brand") {
     updated_at: DateTime! @rename(attribute: "updated_at")
 }
 
-type Model @model(class: "App\\Blog\\Models\\Model") {
+type Model @model(class: "App\\Models\\Model") {
     id: ID! @globalId
     modelName: String! @rename(attribute: "model_name")
     brand: Brand! @belongsTo
@@ -15,7 +15,7 @@ type Model @model(class: "App\\Blog\\Models\\Model") {
     updated_at: DateTime! @rename(attribute: "updated_at")
 }
 
-type Category @model(class: "App\\Blog\\Models\\Category") {
+type Category @model(class: "App\\Models\\Category") {
     id: ID! @globalId
     name: String!
     product: Product @hasMany
@@ -23,7 +23,7 @@ type Category @model(class: "App\\Blog\\Models\\Category") {
     updated_at: DateTime! @rename(attribute: "updated_at")
 }
 
-type Discount @model(class: "App\\Blog\\Models\\Discount") {
+type Discount @model(class: "App\\Models\\Discount") {
     id: ID! @globalId
     code: String!
     name: String!
@@ -52,7 +52,7 @@ type Color {
     updatedAt: DateTime! @rename(attribute: "updated_at")
 }
 
-type Product @model(class: "App\\Blog\\Models\\Product") {
+type Product @model(class: "App\\Models\\Product") {
     id: ID! @globalId
     name: String!
     description: String!
