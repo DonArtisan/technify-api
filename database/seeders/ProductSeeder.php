@@ -16,12 +16,10 @@ class ProductSeeder extends Seeder
     public function run()
     {
         $categories = Category::pluck('id');
-//        $categories = \App\ProductCategory::pluck('id');
         $categories->each(function ($category) {
             Product::factory()->count(10)->create([
                 'category_id' => $category,
             ]);
         });
-        //
     }
 }
