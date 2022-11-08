@@ -5,6 +5,8 @@ namespace Database\Factories;
 use App\Enums\ProductStatus;
 use App\Models\Category;
 use App\Models\Model;
+use App\Models\Price;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -25,7 +27,15 @@ class ProductFactory extends Factory
             'category_id' => Category::factory(),
             'model_id' => Model::factory(),
             'status' => ProductStatus::getRandomValue(),
-
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (Product $product) {
+            Price::factory()->create([
+                'product_id' => $product->id,
+            ]);
+        });
     }
 }
