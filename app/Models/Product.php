@@ -2,15 +2,22 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Product extends BaseModel
+class Product extends BaseModel implements HasMedia
 {
     use HasFactory;
+    use Sluggable;
+    use InteractsWithMedia;
+
+    public const MEDIA_COLLECTION_IMAGE = 'image';
 
     protected $fillable = [
         'category_id',
@@ -21,6 +28,24 @@ class Product extends BaseModel
         'name',
         'status',
     ];
+
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(self::MEDIA_COLLECTION_IMAGE)
+            ->acceptsMimeTypes(['image/jpeg', 'image/jpg', 'image/png'])
+            ->singleFile();
+    }
+
+    public function sluggable(): array
+    {
+        return [
+            'handle' => [
+                'source' => ['name', 'model_id'],
+            ],
+        ];
+    }
+
 
     public function discount(): HasOne
     {
