@@ -64,6 +64,7 @@ type Product @model(class: "App\\Models\\Product") {
     id: ID! @globalId
     name: String!
     description: String!
+    currentPrice: Float @field(resolver: "App\\GraphQL\\Product\\CurrentPriceResolver")
     discount: Discount @hasOne
     model: Model! @belongsTo
     status: ProductStatus
