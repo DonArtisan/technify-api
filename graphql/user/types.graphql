@@ -14,6 +14,10 @@ type User {
 
     isBlocked: Boolean @rename(attribute: "is_blocked")
 
+    picture: Image
+    @with(relation: "media")
+    @field(resolver: "App\\GraphQL\\User\\Types\\UserImage")
+
     password: String!
 
     "When the email was verified."

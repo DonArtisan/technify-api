@@ -68,6 +68,9 @@ type Product @model(class: "App\\Models\\Product") {
     discount: Discount @hasOne
     model: Model! @belongsTo
     status: ProductStatus
+    image: Image
+    @with(relation: "media")
+    @field(resolver: "App\\GraphQL\\Product\\Types\\ProductImage")
     attributes: Attributes! @hasOne
     prices: [Price!]! @hasMany
     color: Color! @hasOne

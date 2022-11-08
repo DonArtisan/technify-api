@@ -1,0 +1,22 @@
+"Represents a generic file."
+type GenericFile @model(class: "App\\Models\\Media") {
+    "Globally unique identifier."
+    id: ID! @globalId
+    "The name of the file."
+    name: String!
+    "The URL of the file."
+    url: URL! @field(resolver: "App\\GraphQL\\Media\\Types\\GenericFileType@url")
+}
+
+"Represents an image."
+type Image @model(class: "App\\Models\\Media") {
+    "The original height of the image in pixels."
+    height: Int @field(resolver: "App\\GraphQL\\Media\\Types\\ImageType@height")
+    "A unique identifier for the image."
+    id: ID! @globalId
+    "The location of the original image as a URL."
+    originalSrc: URL!
+    @field(resolver: "App\\GraphQL\\Media\\Types\\ImageType@originalSrc")
+    @cache(maxAge: 3600)
+    width: Int @field(resolver: "App\\GraphQL\\Media\\Types\\ImageType@width")
+}

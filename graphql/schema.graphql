@@ -8,3 +8,4 @@ type Query
 #import ./product/*.graphql
 #import ./category/*.graphql
 #import ./brand/*.graphql
+#import ./media/*.graphql

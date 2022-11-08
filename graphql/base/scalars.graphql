@@ -1,2 +1,5 @@
 "A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+
+"An RFC 3986 and RFC 3987 compliant URI string."
+scalar URL @scalar(class: "App\\GraphQL\\Scalars\\URL")

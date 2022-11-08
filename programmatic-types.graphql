@@ -21,6 +21,19 @@ scalar String
 """The `Boolean` scalar type represents `true` or `false`."""
 scalar Boolean
 
+"""
+The `Int` scalar type represents non-fractional signed whole numeric
+values. Int can represent values between -(2^31) and 2^31 - 1. 
+"""
+scalar Int
+
+"""
+The `Float` scalar type represents signed double-precision fractional
+values as specified by
+[IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). 
+"""
+scalar Float
+
 """Product status"""
 enum ProductStatus {
   """Active"""
@@ -30,26 +43,13 @@ enum ProductStatus {
   INACTIVE
 }
 
-"""
-The `Float` scalar type represents signed double-precision fractional
-values as specified by
-[IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). 
-"""
-scalar Float
-
-"""
-The `Int` scalar type represents non-fractional signed whole numeric
-values. Int can represent values between -(2^31) and 2^31 - 1. 
-"""
-scalar Int
-
-"""A paginated list of User edges."""
-type UserConnection {
+"""A paginated list of Product edges."""
+type ProductConnection {
   """Pagination information about the list of edges."""
   pageInfo: PageInfo!
 
-  """A list of User edges."""
-  edges: [UserEdge!]!
+  """A list of Product edges."""
+  edges: [ProductEdge!]!
 }
 
 """Information about pagination using a Relay style cursor connection."""
@@ -79,6 +79,24 @@ type PageInfo {
   lastPage: Int!
 }
 
+"""An edge that contains a node of type Product and a cursor."""
+type ProductEdge {
+  """The Product node."""
+  node: Product!
+
+  """A unique cursor that can be used for pagination."""
+  cursor: String!
+}
+
+"""A paginated list of User edges."""
+type UserConnection {
+  """Pagination information about the list of edges."""
+  pageInfo: PageInfo!
+
+  """A list of User edges."""
+  edges: [UserEdge!]!
+}
+
 """An edge that contains a node of type User and a cursor."""
 type UserEdge {
   """The User node."""
@@ -101,24 +119,6 @@ type SellerConnection {
 type SellerEdge {
   """The Seller node."""
   node: Seller!
-
-  """A unique cursor that can be used for pagination."""
-  cursor: String!
-}
-
-"""A paginated list of Product edges."""
-type ProductConnection {
-  """Pagination information about the list of edges."""
-  pageInfo: PageInfo!
-
-  """A list of Product edges."""
-  edges: [ProductEdge!]!
-}
-
-"""An edge that contains a node of type Product and a cursor."""
-type ProductEdge {
-  """The Product node."""
-  node: Product!
 
   """A unique cursor that can be used for pagination."""
   cursor: String!
