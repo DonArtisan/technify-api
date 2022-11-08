@@ -18,6 +18,7 @@ return new class () extends Migration {
             $table->unsignedInteger('discount_id')->nullable();
             $table->foreign('discount_id')->references('id')->on('discounts');
             $table->string('name');
+            $table->string('handle');
             $table->string('description');
             $table->foreignId('model_id')->constrained('models');
             $table->unsignedInteger('color_id')->nullable();

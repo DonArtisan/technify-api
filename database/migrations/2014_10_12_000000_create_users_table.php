@@ -21,6 +21,7 @@ return new class () extends Migration {
             $table->boolean('is_blocked')->default(0);
             $table->string('last_name');
             $table->string('password');
+            $table->string('handle');
             $table->rememberToken();
             $table->timestamps();
         });
