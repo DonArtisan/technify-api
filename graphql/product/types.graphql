@@ -18,7 +18,7 @@ type Model @model(class: "App\\Models\\Model") {
 type Category @model(class: "App\\Models\\Category") {
     id: ID! @globalId
     name: String!
-    products: Product @hasMany
+    products: [Product!]! @hasMany(type: CONNECTION)
     created_at: DateTime! @rename(attribute: "created_at")
     updated_at: DateTime! @rename(attribute: "updated_at")
 }
