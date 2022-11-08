@@ -23,6 +23,7 @@ return new class () extends Migration {
             $table->unsignedInteger('color_id')->nullable();
             $table->foreign('color_id')->references('id')->on('colors');
             $table->foreignId('category_id')->constrained('categories');
+            $table->decimal('price');
             $table->timestamps();
         });
 

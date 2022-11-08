@@ -124,6 +124,42 @@ type ProductEdge {
   cursor: String!
 }
 
+"""A paginated list of Category edges."""
+type CategoryConnection {
+  """Pagination information about the list of edges."""
+  pageInfo: PageInfo!
+
+  """A list of Category edges."""
+  edges: [CategoryEdge!]!
+}
+
+"""An edge that contains a node of type Category and a cursor."""
+type CategoryEdge {
+  """The Category node."""
+  node: Category!
+
+  """A unique cursor that can be used for pagination."""
+  cursor: String!
+}
+
+"""A paginated list of Brand edges."""
+type BrandConnection {
+  """Pagination information about the list of edges."""
+  pageInfo: PageInfo!
+
+  """A list of Brand edges."""
+  edges: [BrandEdge!]!
+}
+
+"""An edge that contains a node of type Brand and a cursor."""
+type BrandEdge {
+  """The Brand node."""
+  node: Brand!
+
+  """A unique cursor that can be used for pagination."""
+  cursor: String!
+}
+
 """
 A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all
 available types and directives on the server, as well as the entry points for
