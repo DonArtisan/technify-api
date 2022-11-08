@@ -15,6 +15,14 @@ type Model @model(class: "App\\Models\\Model") {
     updated_at: DateTime! @rename(attribute: "updated_at")
 }
 
+type Price @model(class: "App\\Models\\Price") {
+    id: ID! @globalId
+    price: Float!
+    product: Product! @belongsTo
+    created_at: DateTime! @rename(attribute: "created_at")
+    updated_at: DateTime! @rename(attribute: "updated_at")
+}
+
 type Category @model(class: "App\\Models\\Category") {
     id: ID! @globalId
     name: String!
@@ -60,6 +68,7 @@ type Product @model(class: "App\\Models\\Product") {
     model: Model! @belongsTo
     status: ProductStatus
     attributes: Attributes! @hasOne
+    price: Price! @hasMany
     color: Color! @hasOne
     category: Category! @belongsTo
     createdAt: DateTime! @rename(attribute: "created_at")

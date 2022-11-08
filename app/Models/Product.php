@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends BaseModel
@@ -44,5 +45,10 @@ class Product extends BaseModel
     public function color(): HasOne
     {
         return $this->hasOne(Color::class);
+    }
+
+    public function prices(): HasMany
+    {
+        return $this->hasMany(Price::class);
     }
 }
