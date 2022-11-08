@@ -29,6 +29,7 @@ return new class () extends Migration {
             ['name' => 'Sonido', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Impresoras', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Bateria', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Telefonos', 'created_at' => now(), 'updated_at' => now()],
         ];
 
         \App\Models\Category::query()->insert($defaultNames);
