@@ -7,6 +7,7 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
@@ -50,6 +51,16 @@ class User extends Authenticatable implements HasMedia
         'remember_token',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection(self::MEDIA_COLLECTION_PICTURE)
@@ -66,19 +77,15 @@ class User extends Authenticatable implements HasMedia
         ];
     }
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
     public function name(): Attribute
     {
         return Attribute::get(
             fn () => trim("$this->first_name $this->last_name")
         );
+    }
+
+    public function sales(): MorphMany
+    {
+        return $this->morphMany(ProductSale::class, 'buyerable');
     }
 }

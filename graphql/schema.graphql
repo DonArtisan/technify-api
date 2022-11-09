@@ -9,3 +9,4 @@ type Query
 #import ./category/*.graphql
 #import ./brand/*.graphql
 #import ./media/*.graphql
+#import ./payment/*.graphql

@@ -75,6 +75,7 @@ type Product @model(class: "App\\Models\\Product") {
     prices: [Price!]! @hasMany
     color: Color! @hasOne
     category: Category! @belongsTo
+    productDetails: [ProductDetail]! @hasMany
     createdAt: DateTime! @rename(attribute: "created_at")
     updatedAt: DateTime! @rename(attribute: "updated_at")
 }

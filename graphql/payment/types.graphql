@@ -1,0 +1,21 @@
+type ProductSale @model(class: "App\\Models\\ProductSale") {
+    buyerableType: String! @rename(attribute: "buyerable_type")
+    buyerableId: ID! @globalId
+    amount: Float!
+    tax: Float!
+    total: Float!
+    productDetails: [ProductDetail!]! @hasMany
+}
+
+type ProductDetail @model(class: "App\\Models\\ProductSaleDetail") {
+    id: ID! @globalId
+    product: Product! @belongsTo
+    quantity: Int!
+    price: Float!
+    productSale: ProductSale! @belongsTo
+}
+
+type ProductSaleCreatePayload {
+    productSale: ProductSale
+    userErrors: [UserError]
+}

@@ -76,4 +76,9 @@ class Product extends BaseModel implements HasMedia
     {
         return $this->hasMany(Price::class);
     }
+
+    public function productDetails(): HasMany
+    {
+        return $this->hasMany(ProductSaleDetail::class);
+    }
 }
