@@ -16,3 +16,7 @@ extend type Query {
         query: String @builder(method: "App\\GraphQL\\User\\Builders\\UserQueryBuilder")
     ): [User!]! @paginate(type: CONNECTION)
 }
+
+extend type Query @guard {
+    viewer: User! @auth
+}
