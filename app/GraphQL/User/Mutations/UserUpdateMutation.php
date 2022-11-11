@@ -8,15 +8,16 @@ use Error;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Throwable;
 
 class UserUpdateMutation extends BaseMutation
 {
-    public function handle(mixed $root, array $args): array
+    public function handle(mixed $root, array $args, GraphQLContext $context): array
     {
         try {
             /** @var User $user */
-            $user = User::find($args['input']['id']);
+            $user = $context->user();
 
             $user->update(
                 array_merge(
@@ -24,7 +25,6 @@ class UserUpdateMutation extends BaseMutation
                         $args['input'],
                         ['first_name', 'last_name', 'email', 'isBlocked']
                     ),
-                    ['password' => Hash::make($args['input']['password'])],
                 )
             );
         } catch (Throwable $error) {
@@ -43,7 +43,6 @@ class UserUpdateMutation extends BaseMutation
             'first_name' => ['sometimes', 'string'],
             'last_name' => ['sometimes', 'string'],
             'email' => ['sometimes', 'email'],
-            'password' => ['sometimes', Password::min(4)->letters()->mixedCase()->numbers()],
         ];
     }
 
