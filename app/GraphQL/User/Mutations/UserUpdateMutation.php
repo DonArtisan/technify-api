@@ -6,8 +6,6 @@ use App\GraphQL\Mutations\BaseMutation;
 use App\Models\User;
 use Error;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Throwable;
 
