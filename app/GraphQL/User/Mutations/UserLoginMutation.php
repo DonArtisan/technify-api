@@ -6,7 +6,6 @@ use App\Models\User;
 use Error;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 use Throwable;
 
 class UserLoginMutation extends BaseMutation
@@ -20,13 +19,13 @@ class UserLoginMutation extends BaseMutation
         try {
             $user = User::whereEmail($args['input']['email'])->first();
 
-            if  ( ! $user || ! Hash::check($args['input']['password'], $user->password)) {
+            if (! $user || ! Hash::check($args['input']['password'], $user->password)) {
                 return [
                     'userErrors' => [
                         [
                             'field' => ['password'],
                             'message' => 'The password is incorrect',
-                        ]
+                        ],
                     ],
                 ];
             }
