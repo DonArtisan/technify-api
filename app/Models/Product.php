@@ -29,7 +29,6 @@ class Product extends BaseModel implements HasMedia
         'status',
     ];
 
-
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection(self::MEDIA_COLLECTION_IMAGE)
@@ -45,7 +44,6 @@ class Product extends BaseModel implements HasMedia
             ],
         ];
     }
-
 
     public function discount(): HasOne
     {
