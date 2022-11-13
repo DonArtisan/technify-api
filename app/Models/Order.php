@@ -24,7 +24,7 @@ class Order extends Model
     ];
 
     protected $casts = [
-        'order_status' => OrderStatus::class
+        'order_status' => OrderStatus::class,
     ];
 
     public function seller(): BelongsTo

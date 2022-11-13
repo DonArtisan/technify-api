@@ -28,11 +28,14 @@ class Orders extends Component
     public bool $isEdit = false;
 
     public string $searchBySeller = '';
+
     public string $searchBySupplier = '';
+
     public string $supplierSearch = '';
     public string $productSearch = '';
 
     public bool $showModal = false;
+
     public bool $showModalSupplier = false;
 
     public int $orderIdToDelete = 0;
