@@ -1,5 +1,8 @@
 input PaymentInput {
     id: ID @globalId(decode: ID)
+    amount: Float
+    tax: Float
+    total: Float
     productId: ID  @globalId(decode: ID) @rename(attribute: "product_id")
     quantity: Int
     price: Float
