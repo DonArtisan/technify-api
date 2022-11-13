@@ -180,7 +180,7 @@
 
             <div class="items-center pt-2 mt-4 border-t border-gray-200 rounded-b">
                 <button class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="submit">
-                    Save
+                    Guardar
                 </button>
             </div>
         </form>
@@ -215,7 +215,7 @@
 
             <div class="items-center pt-2 mt-4 border-t border-gray-200 rounded-b">
                 <button class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="submit">
-                    Save
+                    Guardar
                 </button>
             </div>
         </form>

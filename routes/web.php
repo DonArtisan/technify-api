@@ -6,6 +6,7 @@ use App\Http\Livewire\Categories;
 use App\Http\Livewire\Colors;
 use App\Http\Livewire\Products;
 use App\Http\Livewire\Sellers;
+use App\Http\Livewire\Suppliers;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('categories', Categories::class)->name('categories');
     Route::get('brands', Brands::class)->name('brands');
     Route::get('colors', Colors::class)->name('colors');
+    Route::get('suppliers', Suppliers::class)->name('suppliers');
 });
 
 require __DIR__.'/auth.php';

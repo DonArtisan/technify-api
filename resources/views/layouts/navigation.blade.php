@@ -75,7 +75,7 @@
             <hr class="my-4 md:min-w-full" />
             <!-- Heading -->
             <h6 class="md:min-w-full text-slate-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Main
+                Principal
             </h6>
             <!-- Navigation -->
 
@@ -93,7 +93,7 @@
                             <i class="fas fa-wrench mr-2 text-sm opacity-75"></i>
                             Administración del sistema
                         </span>
-                        <span><i class="fas fa-chevron-down mr-2 text-sm opacity-75"></i></span>
+                        <span><i class="fas fa-chevron-down text-sm opacity-75"></i></span>
                     </span>
                     <ul class="dropdown-item hidden" data-id="admin" id="admin">
                         <li>
@@ -104,7 +104,35 @@
                                 ])
                             >
                                 <i class="fas fa-users mr-2 text-sm opacity-75"></i>
-                                Sellers
+                                Vendedores
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="items-center">
+                    <span data-dropdown data-target="purchases"
+                        @class([
+                            "dropdown cursor-pointer text-xs uppercase py-3 font-bold block hover:text-pink-600",
+                            'link-active' => request()->routeIs('suppliers')
+                        ])
+                    >
+                        <span>
+                            <i class="fas fa-money-check-alt mr-2 text-sm opacity-75"></i>
+                            Pedidos
+                        </span>
+                        <span><i class="fas fa-chevron-down text-sm opacity-75"></i></span>
+                    </span>
+                    <ul class="dropdown-item hidden" data-id="purchases" id="purchases">
+                        <li>
+                            <a href="{{ action(\App\Http\Livewire\Suppliers::class) }}"
+                                @class([
+                                    "text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600",
+                                    'link-active' => request()->routeIs('suppliers')
+                                ])
+                            >
+                                <i class="fas fa-users mr-2 text-sm opacity-75"></i>
+                                Proveedores
                             </a>
                         </li>
                     </ul>
@@ -113,7 +141,7 @@
                 <li class="items-center">
                      <span data-dropdown data-target="sales" @class(["dropdown cursor-pointer text-xs uppercase py-3 font-bold block hover:text-pink-600", 'link-active' => request()->routeIs('customers')])>
                         <span>
-                            <i class="fas fa-wrench mr-2 text-sm opacity-75"></i>
+                            <i class="fas fa-shopping-bag mr-2 text-sm opacity-75"></i>
                             Venta
                         </span>
                         <span><i class="fas fa-chevron-down"></i></span>
@@ -194,7 +222,7 @@
             <hr class="my-4 md:min-w-full" />
             <!-- Heading -->
             <h6 class="md:min-w-full text-slate-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Config
+                Configuración
             </h6>
             <!-- Navigation -->
 
