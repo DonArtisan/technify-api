@@ -28,7 +28,7 @@ class ProductSaleFactory extends Factory
             'amount' => 0,
             'tax' => 0.15,
             'total' => 0,
-            'created_at'=> $this->faker->dateTimeThisYear(),
+            'created_at' => $this->faker->dateTimeThisYear(),
         ];
     }
 
@@ -50,7 +50,7 @@ class ProductSaleFactory extends Factory
                     'sale_id' => $sale->id,
                 ]);
             }
-            SalesStats::increase(1,$sale->created_at);
+            SalesStats::increase(1, $sale->created_at);
         });
     }
 }

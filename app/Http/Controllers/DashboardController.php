@@ -29,9 +29,9 @@ class DashboardController extends Controller
         $usersTotal = $usersStats->last()->value;
         logger($usersTotal);
 
-        $salesPercent = (($salesToday->difference) -  ($salesStats[0]->difference)) * 100;
-        $usersPercent = (($usersStats->last()->difference) -  ($usersStats[0]->difference)) * 100;
+        $salesPercent = (($salesToday->difference) - ($salesStats[0]->difference)) * 100;
+        $usersPercent = (($usersStats->last()->difference) - ($usersStats[0]->difference)) * 100;
 
-        return view('dashboard', compact('salesTotal', 'salesPercent', 'usersStats', 'usersTotal', 'usersPercent') );
+        return view('dashboard', compact('salesTotal', 'salesPercent', 'usersStats', 'usersTotal', 'usersPercent'));
     }
 }
