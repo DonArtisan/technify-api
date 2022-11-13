@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Seller;
 use App\Models\Supplier;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
