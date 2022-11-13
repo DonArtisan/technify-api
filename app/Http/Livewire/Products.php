@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Color;
 use App\Models\Model;
 use App\Models\Product;
+use App\Support\Livewire\Products\Catalog;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
@@ -17,6 +18,7 @@ use Livewire\WithPagination;
 class Products extends Component
 {
     use WithPagination;
+    use Catalog;
 
     protected $queryString = ['search' => ['except' => '']];
 
@@ -131,9 +133,9 @@ class Products extends Component
 
     public function render(): View
     {
-        $brands = Brand::all();
-        $categories = Category::all();
-        $colors = Color::all();
+        $brands = Brand::query()->orderBy('name')->get();
+        $categories = Category::query()->orderBy('name')->get();
+        $colors = Color::query()->orderBy('name')->get();
 
         $products = Product::query()
             ->addSelect([

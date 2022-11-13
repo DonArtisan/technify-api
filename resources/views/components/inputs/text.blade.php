@@ -1,6 +1,6 @@
 @props(['id', 'label' => ''])
 @if($label)
-  <label for="{{ $id }}" class="text-sm font-medium text-gray-900 block mb-2">{{ $label }}</label>
+  <label for="{{ $id }}" class="text-sm font-medium text-gray-900 block mb-2 capitalize">{{ $label }}</label>
 @endif
 <input
   name="{{ $id }}"

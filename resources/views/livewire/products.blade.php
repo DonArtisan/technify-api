@@ -129,34 +129,49 @@
                     @enderror
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.select wire:model="data.brand_id" id="brand_id" label="Brand">
-                        <option value="">seleccionar</option>
-                        @foreach($brands as $brand)
-                        <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                        @endforeach
-                    </x-inputs.select>
+                    <div class="flex flex-wrap justify-between">
+                        <div class="flex-1">
+                            <x-inputs.select wire:model="data.brand_id" id="brand_id" label="Brand">
+                                <option value="">seleccionar</option>
+                                @foreach($brands as $brand)
+                                    <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                @endforeach
+                            </x-inputs.select>
+                        </div>
+                        <button wire:click="addCatalog('brand')" type="button" class="btn-primary px-3 py-3.5 mt-auto"><i class="far fa-plus"></i></button>
+                    </div>
                     @error('data.color_id')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.select wire:model="data.color_id" id="color_id" label="Color">
-                        <option value="">seleccionar</option>
-                        @foreach($colors as $color)
-                        <option value="{{ $color->id }}">{{ $color->name }}</option>
-                        @endforeach
-                    </x-inputs.select>
+                    <div class="flex flex-wrap justify-between">
+                        <div class="flex-1">
+                            <x-inputs.select wire:model="data.color_id" id="color_id" label="Color">
+                                <option value="">seleccionar</option>
+                                @foreach($colors as $color)
+                                    <option value="{{ $color->id }}">{{ $color->name }}</option>
+                                @endforeach
+                            </x-inputs.select>
+                        </div>
+                        <button wire:click="addCatalog('color')" type="button" class="btn-primary px-3 py-3.5 mt-auto"><i class="far fa-plus"></i></button>
+                    </div>
                     @error('data.color_id')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.select wire:model="data.category_id" id="category_id" label="Categoría">
-                        <option value="">seleccionar</option>
-                        @foreach($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                        @endforeach
-                    </x-inputs.select>
+                    <div class="flex flex-wrap justify-between">
+                        <div class="flex-1">
+                            <x-inputs.select wire:model="data.category_id" id="category_id" label="Categoría">
+                                <option value="">seleccionar</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </x-inputs.select>
+                        </div>
+                        <button wire:click="addCatalog('category')" type="button" class="btn-primary px-3 py-3.5 mt-auto"><i class="far fa-plus"></i></button>
+                    </div>
                     @error('data.category_id')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror
@@ -180,6 +195,30 @@
             <button wire:click="deleteProduct" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">Eliminar</button>
             <button wire:click="resetValues" class="text-white bg-gray-600 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">Cancelar</button>
         </div>
+    </x-modal>
+
+    {{-- Category--}}
+    <x-modal :open="(bool) $catalogType" cleanAction="resetCatalog">
+        <x-slot:title>
+            Agregar {{ $catalogType }}
+        </x-slot:title>
+
+        <form wire:submit.prevent="{{ 'save'.ucfirst($catalogType) }}">
+            <div>
+                <div>
+                    <x-inputs.text wire:model.defer="catalogName" type="text" name="color" id="color" :label="$catalogType" />
+                    @error('catalogName')
+                    <p class="text-red-500">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="items-center pt-2 mt-4 border-t border-gray-200 rounded-b">
+                <button class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="submit">
+                    Save
+                </button>
+            </div>
+        </form>
     </x-modal>
 
     <div class="bg-white p-4 sticky bottom-0">
