@@ -22,12 +22,12 @@ class ProductSaleCreateMutation extends BaseMutation
 
             $user->sales()->create(
                 Arr::only(
-                    $args['input'],['amount', 'tax', 'total'],
+                    $args['input'],
+                    ['amount', 'tax', 'total'],
                 )
             );
 
             $ProductSale = ProductSale::class;
-
 
             DB::commit();
         } catch (Throwable $error) {

@@ -11,7 +11,7 @@ class Color extends Model
     use HasFactory;
 
     public $fillable = [
-        'name'
+        'name',
     ];
 
     public function product(): BelongsTo

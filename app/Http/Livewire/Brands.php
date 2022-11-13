@@ -23,7 +23,7 @@ class Brands extends Component
     public ?Brand $brandToEdit = null;
 
     protected array $rules = [
-        'name' => ['required', 'min:2']
+        'name' => ['required', 'min:2'],
     ];
 
     public function edit(int $colorId): void
