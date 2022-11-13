@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Http\Stats\UserStats;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -31,6 +32,15 @@ class UserFactory extends Factory
         ];
     }
 
+    public function configure(): static
+    {
+        return $this->afterCreating(function (User $user) {
+            if ($user->is_admin) {
+                $user->assign('admin');
+            }
+        });
+    }
+
     /**
      * Indicate that the model's email address should be unverified.
      *
@@ -39,7 +49,6 @@ class UserFactory extends Factory
     public function unverified()
     {
         return $this->state(function (array $attributes) {
-
             return [
                 'email_verified_at' => null,
             ];

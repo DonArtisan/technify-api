@@ -55,11 +55,14 @@ class Sellers extends Component
 
         $data = Arr::only($this->data, ['first_name', 'last_name', 'hired_at', 'email']);
 
-        Seller::create([
+        /** @var Seller $seller */
+        $seller = Seller::create([
             ...$data,
             'carnet' => getRandomCarnet(),
             'password' => bcrypt('1234'),
         ]);
+
+        $seller->assign('seller');
 
         $this->reset();
 
