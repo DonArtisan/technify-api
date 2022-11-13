@@ -26,6 +26,10 @@
     @apply max-w-xl;
 }
 
+.modal-lg {
+    @apply max-w-5xl;
+}
+
 #sidebar .dropdown-item {
     margin-inline-start: 20px;
 }

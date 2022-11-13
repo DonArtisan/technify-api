@@ -4,6 +4,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Livewire\Brands;
 use App\Http\Livewire\Categories;
 use App\Http\Livewire\Colors;
+use App\Http\Livewire\Customers;
+use App\Http\Livewire\Orders;
 use App\Http\Livewire\Products;
 use App\Http\Livewire\Sellers;
 use App\Http\Livewire\Suppliers;
@@ -32,7 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::get('brands', Brands::class)->name('brands');
     Route::get('categories', Categories::class)->name('categories');
     Route::get('colors', Colors::class)->name('colors');
-    Route::get('customers', \App\Http\Livewire\Customers::class)->name('customers');
+    Route::get('customers', Customers::class)->name('customers');
+    Route::get('orders', Orders::class)->name('orders');
     Route::get('products', Products::class)->name('products');
     Route::get('sellers', Sellers::class)->name('sellers');
     Route::get('suppliers', Suppliers::class)->name('suppliers');

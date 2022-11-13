@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
+use \Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Seller extends Model
 {
@@ -27,4 +28,9 @@ class Seller extends Model
     protected $casts = [
         'hired_at' => 'date',
     ];
+
+    public function name(): Attribute
+    {
+        return Attribute::get(fn ($attributes) => $attributes['first_name'].' '.$attributes['last_name']);
+    }
 }

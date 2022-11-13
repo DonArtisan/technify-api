@@ -135,6 +135,17 @@
                                 Proveedores
                             </a>
                         </li>
+                        <li>
+                            <a href="{{ action(\App\Http\Livewire\Orders::class) }}"
+                                @class([
+                                    "text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600",
+                                    'link-active' => request()->routeIs('orders')
+                                ])
+                            >
+                                <i class="fas fa-users mr-2 text-sm opacity-75"></i>
+                                Orders
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
