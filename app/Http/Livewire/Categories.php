@@ -23,7 +23,7 @@ class Categories extends Component
     public ?Category $categoryToEdit = null;
 
     protected array $rules = [
-        'name' => ['required', 'min:2']
+        'name' => ['required', 'min:2'],
     ];
 
     public function edit(int $categoryId): void
