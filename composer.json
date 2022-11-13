@@ -23,7 +23,8 @@
         "moneyphp/money": "^4.0.5",
         "nuwave/lighthouse": "^5.58",
         "silber/bouncer": "^1.0",
-        "spatie/laravel-medialibrary": "^10.0.0"
+        "spatie/laravel-medialibrary": "^10.0.0",
+        "spatie/laravel-stats": "^2.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",
