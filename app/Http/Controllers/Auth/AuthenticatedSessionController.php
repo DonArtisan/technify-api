@@ -56,7 +56,7 @@ class AuthenticatedSessionController extends Controller
         Session::put($this->guardIdentifier, 'users');
 
         $status = $this->guard()->attempt(
-            $request->only(['email', 'password']),
+            [...$request->only(['email', 'password']), 'is_admin' => true],
             $request->boolean('remember')
         );
 
