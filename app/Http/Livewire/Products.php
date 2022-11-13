@@ -117,7 +117,7 @@ class Products extends Component
         $this->data['model_name'] = $product->model->model_name;
     }
 
-    public function showUserModal(): void
+    public function showAddModal(): void
     {
         $this->showModal = true;
 

@@ -15,3 +15,14 @@ window.addEventListener('wire::message', ({ detail }) => {
     position: 'right',
   }).showToast()
 })
+
+const dropdowns = document.querySelectorAll('#sidebar span[data-dropdown]')
+
+dropdowns.forEach((elem) => {
+    const target = elem.dataset.target;
+    const itemsElement = document.querySelector(`[data-id=${target}]`)
+
+    elem.addEventListener('click', () => {
+        itemsElement.classList.toggle('hidden')
+    })
+})

@@ -25,3 +25,11 @@
 .modal-xs {
     @apply max-w-xl;
 }
+
+#sidebar .dropdown-item {
+    margin-inline-start: 20px;
+}
+
+#sidebar .dropdown {
+    @apply flex justify-between;
+}

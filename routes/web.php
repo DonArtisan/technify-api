@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Livewire\Brands;
+use App\Http\Livewire\Categories;
+use App\Http\Livewire\Colors;
 use App\Http\Livewire\Products;
 use App\Http\Livewire\Sellers;
 use Illuminate\Support\Facades\Route;
@@ -25,8 +28,11 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('products', Products::class);
-    Route::get('sellers', Sellers::class);
+    Route::get('products', Products::class)->name('products');
+    Route::get('sellers', Sellers::class)->name('sellers');
+    Route::get('categories', Categories::class)->name('categories');
+    Route::get('brands', Brands::class)->name('brands');
+    Route::get('colors', Colors::class)->name('colors');
 });
 
 require __DIR__.'/auth.php';

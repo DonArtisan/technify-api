@@ -9,23 +9,25 @@
                     <form class="lg:pr-3" action="#" method="GET">
                         <label for="users-search" class="sr-only">Search</label>
                         <div class="mt-1 relative lg:w-64 xl:w-96">
-                            <input wire:model.debounce.1000ms="search" type="text" name="email" id="users-search"
-                                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
-                                   placeholder="Search for products">
+                            <input wire:model.debounce.1000ms="search" type="text" name="email" id="users-search" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="Search for products">
                         </div>
                     </form>
-                    {{--                    <div class="flex items-center gap-2">--}}
-                    {{--                        <input wire:model="onlyActives" id="checkbox-all" aria-describedby="checkbox-1" type="checkbox" class="bg-gray-50 border-gray-300 focus:ring-3 focus:ring-cyan-200 h-4 w-4 rounded">--}}
-                    {{--                        <label for="checkbox-all">Active</label>--}}
-                    {{--                    </div>--}}
+                    {{-- <div class="flex items-center gap-2">--}}
+                    {{-- <input wire:model="onlyActives" id="checkbox-all" aria-describedby="checkbox-1" type="checkbox" class="bg-gray-50 border-gray-300 focus:ring-3 focus:ring-cyan-200 h-4 w-4 rounded">--}}
+                    {{-- <label for="checkbox-all">Active</label>--}}
+                    {{-- </div>--}}
                 </div>
                 <div class="flex items-center space-x-2 sm:space-x-3 ml-auto">
-                    <button wire:click="showUserModal" type="button" data-modal-toggle="add-user-modal" class="w-1/2 text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center sm:w-auto">
-                        <svg class="-ml-1 mr-2 h-6 w-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                        Añadir Producto
+                    <button wire:click="showAddModal" type="button" data-modal-toggle="add-user-modal" class="w-1/2 text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center sm:w-auto">
+                        <svg class="-ml-1 mr-2 h-6 w-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        Agregar Producto
                     </button>
                     <a href="#" class="w-1/2 text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center sm:w-auto">
-                        <svg class="-ml-1 mr-2 h-6 w-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clip-rule="evenodd"></path></svg>
+                        <svg class="-ml-1 mr-2 h-6 w-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clip-rule="evenodd"></path>
+                        </svg>
                         Export
                     </a>
                 </div>
@@ -39,29 +41,29 @@
                 <div class="shadow overflow-hidden">
                     <table class="table-fixed min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-100">
-                        <tr>
-                            <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                Name
-                            </th>
-                            <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                Description
-                            </th>
-                            <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                Modelo
-                            </th>
-                            <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                Categoría
-                            </th>
-                            <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                Estado
-                            </th>
-                            <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                Opciones
-                            </th>
-                        </tr>
+                            <tr>
+                                <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                    Name
+                                </th>
+                                <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                    Description
+                                </th>
+                                <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                    Modelo
+                                </th>
+                                <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                    Categoría
+                                </th>
+                                <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                    Estado
+                                </th>
+                                <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                    Opciones
+                                </th>
+                            </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach($products as $product)
+                            @foreach($products as $product)
                             <tr class="hover:bg-gray-100">
                                 <td class="p-4 flex items-center whitespace-nowrap space-x-6 mr-12 lg:mr-0">
                                     <img class="h-10 w-10 rounded-full" src="https://demo.themesberg.com/windster/images/users/neil-sims.png" alt="Neil Sims avatar">
@@ -79,16 +81,21 @@
                                 </td>
                                 <td class="p-4 whitespace-nowrap space-x-2">
                                     <button wire:click="editProduct({{ $product->id }})" type="button" data-modal-toggle="user-modal" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
-                                        <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg>
-                                        Edit product
+                                        <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
+                                            <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        Editar product
                                     </button>
                                     <button wire:click="$set('productIdToDelete', {{ $product->id }})" type="button" data-modal-toggle="delete-user-modal" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
-                                        <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                        <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                        </svg>
                                         Delete product
                                     </button>
                                 </td>
                             </tr>
-                        @endforeach
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -98,7 +105,7 @@
 
     <x-modal :open="$showModal" cleanAction="resetValues">
         <x-slot:title>
-            {{ $isEdit ? 'Edit Product' :'Add Product'}}
+            {{ $isEdit ? 'Editar Product' :'Agregar Product'}}
         </x-slot:title>
 
         <form wire:submit.prevent="save">
@@ -110,7 +117,7 @@
                     @enderror
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.text wire:model="data.description" type="text" name="description" id="description" label="Description"/>
+                    <x-inputs.text wire:model="data.description" type="text" name="description" id="description" label="Description" />
                     @error('data.description')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror
@@ -125,7 +132,7 @@
                     <x-inputs.select wire:model="data.brand_id" id="brand_id" label="Brand">
                         <option value="">seleccionar</option>
                         @foreach($brands as $brand)
-                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                        <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                         @endforeach
                     </x-inputs.select>
                     @error('data.color_id')
@@ -136,7 +143,7 @@
                     <x-inputs.select wire:model="data.color_id" id="color_id" label="Color">
                         <option value="">seleccionar</option>
                         @foreach($colors as $color)
-                            <option value="{{ $color->id }}">{{ $color->name }}</option>
+                        <option value="{{ $color->id }}">{{ $color->name }}</option>
                         @endforeach
                     </x-inputs.select>
                     @error('data.color_id')
@@ -147,7 +154,7 @@
                     <x-inputs.select wire:model="data.category_id" id="category_id" label="Categoría">
                         <option value="">seleccionar</option>
                         @foreach($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
                     </x-inputs.select>
                     @error('data.category_id')
