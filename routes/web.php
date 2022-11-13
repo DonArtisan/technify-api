@@ -31,14 +31,19 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('brands', Brands::class)->name('brands');
-    Route::get('categories', Categories::class)->name('categories');
-    Route::get('colors', Colors::class)->name('colors');
-    Route::get('customers', Customers::class)->name('customers');
-    Route::get('orders', Orders::class)->name('orders');
-    Route::get('products', Products::class)->name('products');
-    Route::get('sellers', Sellers::class)->name('sellers');
-    Route::get('suppliers', Suppliers::class)->name('suppliers');
+    Route::middleware(['seller'])->group(function () {
+        Route::get('customers', Customers::class)->name('customers');
+        Route::get('products', Products::class)->name('products');
+    });
+
+    Route::middleware('admin')->group(function () {
+        Route::get('brands', Brands::class)->name('brands');
+        Route::get('categories', Categories::class)->name('categories');
+        Route::get('colors', Colors::class)->name('colors');
+        Route::get('orders', Orders::class)->name('orders');
+        Route::get('sellers', Sellers::class)->name('sellers');
+        Route::get('suppliers', Suppliers::class)->name('suppliers');
+    });
 });
 
 require __DIR__.'/auth.php';

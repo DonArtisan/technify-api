@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Seller;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -25,5 +26,12 @@ class SellerFactory extends Factory
             'carnet' => now()->year.'-'.Str::random(5),
             'hired_at' => now(),
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Seller $seller) {
+           $seller->assign('seller');
+        });
     }
 }
