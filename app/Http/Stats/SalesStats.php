@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http;
+namespace App\Http\Stats;
+
+use Spatie\Stats\StatsQuery;
 
 class SalesStats extends \Spatie\Stats\BaseStats
 {
