@@ -6,13 +6,10 @@ use App\Enums\AuthorizeEnum;
 use App\Enums\OrderStatus;
 use App\Models\Model;
 use App\Models\Order;
-use App\Models\Product;
 use App\Models\Seller;
 use App\Models\Supplier;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -32,6 +29,7 @@ class Orders extends Component
     public string $searchBySupplier = '';
 
     public string $supplierSearch = '';
+
     public string $productSearch = '';
 
     public bool $showModal = false;
@@ -103,7 +101,7 @@ class Orders extends Component
                 return [
                     'product_id' => $id,
                     'quantity' => $this->quantities[$id],
-                    'price' => 0
+                    'price' => 0,
                 ];
             });
 
@@ -214,7 +212,7 @@ class Orders extends Component
 
         if ($this->supplierSearch) {
             $suppliers = Supplier::query()
-                ->where('agent_name', 'ilike',"%$this->supplierSearch%")
+                ->where('agent_name', 'ilike', "%$this->supplierSearch%")
                 ->get();
         }
 
