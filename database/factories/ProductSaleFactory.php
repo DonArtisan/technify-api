@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ProductSale>
  */
-class SaleFactory extends Factory
+class ProductSaleFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,28 +19,41 @@ class SaleFactory extends Factory
      */
     public function definition()
     {
+
+        $buyerable = $this->buyerable();
+
         return [
-            'buyerable'=> User::factory(),
-            'amount' => '0',
-            'tax' => '0.5',
-            'total'=> '0'
+            'buyerable_id'=> $buyerable::factory(),
+            'buyerable_type'=> $buyerable,
+            'amount' => 0,
+            'tax' => 0.15,
+            'total'=> 0
         ];
+    }
+
+    public function buyerable()
+    {
+
+        return $this->faker->randomElement([
+            User::class,
+        ]);
+
+
     }
 
     public function configure()
     {
-        return $this->afterCreating(function (ProductSale $sale )
+        logger('what');
+
+        return $this->afterCreating(function (ProductSale $sale)
         {
-            ProductSaleDetail::factory()->create([
-                'sale_id' => $sale->id,
-            ]);
+            $r = rand(1, 3);
+            for($i = 0; $i < $r; $i++ ){
+                ProductSaleDetail::factory()->create([
+                    'sale_id' => $sale->id,
+                ]);
+            }
         });
     }
 
-
-//$table->morphs('buyerable');
-//$table->decimal('amount');
-//$table->decimal('tax');
-//$table->decimal('total');
-//$table->timestamps();
 }
