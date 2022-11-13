@@ -36,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
         Relation::enforceMorphMap([
             'user' => User::class,
             'customer' => Customer::class,
-            'seller' => Seller::class
+            'seller' => Seller::class,
         ]);
     }
 }
