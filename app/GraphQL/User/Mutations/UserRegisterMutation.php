@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Mutations;
 
+use App\Http\Stats\UserStats;
 use App\Models\User;
 use Error;
 use Illuminate\Support\Arr;
@@ -27,6 +28,7 @@ class UserRegisterMutation extends BaseMutation
                     ['password' => Hash::make($args['input']['password'])],
                 )
             );
+            UserStats::increase(1);
         } catch (Throwable $error) {
             throw new Error($error);
         }
