@@ -150,7 +150,11 @@
                 </li>
 
                 <li class="items-center">
-                     <span data-dropdown data-target="sales" @class(["dropdown cursor-pointer text-xs uppercase py-3 font-bold block hover:text-pink-600", 'link-active' => request()->routeIs('customers')])>
+                     <span data-dropdown data-target="sales" @class([
+                            "dropdown cursor-pointer text-xs uppercase py-3 font-bold block hover:text-pink-600",
+                            'link-active' => request()->routeIs('customers', 'products')
+                            ])
+                        >
                         <span>
                             <i class="fas fa-shopping-bag mr-2 text-sm opacity-75"></i>
                             Venta
@@ -162,7 +166,7 @@
                             <a href="{{ action(\App\Http\Livewire\Customers::class) }}"
                                 @class([
                                     "text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600",
-                                    'link-active' => request()->routeIs('customers', 'products')
+                                    'link-active' => request()->routeIs('customers')
                                 ])
                             >
                                 <i class="fa-regular fa-user mr-2 text-sm"></i>

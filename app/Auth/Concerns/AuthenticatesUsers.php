@@ -9,10 +9,13 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 
 trait AuthenticatesUsers
 {
+    protected string $guardIdentifier = 'current_guard';
+
     abstract public function create(): View;
 
     public function store(Request $request): RedirectResponse
@@ -68,14 +71,14 @@ trait AuthenticatesUsers
         $request->session()->regenerate();
 
         // @phpstan-ignore-next-line we know that user is the correct type.
-        if ($response = $this->authenticated($request, $this->guard()->user())) {
+        if ($response = $this->authenticated($request, $this->guard(Session::get($this->guardIdentifier))->user())) {
             return $response;
         }
 
         return redirect()->intended($this->redirectTo());
     }
 
-    abstract protected function guard(): StatefulGuard;
+    abstract protected function guard(string $guard): StatefulGuard;
 
     abstract public function redirectTo(): string;
 
