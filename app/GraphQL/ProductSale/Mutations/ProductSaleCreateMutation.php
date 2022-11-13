@@ -38,7 +38,6 @@ class ProductSaleCreateMutation extends BaseMutation
             throw new Error($error);
         }
 
-
         return [
             'productSale' => $ProductSale,
             'userErrors' => [],
