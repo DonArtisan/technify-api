@@ -1,0 +1,7 @@
+extend type Query {
+    payment(
+        id: ID! @globalId(decode: ID) @eq
+    ): ProductDetail @find
+
+    payments: [ProductDetail!]! @paginate(type: CONNECTION)
+}
