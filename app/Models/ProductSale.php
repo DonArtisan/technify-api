@@ -10,6 +10,11 @@ class ProductSale extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'amount',
+        'total',
+    ];
+
     public function buyerable(): MorphTo
     {
         return $this->morphTo();
