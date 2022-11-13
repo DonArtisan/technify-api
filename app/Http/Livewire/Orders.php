@@ -2,11 +2,17 @@
 
 namespace App\Http\Livewire;
 
+use App\Enums\AuthorizeEnum;
+use App\Enums\OrderStatus;
+use App\Models\Model;
 use App\Models\Order;
+use App\Models\Seller;
 use App\Models\Supplier;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -24,6 +30,8 @@ class Orders extends Component
 
     public string $supplierSearch = '';
 
+    public string $productSearch = '';
+
     public bool $showModal = false;
 
     public bool $showModalSupplier = false;
@@ -32,24 +40,18 @@ class Orders extends Component
 
     public ?Supplier $supplierSelected = null;
 
+    public array $modelsIdSelected = [];
+
+    public array $quantities = [];
+
+    public ?string $requiredDate = null;
+
     public array $data = [
-        'amount',
-        'order_status',
-        'required_date',
-        'seller_id',
-        'supplier_id',
-        'tax',
-        'total',
+        'requiredDate',
     ];
 
     protected array $rules = [
-        'data.amount' => ['required'],
-        'data.order_status' => ['required'],
-        'data.required_date' => ['required'],
-        'data.seller_id' => ['required'],
-        'data.supplier_id' => ['required'],
-        'data.tax' => ['required'],
-        'data.total' => ['required'],
+        'requiredDate' => ['required', 'date_format:Y-m-d', 'after_or_equal:today'],
     ];
 
     public ?Order $orderToEdit = null;
@@ -59,17 +61,9 @@ class Orders extends Component
         $this->validate();
 
         $data = Arr::only($this->data, [
-            'amount',
-            'order_status',
             'required_date',
-            'seller_id',
             'supplier_id',
-            'tax',
-            'total',
         ]);
-
-        $data['RUC'] = $this->data['ruc'];
-        unset($data['ruc']);
 
         if ($this->isEdit) {
             $this->orderToEdit->update($data);
@@ -81,7 +75,42 @@ class Orders extends Component
             return;
         }
 
-        Order::create($data);
+        /** @var Seller $seller */
+        $seller = Auth::user();
+
+        DB::beginTransaction();
+        try {
+            /** @var Order $order */
+            $order = $seller->orders()->create([
+                'amount' => collect($this->quantities)->sum(),
+                'order_status' => OrderStatus::PENDING(),
+                'required_date' => $this->requiredDate,
+                'supplier_id' => $this->supplierSelected->id,
+                'authorize_status' => AuthorizeEnum::APPROVED(),
+                'tax' => 0,
+                'total' => 0,
+            ]);
+
+            $productIds = Model::query()
+                ->with('product:id,model_id,name')
+                ->whereIn('id', $this->modelsIdSelected)
+                ->get()
+                ->pluck('product.id');
+
+            $data = $productIds->map(function (int $id) {
+                return [
+                    'product_id' => $id,
+                    'quantity' => $this->quantities[$id],
+                    'price' => 0,
+                ];
+            });
+
+            $order->orderDetails()->createMany($data);
+
+            DB::commit();
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+        }
 
         $this->reset();
 
@@ -133,6 +162,16 @@ class Orders extends Component
         $this->resetExcept(['showModal']);
     }
 
+    public function removeModel(int $modelId)
+    {
+        unset($this->modelsIdSelected[$modelId]);
+    }
+
+    public function selectModel(int $modelId)
+    {
+        $this->modelsIdSelected[$modelId] = $modelId;
+    }
+
     public function selectSupplier(int $supplierId)
     {
         $this->supplierSelected = Supplier::find($supplierId);
@@ -153,13 +192,14 @@ class Orders extends Component
     public function render(): View
     {
         $orders = Order::query()
+            ->with(['supplier', 'seller'])
             ->when($this->searchBySeller, function (Builder $query, $search) {
-                $query->withWhereHas('seller', function (Builder $query) use ($search) {
+                $query->whereHas('seller', function (Builder $query) use ($search) {
                     $query->where('first_name', 'ilike', "%$search%");
                 });
             })
             ->when($this->searchBySupplier, function (Builder $query, $search) {
-                $query->withWhereHas('supplier', function (Builder $query) use ($search) {
+                $query->whereHas('supplier', function (Builder $query) use ($search) {
                     $query->where('agent_name', 'ilike', "%$search%");
                 });
             })
@@ -167,17 +207,42 @@ class Orders extends Component
             ->paginate();
 
         $suppliers = [];
+        $models = [];
+        $modelsSelected = [];
 
-        if ($this->showModalSupplier) {
+        if ($this->supplierSearch) {
             $suppliers = Supplier::query()
-                ->when($this->supplierSearch, function (Builder $query, $search) {
-                    $query->where('agent_name', 'ilike', "%$search%");
-                })
+                ->where('agent_name', 'ilike', "%$this->supplierSearch%")
                 ->get();
         }
 
-        logger(compact('suppliers'));
+        if ($this->productSearch) {
+            $models = Model::query()
+                ->with('product:id,model_id,name', 'brand:id,name')
+                ->whereNotIn('id', $this->modelsIdSelected)
+                ->where(function (Builder $query) {
+                    $query->where('model_name', 'ilike', "%$this->productSearch%")
+                        ->orWhere(function (Builder $query) {
+                            $query->where(function (Builder $query) {
+                                $query->whereHas('product', function ($query) {
+                                    $query->where('name', 'ilike', "%$this->productSearch%");
+                                });
+                            })
+                                ->orWhere(function (Builder $query) {
+                                    $query->whereHas('brand', function ($query) {
+                                        $query->where('name', 'ilike', "%$this->productSearch%");
+                                    });
+                                });
+                        });
+                })
+                ->get();
 
-        return view('livewire.orders', compact('orders', 'suppliers'));
+            $modelsSelected = Model::query()
+                ->with('product:id,model_id,name', 'brand:id,name')
+                ->whereIn('id', $this->modelsIdSelected)
+                ->get();
+        }
+
+        return view('livewire.orders', compact('orders', 'suppliers', 'models', 'modelsSelected'));
     }
 }

@@ -20,6 +20,7 @@ return new class () extends Migration {
             $table->string('password');
             $table->string('carnet')->unique();
             $table->date('hired_at');
+            $table->rememberToken();
             $table->timestamps();
         });
     }
