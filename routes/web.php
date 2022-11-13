@@ -29,11 +29,12 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('brands', Brands::class)->name('brands');
+    Route::get('categories', Categories::class)->name('categories');
+    Route::get('colors', Colors::class)->name('colors');
+    Route::get('customers', \App\Http\Livewire\Customers::class)->name('customers');
     Route::get('products', Products::class)->name('products');
     Route::get('sellers', Sellers::class)->name('sellers');
-    Route::get('categories', Categories::class)->name('categories');
-    Route::get('brands', Brands::class)->name('brands');
-    Route::get('colors', Colors::class)->name('colors');
     Route::get('suppliers', Suppliers::class)->name('suppliers');
 });
 

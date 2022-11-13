@@ -111,19 +111,19 @@
         <form wire:submit.prevent="save">
             <div class="grid grid-cols-6 gap-6">
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.text wire:model="data.name" type="text" name="name" id="name" label="Name" />
+                    <x-inputs.text wire:model.defer="data.name" type="text" name="name" id="name" label="Name" />
                     @error('data.name')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.text wire:model="data.description" type="text" name="description" id="description" label="Description" />
+                    <x-inputs.text wire:model.defer="data.description" type="text" name="description" id="description" label="Description" />
                     @error('data.description')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.text wire:model="data.model_name" type="text" name="model_name" id="model_name" label="Model" />
+                    <x-inputs.text wire:model.defer="data.model_name" type="text" name="model_name" id="model_name" label="Model" />
                     @error('data.model_name')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror
@@ -131,7 +131,7 @@
                 <div class="col-span-6 sm:col-span-3">
                     <div class="flex flex-wrap justify-between">
                         <div class="flex-1">
-                            <x-inputs.select wire:model="data.brand_id" id="brand_id" label="Brand">
+                            <x-inputs.select wire:model.defer="data.brand_id" id="brand_id" label="Brand">
                                 <option value="">seleccionar</option>
                                 @foreach($brands as $brand)
                                     <option value="{{ $brand->id }}">{{ $brand->name }}</option>
@@ -147,7 +147,7 @@
                 <div class="col-span-6 sm:col-span-3">
                     <div class="flex flex-wrap justify-between">
                         <div class="flex-1">
-                            <x-inputs.select wire:model="data.color_id" id="color_id" label="Color">
+                            <x-inputs.select wire:model.defer="data.color_id" id="color_id" label="Color">
                                 <option value="">seleccionar</option>
                                 @foreach($colors as $color)
                                     <option value="{{ $color->id }}">{{ $color->name }}</option>
@@ -163,7 +163,7 @@
                 <div class="col-span-6 sm:col-span-3">
                     <div class="flex flex-wrap justify-between">
                         <div class="flex-1">
-                            <x-inputs.select wire:model="data.category_id" id="category_id" label="Categoría">
+                            <x-inputs.select wire:model.defer="data.category_id" id="category_id" label="Categoría">
                                 <option value="">seleccionar</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>

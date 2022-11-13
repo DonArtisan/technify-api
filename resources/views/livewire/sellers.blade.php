@@ -106,25 +106,25 @@
         <form wire:submit.prevent="save">
             <div class="grid grid-cols-6 gap-6">
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.text wire:model="data.first_name" type="text" name="first_name" id="first_name" label="First Name" />
+                    <x-inputs.text wire:model.defer="data.first_name" type="text" name="first_name" id="first_name" label="Nombre" />
                     @error('data.first_name')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.text wire:model="data.last_name" type="text" id="last_name" name="last_name" label="Last Name"/>
+                    <x-inputs.text wire:model.defer="data.last_name" type="text" id="last_name" name="last_name" label="Apellido"/>
                     @error('data.last_name')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.text wire:model="data.email" type="email" name="email" id="email" label="Email" placeholder="example@gmail.com" />
+                    <x-inputs.text wire:model.defer="data.email" type="email" name="email" id="email" label="Email" placeholder="example@gmail.com" />
                     @error('data.email')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.text wire:model="data.hired_at" type="date" name="hired_at" id="hired_at" label="Hired At" :max="now()->toDateString()" />
+                    <x-inputs.text wire:model.defer="data.hired_at" type="date" name="hired_at" id="hired_at" label="Contratado en" :max="now()->toDateString()" />
                     @error('data.hired_at')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror

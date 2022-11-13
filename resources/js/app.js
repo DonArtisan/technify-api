@@ -10,6 +10,7 @@ Alpine.start();
 
 window.addEventListener('wire::message', ({ detail }) => {
   Toastify({
+    className: 'capitalize',
     text: detail.message,
     gravity: 'top',
     position: 'right',

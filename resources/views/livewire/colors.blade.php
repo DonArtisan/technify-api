@@ -83,7 +83,7 @@
                 <div>
                     <label for="color" class="text-sm font-medium text-gray-900 block mb-2">Name</label>
                     <div class="flex">
-                        <x-inputs.text wire:model="name" type="text" name="color" id="color" />
+                        <x-inputs.text wire:model.defer="name" type="text" name="color" id="color" />
                         <button type="button" id="color-btn" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center sm:w-auto">Ver</button>
                     </div>
                     @error('name')

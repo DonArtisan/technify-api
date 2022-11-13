@@ -46,7 +46,7 @@ class Sellers extends Component
 
             $this->reset();
 
-            $this->dispatchBrowserEvent('wire::message', ['message' => 'user updated']);
+            $this->dispatchBrowserEvent('wire::message', ['message' => 'usuario actualizado']);
 
             return;
         }
@@ -63,7 +63,7 @@ class Sellers extends Component
 
         $this->reset();
 
-        $this->dispatchBrowserEvent('wire::message', ['message' => 'user saved.']);
+        $this->dispatchBrowserEvent('wire::message', ['message' => 'usuario guardado.']);
     }
 
     public function deleteUser(): void
@@ -77,7 +77,7 @@ class Sellers extends Component
 
         $seller->delete();
 
-        $this->dispatchBrowserEvent('wire::message', ['message' => 'user deleted.']);
+        $this->dispatchBrowserEvent('wire::message', ['message' => 'usuario borrado.']);
 
         $this->resetValues();
     }

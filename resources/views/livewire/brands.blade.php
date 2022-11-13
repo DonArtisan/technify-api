@@ -75,7 +75,7 @@
         <form wire:submit.prevent="save">
             <div>
                 <div>
-                    <x-inputs.text wire:model="name" type="text" name="color" id="color" label="Name" />
+                    <x-inputs.text wire:model.defer="name" type="text" name="color" id="color" label="Name" />
                     @error('name')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror

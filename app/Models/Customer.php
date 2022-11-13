@@ -10,4 +10,12 @@ class Customer extends Model
 {
     use HasFactory;
     use HasRolesAndAbilities;
+
+    protected $fillable = [
+        'address',
+        'dni',
+        'first_name',
+        'last_name',
+        'phone',
+    ];
 }

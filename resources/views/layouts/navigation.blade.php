@@ -148,10 +148,10 @@
                     </span>
                     <ul class="dropdown-item hidden" data-id="sales" id="sales">
                         <li class="items-center">
-                            <a href="#"
+                            <a href="{{ action(\App\Http\Livewire\Customers::class) }}"
                                 @class([
                                     "text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600",
-                                    'link-active' => request()->routeIs('customers')
+                                    'link-active' => request()->routeIs('customers', 'products')
                                 ])
                             >
                                 <i class="fa-regular fa-user mr-2 text-sm"></i>
@@ -173,7 +173,10 @@
                 </li>
 
                 <li class="items-center">
-                     <span data-dropdown data-target="catalog" @class(["dropdown cursor-pointer text-xs uppercase py-3 font-bold block hover:text-pink-600", 'link-active' => request()->routeIs('customers')])>
+                     <span data-dropdown data-target="catalog"
+                         @class(["dropdown cursor-pointer text-xs uppercase py-3 font-bold block hover:text-pink-600",
+                                'link-active' => request()->routeIs('brands', 'categories', 'color')
+                            ])>
                         <span>
                             <i class="fas fa-pager mr-2 text-sm opacity-75"></i>
                             Catalogo
@@ -185,7 +188,7 @@
                             <a href="{{ action(\App\Http\Livewire\Brands::class) }}"
                                 @class([
                                     "text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600",
-                                    'link-active' => request()->routeIs('brand')
+                                    'link-active' => request()->routeIs('brands')
                                 ])
                             >
                                 <i class="fab fa-bandcamp mr-2 text-sm opacity-75"></i>
