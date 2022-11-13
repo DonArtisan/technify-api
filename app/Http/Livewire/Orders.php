@@ -6,7 +6,6 @@ use App\Models\Order;
 use App\Models\Supplier;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -20,10 +19,13 @@ class Orders extends Component
     public bool $isEdit = false;
 
     public string $searchBySeller = '';
+
     public string $searchBySupplier = '';
+
     public string $supplierSearch = '';
 
     public bool $showModal = false;
+
     public bool $showModalSupplier = false;
 
     public int $orderIdToDelete = 0;
@@ -169,11 +171,10 @@ class Orders extends Component
         if ($this->showModalSupplier) {
             $suppliers = Supplier::query()
                 ->when($this->supplierSearch, function (Builder $query, $search) {
-                    $query->where('agent_name', 'ilike',"%$search%");
+                    $query->where('agent_name', 'ilike', "%$search%");
                 })
                 ->get();
         }
-
 
         logger(compact('suppliers'));
 
