@@ -49,7 +49,7 @@
                                             New users
                                         </h5>
                                         <span class="font-semibold text-xl text-slate-700">
-                                            2,356
+                                            {{$usersStats->last()->increments}}
                                         </span>
                                     </div>
                                     <div class="relative w-auto pl-4 flex-initial">
@@ -59,8 +59,8 @@
                                     </div>
                                 </div>
                                 <p class="text-sm text-slate-400 mt-4">
-                                    <span class="text-red-500 mr-2">
-                                        <i class="fas fa-arrow-down"></i> 3.48%
+                                    <span class=" {{ $usersPercent > 0 ? 'text-emerald-500' : 'text-red-500' }} mr-2">
+                                        <i class="fas {{ $usersPercent > 0 ? 'fa-arrow-up' : 'fa-arrow-down' }}"></i> {{$usersPercent}} %
                                     </span>
                                     <span class="whitespace-nowrap"> Since last week </span>
                                 </p>
@@ -76,7 +76,7 @@
                                             Sales
                                         </h5>
                                         <span class="font-semibold text-xl text-slate-700">
-                                            924
+                                            {{$salesTotal}}
                                         </span>
                                     </div>
                                     <div class="relative w-auto pl-4 flex-initial">
@@ -87,7 +87,7 @@
                                 </div>
                                 <p class="text-sm text-slate-400 mt-4">
                                     <span class="text-orange-500 mr-2">
-                                        <i class="fas fa-arrow-down"></i> 1.10%
+                                        <i class="fas fa-arrow-down"></i> {{$salesPercent}} %
                                     </span>
                                     <span class="whitespace-nowrap"> Since yesterday </span>
                                 </p>

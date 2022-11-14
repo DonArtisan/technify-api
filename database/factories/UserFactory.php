@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Seller;
+use App\Http\Stats\UserStats;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -19,6 +19,8 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        UserStats::increase(1);
+
         return [
             'email' => fake()->safeEmail(),
             'email_verified_at' => now(),

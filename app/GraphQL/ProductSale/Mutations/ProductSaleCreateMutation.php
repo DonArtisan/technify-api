@@ -3,6 +3,7 @@
 namespace App\GraphQL\ProductSale\Mutations;
 
 use App\GraphQL\Mutations\BaseMutation;
+use App\Http\Stats\SalesStats;
 use App\Models\ProductSale;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -40,6 +41,7 @@ class ProductSaleCreateMutation extends BaseMutation
 
             $user->invoiceFor('One Time Fee', $args['input']['amount']);
             DB::commit();
+            SalesStats::increase(1);
         } catch (Throwable $error) {
             DB::rollBack();
 

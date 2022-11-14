@@ -21,9 +21,8 @@ class ProductSaleDetailFactory extends Factory
     {
         $product = Product::query()->inRandomOrder()->first();
         $price = $product->prices()->first()->price;
-        $sale = ProductSale::factory();
         return [
-            'sale_id' => $sale->id,
+            'sale_id' => ProductSale::factory(),
             'product_id' => $product->id,
             'quantity' => $this->faker->numberBetween(1, 10),
             'price' => $price,
