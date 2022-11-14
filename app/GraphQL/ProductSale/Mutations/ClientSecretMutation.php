@@ -20,9 +20,10 @@ class ClientSecretMutation extends BaseMutation
             /** @var \App\Models\User $user */
             $user = $context->user();
 
-            $payment = $user->pay(
-                $args['input']['amount']
-            );
+//            $payment = $user->pay(
+//                $args['input']['amount']
+//            );
+            $intent = $user->createSetupIntent();
 
             DB::commit();
         } catch (Throwable $error) {
@@ -32,7 +33,7 @@ class ClientSecretMutation extends BaseMutation
         }
 
         return [
-            'clientSecret' => $payment->client_secret,
+            'clientSecret' => $intent->client_secret,
             'userErrors' => [],
         ];
     }
