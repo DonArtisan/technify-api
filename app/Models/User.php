@@ -63,6 +63,7 @@ class User extends Authenticatable implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection(self::MEDIA_COLLECTION_PICTURE)
+            ->useFallbackUrl(asset('images/user-placeholder.png'))
             ->acceptsMimeTypes(['image/jpeg', 'image/jpg', 'image/png'])
             ->singleFile();
     }
@@ -81,6 +82,11 @@ class User extends Authenticatable implements HasMedia
         return Attribute::get(
             fn () => trim("$this->first_name $this->last_name")
         );
+    }
+
+    public function profilePhotoUrl(): Attribute
+    {
+        return Attribute::get(fn () => $this->getFirstMediaUrl(self::MEDIA_COLLECTION_PICTURE));
     }
 
     public function orders(): MorphMany
