@@ -19,3 +19,8 @@ type ProductSaleCreatePayload {
     productSale: ProductSale
     userErrors: [UserError]
 }
+
+type ClientSecretPayload {
+    clientSecret: String
+    userErrors: [UserError]
+}

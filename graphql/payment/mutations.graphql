@@ -1,4 +1,7 @@
 extend type Mutation @namespace(field: "App\\GraphQL\\ProductSale\\Mutations") {
     productSaleCreate(input: PaymentInput!): ProductSaleCreatePayload
     @field(resolver: "ProductSaleCreateMutation")
+
+    clientSecret(input: ClientSecretInput!): ClientSecretPayload
+    @field(resolver: "ClientSecretMutation")
 }
