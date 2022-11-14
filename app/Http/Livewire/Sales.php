@@ -84,7 +84,7 @@ class Sales extends Component
             ]);
 
             $models = Model::query()
-                ->with('product.stock')
+                ->with('product.stock', 'product.price')
                 ->whereIn('id', $this->modelsIdSelected)
                 ->get();
 
