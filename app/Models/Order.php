@@ -26,7 +26,7 @@ class Order extends Model
 
     protected $casts = [
         'order_status' => OrderStatus::class,
-        'required_date' => 'date'
+        'required_date' => 'date',
     ];
 
     public function orderable(): MorphTo

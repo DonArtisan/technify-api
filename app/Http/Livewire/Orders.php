@@ -50,7 +50,7 @@ class Orders extends Component
 
     public int $orderIdToApprove = 0;
 
-    public int $orderIdToDisplay= 0;
+    public int $orderIdToDisplay = 0;
 
     public array $data = [
         'requiredDate',
@@ -64,7 +64,7 @@ class Orders extends Component
 
     public function approveOrder()
     {
-        if (!$this->orderIdToApprove) {
+        if (! $this->orderIdToApprove) {
             return;
         }
 
@@ -83,7 +83,7 @@ class Orders extends Component
                 /** @var Product $product */
                 $product = $orderDetail->product;
 
-                if (!$product->stock) {
+                if (! $product->stock) {
                     $product->stock()->create(['quantity' => $orderDetail->quantity]);
                 } else {
                     $product->stock()->update(['quantity' => $product->stock->quantity + $orderDetail->quantity]);
