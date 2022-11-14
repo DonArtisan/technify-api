@@ -107,6 +107,7 @@ class Customers extends Component
             ->when($this->search, function (Builder $query, $search) {
                 $query->where('first_name', 'ilike', "%$search%");
             })
+            ->where('is_admin', false)
             ->latest()
             ->paginate();
 
