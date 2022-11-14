@@ -32,6 +32,7 @@ class Product extends BaseModel implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection(self::MEDIA_COLLECTION_IMAGE)
+            ->useFallbackUrl(asset('images/placeholder-image.png'))
             ->acceptsMimeTypes(['image/jpeg', 'image/jpg', 'image/png'])
             ->singleFile();
     }

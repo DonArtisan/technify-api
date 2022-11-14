@@ -13,11 +13,14 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Livewire\Component;
+use Livewire\TemporaryUploadedFile;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class Products extends Component
 {
     use WithPagination;
+    use WithFileUploads;
     use Catalog;
 
     protected $queryString = ['search' => ['except' => '']];
@@ -50,12 +53,18 @@ class Products extends Component
 
     public ?Product $productToEdit = null;
 
+    public TemporaryUploadedFile|string $image = '';
+
     public function save(): void
     {
         if ($this->isEdit) {
             $this->productToEdit->update(Arr::only($this->data, ['name', 'description', 'color_id', 'category_id']));
 
             $this->productToEdit->model()->update(Arr::only($this->data, ['model_name', 'brand_id']));
+
+            if ($this->image instanceof TemporaryUploadedFile) {
+                $this->productToEdit->addMedia($this->image)->toMediaCollection(Product::MEDIA_COLLECTION_IMAGE);
+            }
 
             $this->reset();
 
@@ -72,7 +81,12 @@ class Products extends Component
         /** @var Model $model */
         $model = Model::create(Arr::only($this->data, ['model_name', 'brand_id']));
 
-        $model->product()->create($data);
+        /** @var Product $product */
+        $product = $model->product()->create($data);
+
+        if ($this->image instanceof TemporaryUploadedFile) {
+            $product->addMedia($this->image)->toMediaCollection(Product::MEDIA_COLLECTION_IMAGE);
+        }
 
         $this->reset();
 
@@ -107,6 +121,7 @@ class Products extends Component
         $this->productToEdit = $product;
         $this->isEdit = true;
         $this->showModal = true;
+        $this->image = $product->getFirstMediaUrl(Product::MEDIA_COLLECTION_IMAGE);
 
         $this->data = $product->only([
             'category_id',

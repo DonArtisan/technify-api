@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Customer;
 use App\Models\Model;
+use App\Models\Product;
 use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -37,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
             'user' => User::class,
             'customer' => Customer::class,
             'seller' => Seller::class,
+            'product' => Product::class,
         ]);
     }
 }

@@ -63,10 +63,13 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
+                        @php
+                            /** @var \App\Models\Product $product */
+                        @endphp
                             @foreach($products as $product)
                             <tr class="hover:bg-gray-100">
                                 <td class="p-4 flex items-center whitespace-nowrap space-x-6 mr-12 lg:mr-0">
-                                    <img class="h-10 w-10 rounded-full" src="https://demo.themesberg.com/windster/images/users/neil-sims.png" alt="Neil Sims avatar">
+                                    <img class="h-10 w-10 rounded-full bg-gray-300" src="{{ $product->getFirstMediaUrl(\App\Models\Product::MEDIA_COLLECTION_IMAGE) }}" alt="Neil Sims avatar">
                                     <div class="text-sm font-normal text-gray-500">
                                         <div class="text-base font-semibold text-gray-900">{{ $product->name }}</div>
                                     </div>
@@ -110,6 +113,24 @@
 
         <form wire:submit.prevent="save">
             <div class="grid grid-cols-6 gap-6">
+                <div class="col-span-6 flex flex-wrap mb-5">
+                    <div>
+                        @if(!$errors->has('image') && $image)
+                            <img src="{{ is_string($image) ? $image : $image->temporaryUrl() }}" alt="Temporal Cover" class="w-[250px] h-[250px] object-cover mr-4 mb-2 lg:mb-0">
+                        @endif
+                    </div>
+                    <div class="flex flex-wrap sm:items-center mt-2">
+                        <div class="flex flex-wrap justify-center">
+                            <label class="block w-max cursor-pointer rounded-md border border-gray-300 border-2 py-2 px-3 mr-3">
+                                <input type="file" wire:model="image" accept="image/png, image/jpg, image/jpeg" hidden>
+                                Agregar imagen
+                            </label>
+                        </div>
+                        <p class="w-full text-blue-700">Tamaño máximo recomendado: 920px x 620px</p>
+                        @error('image') <span class="text-red-600">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
                 <div class="col-span-6 sm:col-span-3">
                     <x-inputs.text wire:model.defer="data.name" type="text" name="name" id="name" label="Name" />
                     @error('data.name')
