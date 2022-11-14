@@ -8,3 +8,7 @@ input PaymentInput {
     price: Float
     saleId: ID @globalId(decode: ID) @rename(attribute: "sale_id")
 }
+
+input ClientSecretInput {
+    amount: Float
+}
