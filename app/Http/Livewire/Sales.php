@@ -2,15 +2,11 @@
 
 namespace App\Http\Livewire;
 
-use App\Enums\AuthorizeEnum;
 use App\Models\Customer;
 use App\Models\Model;
 use App\Models\ProductSale as Sale;
-use App\Models\ProductSaleDetail as SaleDetail;
-use App\Models\Product;
 use App\Models\Seller;
 use App\Models\Stock;
-use App\Models\Supplier;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,7 +17,6 @@ use Livewire\WithPagination;
 
 class Sales extends Component
 {
-
     use WithPagination;
 
     protected $queryString = ['searchByProduct' => ['except' => '']];
@@ -53,6 +48,7 @@ class Sales extends Component
     public ?Customer $customerSelected = null;
 
     public float $subtotal = 0;
+
     public float $total = 0;
 
     public function calculate()
@@ -108,7 +104,7 @@ class Sales extends Component
                 ->whereIn('product_id', $models->pluck('product.id'))
                 ->each(function (Stock $stock) {
                     $stock->update([
-                        'quantity' => $stock->quantity - $this->quantities[$stock->product_id]
+                        'quantity' => $stock->quantity - $this->quantities[$stock->product_id],
                     ]);
                 });
 
@@ -213,7 +209,8 @@ class Sales extends Component
 
         if ($this->saleIdToDisplay) {
             $salesToDisplay = Sale::query()
-                ->with('saleDetails.product.model.brand',
+                ->with(
+                    'saleDetails.product.model.brand',
                     'saleDetails.product.stock',
                     'supplier',
                     'salesDetails.product.price'
