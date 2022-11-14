@@ -14,7 +14,7 @@ class seller
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->isNotAn('seller')) {
+        if (Auth::user()->isNotAn('seller', 'admin')) {
             abort(Response::HTTP_FORBIDDEN);
         }
 
