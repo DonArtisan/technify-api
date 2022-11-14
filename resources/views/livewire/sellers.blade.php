@@ -118,7 +118,7 @@
                     @enderror
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.text wire:model.defer="data.email" type="email" name="email" id="email" label="Email" placeholder="example@gmail.com" />
+                    <x-inputs.text wire:model.defer="data.email" type="email" name="email" id="email" label="Email" placeholder="example@gmail.com" :readonly="$isEdit" />
                     @error('data.email')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror
@@ -126,6 +126,12 @@
                 <div class="col-span-6 sm:col-span-3">
                     <x-inputs.text wire:model.defer="data.hired_at" type="date" name="hired_at" id="hired_at" label="Contratado en" :max="now()->toDateString()" />
                     @error('data.hired_at')
+                    <p class="text-red-500">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div class="col-span-6 sm:col-span-3">
+                    <x-inputs.text wire:model.defer="data.password" type="password" name="password" id="password" label="Contraseña" />
+                    @error('data.password')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>

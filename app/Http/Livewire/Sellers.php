@@ -28,6 +28,7 @@ class Sellers extends Component
         'email',
         'hired_at',
         'last_name',
+        'password',
     ];
 
     protected array $rules = [
@@ -35,6 +36,7 @@ class Sellers extends Component
         'data.email' => ['required', 'email', 'unique:users,email', 'unique:sellers,email'],
         'data.hired_at' => ['required', 'before_or_equal:today'],
         'data.last_name' => ['required'],
+        'data.password' => ['required']
     ];
 
     public ?Seller $sellerToEdit = null;
@@ -42,7 +44,19 @@ class Sellers extends Component
     public function save(): void
     {
         if ($this->isEdit) {
-            $this->sellerToEdit->update($this->data);
+            $this->validate([
+                'data.first_name' => ['required'],
+                'data.hired_at' => ['required', 'before_or_equal:today'],
+                'data.last_name' => ['required'],
+            ]);
+
+            $data = Arr::only($this->data, ['first_name', 'last_name', 'email']);
+
+            if ($this->data['password']) {
+                $data['password'] = bcrypt($this->data['password']);
+            }
+
+            $this->sellerToEdit->update($data);
 
             $this->reset();
 
@@ -59,7 +73,7 @@ class Sellers extends Component
         $seller = Seller::create([
             ...$data,
             'carnet' => getRandomCarnet(),
-            'password' => bcrypt('1234'),
+            'password' => bcrypt($this->data['password']),
         ]);
 
         $seller->assign('seller');
