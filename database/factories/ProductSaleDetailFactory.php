@@ -32,7 +32,7 @@ class ProductSaleDetailFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (ProductSaleDetail $saleDetail) {
-            $sale = $saleDetail->productSale()->get()->first();
+            $sale = $saleDetail->sale()->get()->first();
             $amount = $sale->amount + ($saleDetail->price * $saleDetail->quantity);
             $total = ($sale->tax * $amount) + $amount;
             $sale->update(['amount' => $amount, 'total' => $total]);

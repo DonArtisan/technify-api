@@ -4,6 +4,7 @@ namespace App\GraphQL\ProductSale\Mutations;
 
 use App\GraphQL\Mutations\BaseMutation;
 use App\Http\Stats\SalesStats;
+use App\Models\ProductSale;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
@@ -24,6 +25,7 @@ class ProductSaleCreateMutation extends BaseMutation
             $user->createAsStripeCustomer();
             $user->updateDefaultPaymentMethod($args['input']['paymentMethod']);
 
+            /** @var ProductSale $productSale */
             $productSale = $user->sales()->create(
                 Arr::only(
                     $args['input'],
@@ -31,7 +33,7 @@ class ProductSaleCreateMutation extends BaseMutation
                 )
             );
 
-            $productSale->productDetails()->create(
+            $productSale->saleDetails()->create(
                 Arr::only(
                     $args['input'],
                     ['productId', 'quantity', 'price'],
