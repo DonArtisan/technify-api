@@ -7,6 +7,7 @@ use App\Http\Livewire\Colors;
 use App\Http\Livewire\Customers;
 use App\Http\Livewire\Orders;
 use App\Http\Livewire\Products;
+use App\Http\Livewire\Sales;
 use App\Http\Livewire\Sellers;
 use App\Http\Livewire\Suppliers;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['seller'])->group(function () {
         Route::get('customers', Customers::class)->name('customers');
         Route::get('products', Products::class)->name('products');
+        Route::get('sales', Sales::class)->name('sales');
     });
 
     Route::middleware('admin')->group(function () {

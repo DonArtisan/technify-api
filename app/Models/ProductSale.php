@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class ProductSale extends Model
@@ -12,6 +13,7 @@ class ProductSale extends Model
 
     protected $fillable = [
         'amount',
+        'tax',
         'total',
     ];
 
@@ -20,8 +22,8 @@ class ProductSale extends Model
         return $this->morphTo();
     }
 
-    public function productDetails()
+    public function saleDetails(): HasMany
     {
-        return $this->hasMany(ProductSaleDetail::class);
+        return $this->hasMany(ProductSaleDetail::class, 'sale_id');
     }
 }

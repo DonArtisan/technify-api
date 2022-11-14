@@ -202,7 +202,7 @@
                 <li class="items-center">
                      <span data-dropdown data-target="sales" @class([
                             "dropdown cursor-pointer text-xs uppercase py-3 font-bold block hover:text-pink-600",
-                            'link-active' => request()->routeIs('customers', 'products')
+                            'link-active' => request()->routeIs('customers', 'products', 'sales')
                             ])
                         >
                         <span>
@@ -232,6 +232,17 @@
                                 >
                                     <i class="fa-brands fa-product-hunt mr-2 text-sm"></i>
                                     Products
+                                </a>
+                            </li>
+                            <li class="items-center">
+                                <a href="{{ action(\App\Http\Livewire\Sales::class) }}"
+                                    @class([
+                                        "text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600",
+                                        'link-active' => request()->routeIs('sales')
+                                    ])
+                                >
+                                    <i class="fas fa-shopping-bag mr-2 text-sm"></i>
+                                    Venta
                                 </a>
                             </li>
                         </ul>

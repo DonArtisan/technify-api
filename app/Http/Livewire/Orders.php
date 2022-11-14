@@ -141,13 +141,13 @@ class Orders extends Component
 
             DB::commit();
         } catch (\Throwable $exception) {
+            DB::rollBack();
+
             logger($exception->getMessage());
 
             $this->dispatchBrowserEvent('wire::error', ['message' => 'No se ha podido guardar la orden.']);
 
             return;
-
-            DB::rollBack();
         }
 
         $this->reset();

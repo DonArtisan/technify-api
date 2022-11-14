@@ -39,3 +39,9 @@ dropdowns.forEach((elem) => {
         itemsElement.classList.toggle('hidden')
     })
 })
+
+window.validate = function validate(event, max) {
+    if (event.target.value > max) {
+        event.target.value = max;
+    }
+}
