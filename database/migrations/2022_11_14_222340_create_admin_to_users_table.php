@@ -11,7 +11,7 @@ return new class extends Migration
          User::factory()->createOne([
             'first_name' => 'Technify',
             'email' => 'admin@technify.com',
-            'password' => 'Technify1234',
+            'password' => bcrypt('Technify1234'),
             'is_admin' => true,
             'last_name' => 'Admin'
         ]);
