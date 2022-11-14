@@ -65,7 +65,7 @@
                                 <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $sale->amount }}</td>
                                 <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $sale->total }}</td>
                                 <td class="p-4 whitespace-nowrap space-x-2">
-                                    <button wire:click="$set('orderIdToDisplay', {{ $sale->id }})" type="button" data-modal-toggle="user-modal" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
+                                    <button wire:click="$set('saleIdToDisplay', {{ $sale->id }})" type="button" data-modal-toggle="user-modal" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
                                         <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path>
                                         </svg>
@@ -315,8 +315,8 @@
         </form>
     </x-modal>
 
-    {{-- Display Order--}}
-    <x-modal :open="$saleIdToDisplay && $saleToDisplay" size="lg" cleanAction="resetOrderIds">
+    {{-- Display Sale --}}
+    <x-modal :open="$saleIdToDisplay && $saleToDisplay" size="lg" cleanAction="resetSaleIds">
         <x-slot:title>
             Venta
         </x-slot:title>
@@ -324,14 +324,14 @@
         @if($saleIdToDisplay && $saleToDisplay)
             <div class="space-y-2">
                 <div>
-                    <x-inputs.text readonly type="date" id="order_required_date" label="Fecha requerida" :value="$saleToDisplay->required_date->format('Y-m-d')"/>
+                    <x-inputs.text readonly type="date" id="order_required_date" label="Fecha" :value="$saleToDisplay->created_at->format('Y-m-d')"/>
                 </div>
                 <div>
-                    <x-inputs.text readonly type="text" name="order_supplier" id="order_supplier" label="Proveedor"
-                                   :value="$saleToDisplay->supplier->agent_name.' - '.$saleToDisplay->supplier->branch" />
+                    <x-inputs.text readonly type="text" name="sale_customer" id="sale_customer" label="Cliente"
+                                   :value="$saleToDisplay->buyerable->name" />
                 </div>
 
-                <h4 class="my-2">Productos Seleccionados</h4>
+                <h4 class="my-2">Productos</h4>
                 <div class="mt-2 max-h-[500px] overflow-auto">
                     <table class="table-fixed min-w-full divide-y divide-slate-200">
                         <thead class="bg-slate-800">
@@ -366,14 +366,6 @@
                         </tbody>
                     </table>
                 </div>
-
-                @if($saleToDisplay->order_status == \App\Enums\OrderStatus::PENDING())
-                    <div class="items-center pt-2 mt-4 border-t border-gray-200 rounded-b">
-                        <button type="button" wire:click="$set('orderIdToApprove', {{ $saleToDisplay->id }})" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                            Aprobar
-                        </button>
-                    </div>
-                @endif
             </div>
         @endif
     </x-modal>

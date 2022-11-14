@@ -204,20 +204,20 @@ class Sales extends Component
                 ->get();
         }
 
-        $salesToDisplay = null;
+        $saleToDisplay = null;
         $saleDetails = null;
 
         if ($this->saleIdToDisplay) {
-            $salesToDisplay = Sale::query()
+            $saleToDisplay = Sale::query()
                 ->with(
+                    'buyerable',
                     'saleDetails.product.model.brand',
                     'saleDetails.product.stock',
-                    'supplier',
-                    'salesDetails.product.price'
+                    'saleDetails.product.price',
                 )
                 ->find($this->saleIdToDisplay);
 
-            $saleDetails = $salesToDisplay->saleDetails;
+            $saleDetails = $saleToDisplay->saleDetails;
         }
 
         $customers = [];
@@ -233,7 +233,7 @@ class Sales extends Component
             'models',
             'customers',
             'modelsSelected',
-            'salesToDisplay',
+            'saleToDisplay',
             'saleDetails'
         ));
     }
