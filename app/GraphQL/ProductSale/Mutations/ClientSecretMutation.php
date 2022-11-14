@@ -3,7 +3,6 @@
 namespace App\GraphQL\ProductSale\Mutations;
 
 use App\GraphQL\Mutations\BaseMutation;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
@@ -50,5 +49,4 @@ class ClientSecretMutation extends BaseMutation
 
         ];
     }
-
 }
