@@ -11,6 +11,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionController extends Controller
@@ -37,12 +38,11 @@ class AuthenticatedSessionController extends Controller
 
     public function destroy(Request $request): RedirectResponse
     {
-        $this->guard()->logout();
-
-        $this->sellersGuard()->logout();
+        $this->guard(Session::get($this->guardIdentifier))->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+        Session::forget($this->guardIdentifier);
 
         if ($response = $this->loggedOut($request)) {
             return $response;
@@ -53,13 +53,17 @@ class AuthenticatedSessionController extends Controller
 
     public function attemptLogin(LoginRequest $request)
     {
+        Session::put($this->guardIdentifier, 'users');
+
         $status = $this->guard()->attempt(
-            $request->only(['email', 'password']),
+            [...$request->only(['email', 'password']), 'is_admin' => true],
             $request->boolean('remember')
         );
 
         if (! $status) {
-            return $this->sellersGuard()->attempt(
+            Session::put($this->guardIdentifier, 'sellers');
+
+            return $this->guard('sellers')->attempt(
                 $request->only(['email', 'password']),
                 $request->boolean('remember')
             );
@@ -68,14 +72,9 @@ class AuthenticatedSessionController extends Controller
         return $status;
     }
 
-    protected function guard(): StatefulGuard
+    protected function guard(string $guard = 'users'): StatefulGuard
     {
-        return Auth::guard('users');
-    }
-
-    protected function sellersGuard(): StatefulGuard
-    {
-        return Auth::guard('sellers');
+        return Auth::guard($guard);
     }
 
     public function redirectTo(): string

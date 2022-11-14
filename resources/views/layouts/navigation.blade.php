@@ -1,4 +1,4 @@
-<nav class="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
+<nav id="sidebar" class="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
     <div class="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
         <button class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent" type="button" data-navbar data-target="example-collapse-sidebar">
             <i class="fas fa-bars"></i>
@@ -75,50 +75,187 @@
             <hr class="my-4 md:min-w-full" />
             <!-- Heading -->
             <h6 class="md:min-w-full text-slate-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Main
+                Principal
             </h6>
             <!-- Navigation -->
 
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                 <li class="items-center">
-                    <a href="#" @class(["text-xs uppercase py-3 font-bold block hover:text-pink-600", 'link-active' => request()->routeIs('dashboard')])>
+                    <a href="{{ action([\App\Http\Controllers\DashboardController::class, 'index']) }}" @class(["text-xs uppercase py-3 font-bold block hover:text-pink-600", 'link-active' => request()->routeIs('dashboard')])>
                         <i class="fas fa-tv mr-2 text-sm opacity-75"></i>
                         Dashboard
                     </a>
                 </li>
 
+                @if(Auth::user()->isAn('admin'))
                 <li class="items-center">
-                    <a href="{{ action(\App\Http\Livewire\Sellers::class) }}"
+                    <span data-dropdown data-target="admin" @class(["dropdown cursor-pointer text-xs uppercase py-3 font-bold block hover:text-pink-600", 'link-active' => request()->routeIs('sellers')])>
+                        <span>
+                            <i class="fas fa-wrench mr-2 text-sm opacity-75"></i>
+                            Administración del sistema
+                        </span>
+                        <span><i class="fas fa-chevron-down text-sm opacity-75"></i></span>
+                    </span>
+                    <ul class="dropdown-item hidden" data-id="admin" id="admin">
+                        <li>
+                            <a href="{{ action(\App\Http\Livewire\Sellers::class) }}"
+                                @class([
+                                    "text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600",
+                                    'link-active' => request()->routeIs('sellers')
+                                ])
+                            >
+                                <i class="fas fa-users mr-2 text-sm opacity-75"></i>
+                                Vendedores
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="items-center">
+                    <span data-dropdown data-target="purchases"
                         @class([
-                            "text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600",
-                            'link-active' => request()->routeIs('sellers')
+                            "dropdown cursor-pointer text-xs uppercase py-3 font-bold block hover:text-pink-600",
+                            'link-active' => request()->routeIs('suppliers')
                         ])
                     >
-                        <i class="fas fa-users mr-2 text-sm text-slate-300"></i>
-                        Sellers
-                    </a>
+                        <span>
+                            <i class="fas fa-money-check-alt mr-2 text-sm opacity-75"></i>
+                            Pedidos
+                        </span>
+                        <span><i class="fas fa-chevron-down text-sm opacity-75"></i></span>
+                    </span>
+                    <ul class="dropdown-item hidden" data-id="purchases" id="purchases">
+                        <li>
+                            <a href="{{ action(\App\Http\Livewire\Suppliers::class) }}"
+                                @class([
+                                    "text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600",
+                                    'link-active' => request()->routeIs('suppliers')
+                                ])
+                            >
+                                <i class="fas fa-users mr-2 text-sm opacity-75"></i>
+                                Proveedores
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ action(\App\Http\Livewire\Orders::class) }}"
+                                @class([
+                                    "text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600",
+                                    'link-active' => request()->routeIs('orders')
+                                ])
+                            >
+                                <i class="fas fa-users mr-2 text-sm opacity-75"></i>
+                                Orders
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li class="items-center">
-                    <a href="#" class="text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600">
-                        <i class="fa-regular fa-user mr-2 text-sm text-slate-300"></i>
-                        Customers
-                    </a>
+                     <span data-dropdown data-target="catalog"
+                         @class(["dropdown cursor-pointer text-xs uppercase py-3 font-bold block hover:text-pink-600",
+                                'link-active' => request()->routeIs('brands', 'categories', 'color')
+                            ])>
+                        <span>
+                            <i class="fas fa-pager mr-2 text-sm opacity-75"></i>
+                            Catalogo
+                        </span>
+                        <span><i class="fas fa-chevron-down"></i></span>
+                    </span>
+                    <ul class="dropdown-item hidden" data-id="catalog" id="catalog">
+                        <li class="items-center">
+                            <a href="{{ action(\App\Http\Livewire\Brands::class) }}"
+                                @class([
+                                    "text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600",
+                                    'link-active' => request()->routeIs('brands')
+                                ])
+                            >
+                                <i class="fab fa-bandcamp mr-2 text-sm opacity-75"></i>
+                                Marcas
+                            </a>
+                        </li>
+                        <li class="items-center">
+                            <a href="{{ action(\App\Http\Livewire\Categories::class) }}"
+                                @class([
+                                    "text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600",
+                                    'link-active' => request()->routeIs('categories')
+                                ])
+                            >
+                                <i class="fas fa-braille mr-2 text-sm opacity-75"></i>
+                                Categorías
+                            </a>
+                        </li>
+                        <li class="items-center">
+                            <a href="{{ action(\App\Http\Livewire\Colors::class) }}"
+                                @class([
+                                    "text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600",
+                                    'link-active' => request()->routeIs('colors')
+                                ])
+                            >
+                                <i class="fas fa-palette mr-2 text-sm opacity-75"></i>
+                                Colores
+                            </a>
+                        </li>
+                    </ul>
                 </li>
+                @endif
 
+                @if(Auth::user()->isAn('seller') || Auth::user()->isAn('admin'))
                 <li class="items-center">
-                    <a href="{{ action(\App\Http\Livewire\Products::class) }}" class="text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600">
-                        <i class="fa-brands fa-product-hunt mr-2 text-sm text-slate-300"></i>
-                        Products
-                    </a>
+                    <span data-dropdown data-target="sales" @class([
+                        "dropdown cursor-pointer text-xs uppercase py-3 font-bold block hover:text-pink-600",
+                        'link-active' => request()->routeIs('customers', 'products', 'sales')
+                        ])
+                    >
+                    <span>
+                        <i class="fas fa-shopping-bag mr-2 text-sm opacity-75"></i>
+                        Venta
+                    </span>
+                    <span><i class="fas fa-chevron-down"></i></span>
+                    </span>
+                    <ul class="dropdown-item hidden" data-id="sales" id="sales">
+                        <li class="items-center">
+                            <a href="{{ action(\App\Http\Livewire\Customers::class) }}"
+                                @class([
+                                    "text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600",
+                                    'link-active' => request()->routeIs('customers')
+                                ])
+                            >
+                                <i class="fa-regular fa-user mr-2 text-sm"></i>
+                                Customers
+                            </a>
+                        </li>
+                        <li class="items-center">
+                            <a href="{{ action(\App\Http\Livewire\Products::class) }}"
+                                @class([
+                                    "text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600",
+                                    'link-active' => request()->routeIs('products')
+                                ])
+                            >
+                                <i class="fa-brands fa-product-hunt mr-2 text-sm"></i>
+                                Products
+                            </a>
+                        </li>
+                        <li class="items-center">
+                            <a href="{{ action(\App\Http\Livewire\Sales::class) }}"
+                                @class([
+                                    "text-xs uppercase py-3 font-bold block text-slate-700 hover:text-pink-600",
+                                    'link-active' => request()->routeIs('sales')
+                                ])
+                            >
+                                <i class="fas fa-shopping-bag mr-2 text-sm"></i>
+                                Venta
+                            </a>
+                        </li>
+                    </ul>
                 </li>
+                @endif
             </ul>
 
             <!-- Divider -->
             <hr class="my-4 md:min-w-full" />
             <!-- Heading -->
             <h6 class="md:min-w-full text-slate-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                Config
+                Configuración
             </h6>
             <!-- Navigation -->
 
@@ -130,12 +267,12 @@
                     </a>
                 </li>
 
-                <li class="items-center">
-                    <a href="#" class="text-slate-700 hover:text-pink-600 text-xs uppercase py-3 font-bold block">
-                        <i class="fas fa-tools text-slate-300 mr-2 text-sm"></i>
-                        Settings
-                    </a>
-                </li>
+{{--                <li class="items-center">--}}
+{{--                    <a href="#" class="text-slate-700 hover:text-pink-600 text-xs uppercase py-3 font-bold block">--}}
+{{--                        <i class="fas fa-tools text-slate-300 mr-2 text-sm"></i>--}}
+{{--                        Settings--}}
+{{--                    </a>--}}
+{{--                </li>--}}
 
                 <li class="items-center">
                     <form action="{{ action([App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy']) }}" method="post">

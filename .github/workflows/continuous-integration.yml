@@ -45,11 +45,8 @@ jobs:
         run: |
           php composer-unused.phar --no-progress \
             --excludePackage=guzzlehttp/guzzle  \
-            --excludePackage=cviebrock/eloquent-sluggable  \
-            --excludePackage=laravel/cashier \
             --excludePackage=laravel/tinker \
             --excludePackage=mll-lab/laravel-graphql-playground \
-            --excludePackage=spatie/laravel-medialibrary
 
   static-code-analysis:
     name: Static code analysis

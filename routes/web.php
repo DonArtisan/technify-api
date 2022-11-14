@@ -1,8 +1,15 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Livewire\Brands;
+use App\Http\Livewire\Categories;
+use App\Http\Livewire\Colors;
+use App\Http\Livewire\Customers;
+use App\Http\Livewire\Orders;
 use App\Http\Livewire\Products;
+use App\Http\Livewire\Sales;
 use App\Http\Livewire\Sellers;
+use App\Http\Livewire\Suppliers;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,17 +23,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', 'dashboard');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('products', Products::class);
-    Route::get('sellers', Sellers::class);
+    Route::middleware(['seller'])->group(function () {
+        Route::get('customers', Customers::class)->name('customers');
+        Route::get('products', Products::class)->name('products');
+        Route::get('sales', Sales::class)->name('sales');
+    });
+
+    Route::middleware('admin')->group(function () {
+        Route::get('brands', Brands::class)->name('brands');
+        Route::get('categories', Categories::class)->name('categories');
+        Route::get('colors', Colors::class)->name('colors');
+        Route::get('orders', Orders::class)->name('orders');
+        Route::get('sellers', Sellers::class)->name('sellers');
+        Route::get('suppliers', Suppliers::class)->name('suppliers');
+    });
 });
 
 require __DIR__.'/auth.php';

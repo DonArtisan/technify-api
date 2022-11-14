@@ -29,10 +29,10 @@ class Product extends BaseModel implements HasMedia
         'status',
     ];
 
-
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection(self::MEDIA_COLLECTION_IMAGE)
+            ->useFallbackUrl(asset('images/placeholder-image.png'))
             ->acceptsMimeTypes(['image/jpeg', 'image/jpg', 'image/png'])
             ->singleFile();
     }
@@ -45,7 +45,6 @@ class Product extends BaseModel implements HasMedia
             ],
         ];
     }
-
 
     public function discount(): HasOne
     {
@@ -77,8 +76,18 @@ class Product extends BaseModel implements HasMedia
         return $this->hasMany(Price::class);
     }
 
+    public function price(): HasOne
+    {
+        return $this->HasOne(Price::class)->latest();
+    }
+
     public function productDetails(): HasMany
     {
         return $this->hasMany(ProductSaleDetail::class);
+    }
+
+    public function stock(): HasOne
+    {
+        return $this->hasOne(Stock::class);
     }
 }

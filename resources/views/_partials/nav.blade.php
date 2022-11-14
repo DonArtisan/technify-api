@@ -11,7 +11,7 @@
             <a class="text-blueGray-500 block" href="#" data-dropdown data-target="user-dropdown">
                 <div class="items-center flex">
                 <span class="w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full">
-                  <img alt="..." class="w-full rounded-full align-middle border-none shadow-lg" src="https://avatars.githubusercontent.com/u/63825298?v=4" />
+                  <img alt="image-profile" class="w-full rounded-full align-middle border-none shadow-lg" src="{{ \Illuminate\Support\Facades\Auth::user()->profile_photo_url }}" />
                 </span>
                 </div>
             </a>

@@ -8,6 +8,7 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/css/message.css',
                 'resources/js/app.js',
+                'resources/css/colors.js',
                 'resources/js/dashboard.js',
                 'resources/js/message.js',
             ],
