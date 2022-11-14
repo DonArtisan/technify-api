@@ -36,7 +36,7 @@ class Sellers extends Component
         'data.email' => ['required', 'email', 'unique:users,email', 'unique:sellers,email'],
         'data.hired_at' => ['required', 'before_or_equal:today'],
         'data.last_name' => ['required'],
-        'data.password' => ['required']
+        'data.password' => ['required'],
     ];
 
     public ?Seller $sellerToEdit = null;
