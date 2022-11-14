@@ -66,7 +66,7 @@
                             <tr class="hover:bg-gray-100">
                                 <td class="p-4 flex items-center whitespace-nowrap space-x-6 mr-12 lg:mr-0">
                                     <div class="text-sm font-normal text-gray-500">
-                                        <div class="text-base font-semibold text-gray-900">{{ $order->required_date }}</div>
+                                        <div class="text-base font-semibold text-gray-900">{{ $order->required_date->toDateString() }}</div>
                                     </div>
                                 </td>
                                 <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $order->supplier->agent_name }}</td>
@@ -339,7 +339,11 @@
                                     <x-inputs.text :value="$orderDetail->quantity" readonly type="number" :id="'selected_'.$orderDetail->id" :name="'selected_'.$orderDetail->id" min="1" />
                                 </td>
                                 <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">
-                                    <x-inputs.text placeholder="Ingresa el precio" wire:model.defer="prices.{{ $orderDetail->product->id }}" type="number" :id="'price_'.$orderDetail->product->id" :name="'price_'.$orderDetail->product->id" min="1" />
+                                    @if($orderToDisplay->order_status == \App\Enums\OrderStatus::COMPLETED())
+                                        <x-inputs.text readonly placeholder="Ingresa el precio" type="number" :value="$orderDetail->price" :id="'price_'.$orderDetail->product->id" :name="'price_'.$orderDetail->product->id" min="1" />
+                                    @else
+                                        <x-inputs.text placeholder="Ingresa el precio" wire:model.defer="prices.{{ $orderDetail->product->id }}" type="number" :id="'price_'.$orderDetail->product->id" :name="'price_'.$orderDetail->product->id" min="1" />
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

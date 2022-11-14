@@ -97,6 +97,7 @@ class Orders extends Component
                     $product->stock()->update(['quantity' => $product->stock->quantity + $orderDetail->quantity]);
                 }
 
+                $orderDetail->update(['price' => $this->prices[$product->id]]);
                 $product->prices()->create(['price' => $this->prices[$product->id]]);
             });
 

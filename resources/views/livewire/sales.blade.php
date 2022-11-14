@@ -131,13 +131,13 @@
                                 Nombre
                             </th>
                             <th scope="col" class="p-4 text-left text-xs font-medium text-white uppercase">
-                                Marca
-                            </th>
-                            <th scope="col" class="p-4 text-left text-xs font-medium text-white uppercase">
-                                Cantidad
+                                Cantidad a vender
                             </th>
                             <th scope="col" class="p-4 text-left text-xs font-medium text-white uppercase">
                                 Stock
+                            </th>
+                            <th scope="col" class="p-4 text-left text-xs font-medium text-white uppercase">
+                                Precio
                             </th>
                             <th scope="col" class="p-4 text-left text-xs font-medium text-white uppercase">
                                 Acciones
