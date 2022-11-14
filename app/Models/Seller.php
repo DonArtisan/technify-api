@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
@@ -37,8 +37,8 @@ class Seller extends Authenticatable
         );
     }
 
-    public function orders(): HasMany
+    public function orders(): MorphMany
     {
-        return $this->hasMany(Order::class);
+        return $this->morphMany(Order::class, 'orderable');
     }
 }

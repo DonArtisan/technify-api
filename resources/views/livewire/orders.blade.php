@@ -70,20 +70,29 @@
                                     </div>
                                 </td>
                                 <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $order->supplier->agent_name }}</td>
-                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $order->seller->name }}</td>
+                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $order->orderable->name }}</td>
                                 <td class="p-4 whitespace-nowrap space-x-2">
-                                    <button wire:click="edit({{ $order->id }})" type="button" data-modal-toggle="user-modal" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
+                                    <button wire:click="$set('orderIdToDisplay', {{ $order->id }})" type="button" data-modal-toggle="user-modal" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
                                         <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path>
                                         </svg>
-                                        Editar order
+                                        Ver orden
                                     </button>
-                                    <button wire:click="$set('supplierIdToDelete', {{ $order->id }})" type="button" data-modal-toggle="delete-user-modal" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
-                                        <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                                        </svg>
-                                        Remover order
-                                    </button>
+                                    @if($order->order_status == \App\Enums\OrderStatus::COMPLETED())
+                                        <button disabled type="button" data-modal-toggle="delete-user-modal" class="disabled:opacity-25 text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
+                                            <svg class="mr-2 h-5 w-5" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                <path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/>
+                                            </svg>
+                                            Order aprobada
+                                        </button>
+                                    @else
+                                        <button wire:click="$set('orderIdToApprove', {{ $order->id }})" type="button" data-modal-toggle="delete-user-modal" class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
+                                            <svg class="mr-2 h-5 w-5" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                <path d="M448 240v96c0 3.084-.356 6.159-1.063 9.162l-32 136C410.686 499.23 394.562 512 376 512H168a40.004 40.004 0 0 1-32.35-16.473l-127.997-176c-12.993-17.866-9.043-42.883 8.822-55.876 17.867-12.994 42.884-9.043 55.877 8.823L104 315.992V40c0-22.091 17.908-40 40-40s40 17.909 40 40v200h8v-40c0-22.091 17.908-40 40-40s40 17.909 40 40v40h8v-24c0-22.091 17.908-40 40-40s40 17.909 40 40v24h8c0-22.091 17.908-40 40-40s40 17.909 40 40zm-256 80h-8v96h8v-96zm88 0h-8v96h8v-96zm88 0h-8v96h8v-96z"/>
+                                            </svg>
+                                            Aprobar Order
+                                        </button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -94,6 +103,7 @@
         </div>
     </div>
 
+    {{-- Create Order --}}
     <x-modal :open="$showModal" size="lg" cleanAction="resetValues">
         <x-slot:title>
             {{ $isEdit ? 'Editar Order' :'Agregar Order'}}
@@ -220,17 +230,6 @@
         </form>
     </x-modal>
 
-    <x-modal :open="$orderIdToDelete" size="xs" cleanAction="resetValues">
-        <x-slot:title>
-            Estas seguro de eliminar esta order?
-        </x-slot:title>
-
-        <div class="flex gap-4">
-            <button wire:click="delete" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">Eliminar</button>
-            <button wire:click="resetValues" class="text-white bg-gray-600 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">Cancelar</button>
-        </div>
-    </x-modal>
-
     {{-- Supplier --}}
     <x-modal :open="$showModalSupplier" size="lg" cleanAction="resetModalSupplier">
         <x-slot:title>
@@ -288,6 +287,88 @@
                 </table>
             </div>
         </form>
+    </x-modal>
+
+
+
+    {{-- Display Order--}}
+    <x-modal :open="$orderIdToDisplay && $orderToDisplay" size="lg" cleanAction="resetOrderIds">
+        <x-slot:title>
+            Orden
+        </x-slot:title>
+
+        @if($orderIdToDisplay && $orderToDisplay)
+            <div class="space-y-2">
+                <div>
+                    <x-inputs.text readonly type="date" id="order_required_date" label="Fecha requerida" :value="$orderToDisplay->required_date->format('Y-m-d')"/>
+                </div>
+                <div>
+                    <x-inputs.text readonly type="text" name="order_supplier" id="order_supplier" label="Proveedor"
+                                   :value="$orderToDisplay->supplier->agent_name.' - '.$orderToDisplay->supplier->branch" />
+                </div>
+
+                <h4 class="my-2">Productos Seleccionados</h4>
+                <div class="mt-2 max-h-[500px] overflow-auto">
+                    <table class="table-fixed min-w-full divide-y divide-slate-200">
+                        <thead class="bg-slate-800">
+                        <tr>
+                            <th scope="col" class="p-4 text-left text-xs font-medium text-white uppercase">
+                                Modelo
+                            </th>
+                            <th scope="col" class="p-4 text-left text-xs font-medium text-white uppercase">
+                                Nombre
+                            </th>
+                            <th scope="col" class="p-4 text-left text-xs font-medium text-white uppercase">
+                                Marca
+                            </th>
+                            <th scope="col" class="p-4 text-left text-xs font-medium text-white uppercase">
+                                Cantidad
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach($orderDetails as $orderDetail)
+                            <tr class="hover:bg-gray-100" wire:key="{{ 'displayed_'.$orderDetail->id }}">
+                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">
+                                    <div class="text-base font-semibold text-gray-900">{{ $orderDetail->product->model->model_name }}</div>
+                                </td>
+                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $orderDetail->product->name }}</td>
+                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $orderDetail->product->model->brand->name }}</td>
+                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">
+                                    <x-inputs.text :value="$orderDetail->quantity" readonly type="number" :id="'selected_'.$orderDetail->id" :name="'selected_'.$orderDetail->id" min="1" />
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                @if($orderToDisplay->order_status == \App\Enums\OrderStatus::PENDING())
+                    <div class="items-center pt-2 mt-4 border-t border-gray-200 rounded-b">
+                        <button type="button" wire:click="$set('orderIdToApprove', {{ $orderToDisplay->id }})" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                            Aprobar
+                        </button>
+                    </div>
+                @endif
+            </div>
+        @endif
+    </x-modal>
+
+    {{-- Approve Order--}}
+    <!-- Approve Order -->
+    <x-modal :open="(bool) $orderIdToApprove" size="xs" cleanAction="resetOrderIds">
+        <x-slot:title>
+            Desea aprobar esta orden?
+        </x-slot:title>
+
+        @error('error')
+        <h4 class="text-red-600">{{ $message }}</h4>
+        @enderror
+
+        <div class="flex gap-4">
+            <button wire:click="approveOrder" class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">Aprobar</button>
+            <button wire:click="resetOrderIds" class="text-white bg-gray-600 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">Cancelar</button>
+        </div>
     </x-modal>
 
     <div class="bg-white p-4 sticky bottom-0">

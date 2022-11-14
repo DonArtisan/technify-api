@@ -83,6 +83,11 @@ class User extends Authenticatable implements HasMedia
         );
     }
 
+    public function orders(): MorphMany
+    {
+        return $this->morphMany(Order::class, 'orderable');
+    }
+
     public function sales(): MorphMany
     {
         return $this->morphMany(ProductSale::class, 'buyerable');

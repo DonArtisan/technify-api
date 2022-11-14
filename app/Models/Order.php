@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Order extends Model
 {
@@ -25,11 +26,12 @@ class Order extends Model
 
     protected $casts = [
         'order_status' => OrderStatus::class,
+        'required_date' => 'date'
     ];
 
-    public function seller(): BelongsTo
+    public function orderable(): MorphTo
     {
-        return $this->belongsTo(Seller::class);
+        return $this->morphTo();
     }
 
     public function supplier(): BelongsTo

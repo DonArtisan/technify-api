@@ -6,11 +6,13 @@ use App\Enums\AuthorizeEnum;
 use App\Enums\OrderStatus;
 use App\Models\Model;
 use App\Models\Order;
+use App\Models\OrderDetail;
+use App\Models\Product;
 use App\Models\Seller;
 use App\Models\Supplier;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -46,6 +48,10 @@ class Orders extends Component
 
     public ?string $requiredDate = null;
 
+    public int $orderIdToApprove = 0;
+
+    public int $orderIdToDisplay= 0;
+
     public array $data = [
         'requiredDate',
     ];
@@ -56,32 +62,58 @@ class Orders extends Component
 
     public ?Order $orderToEdit = null;
 
+    public function approveOrder()
+    {
+        if (!$this->orderIdToApprove) {
+            return;
+        }
+
+        try {
+            DB::beginTransaction();
+
+            /** @var Order $order */
+            $order = Order::query()
+                ->find($this->orderIdToApprove);
+
+            $order->update(['order_status' => OrderStatus::COMPLETED()]);
+
+            $orderDetails = $order->orderDetails()->with('product.stock')->get();
+
+            $orderDetails->each(function (OrderDetail $orderDetail) {
+                /** @var Product $product */
+                $product = $orderDetail->product;
+
+                if (!$product->stock) {
+                    $product->stock()->create(['quantity' => $orderDetail->quantity]);
+                } else {
+                    $product->stock()->update(['quantity' => $product->stock->quantity + $orderDetail->quantity]);
+                }
+            });
+
+            $this->dispatchBrowserEvent('wire::message', ['message' => 'Solicitud aprobada correctamente.']);
+
+            $this->resetValues();
+
+            DB::commit();
+        } catch (\Throwable $exception) {
+            logger($exception->getMessage());
+            DB::rollBack();
+
+            $this->addError('error', 'No se ha podido aprobar la orden.');
+        }
+    }
+
     public function save(): void
     {
         $this->validate();
 
-        $data = Arr::only($this->data, [
-            'required_date',
-            'supplier_id',
-        ]);
-
-        if ($this->isEdit) {
-            $this->orderToEdit->update($data);
-
-            $this->reset();
-
-            $this->dispatchBrowserEvent('wire::message', ['message' => 'order actualizada.']);
-
-            return;
-        }
-
-        /** @var Seller $seller */
-        $seller = Auth::user();
+        /** @var Seller|User $seller */
+        $user = Auth::user();
 
         DB::beginTransaction();
         try {
             /** @var Order $order */
-            $order = $seller->orders()->create([
+            $order = $user->orders()->create([
                 'amount' => collect($this->quantities)->sum(),
                 'order_status' => OrderStatus::PENDING(),
                 'required_date' => $this->requiredDate,
@@ -109,50 +141,18 @@ class Orders extends Component
 
             DB::commit();
         } catch (\Throwable $exception) {
+            logger($exception->getMessage());
+
+            $this->dispatchBrowserEvent('wire::error', ['message' => 'No se ha podido guardar la orden.']);
+
+            return;
+
             DB::rollBack();
         }
 
         $this->reset();
 
         $this->dispatchBrowserEvent('wire::message', ['message' => 'order guardada.']);
-    }
-
-    public function delete(): void
-    {
-        /** @var Order $order */
-        $order = Order::find($this->supplierIdToDelete);
-
-        if (! $order) {
-            return;
-        }
-
-        $order->delete();
-
-        $this->dispatchBrowserEvent('wire::message', ['message' => 'order borrada.']);
-
-        $this->resetValues();
-    }
-
-    public function edit(int $userId): void
-    {
-        $order = Order::find($userId);
-
-        if (! $order) {
-            return;
-        }
-
-        $this->orderToEdit = $order;
-        $this->isEdit = true;
-        $this->showModal = true;
-
-        $this->data = $order->only([
-            'address',
-            'agent_name',
-            'branch',
-            'email',
-            'phone_number',
-        ]);
-        $this->data['ruc'] = $order->RUC;
     }
 
     public function showAddModal(): void
@@ -189,12 +189,17 @@ class Orders extends Component
         $this->reset();
     }
 
+    public function resetOrderIds()
+    {
+        $this->reset('orderIdToApprove', 'orderIdToDisplay');
+    }
+
     public function render(): View
     {
         $orders = Order::query()
-            ->with(['supplier', 'seller'])
+            ->with(['supplier', 'orderable'])
             ->when($this->searchBySeller, function (Builder $query, $search) {
-                $query->whereHas('seller', function (Builder $query) use ($search) {
+                $query->whereHas('orderable', function (Builder $query) use ($search) {
                     $query->where('first_name', 'ilike', "%$search%");
                 });
             })
@@ -243,6 +248,24 @@ class Orders extends Component
                 ->get();
         }
 
-        return view('livewire.orders', compact('orders', 'suppliers', 'models', 'modelsSelected'));
+        $orderToDisplay = null;
+        $orderDetails = null;
+
+        if ($this->orderIdToDisplay) {
+            $orderToDisplay = Order::query()
+                ->with('orderDetails.product.model.brand', 'supplier')
+                ->find($this->orderIdToDisplay);
+
+            $orderDetails = $orderToDisplay->orderDetails;
+        }
+
+        return view('livewire.orders', compact(
+            'orders',
+            'suppliers',
+            'models',
+            'modelsSelected',
+            'orderToDisplay',
+            'orderDetails'
+        ));
     }
 }

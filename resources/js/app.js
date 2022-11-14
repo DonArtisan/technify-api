@@ -17,6 +17,18 @@ window.addEventListener('wire::message', ({ detail }) => {
   }).showToast()
 })
 
+window.addEventListener('wire::error', ({ detail }) => {
+    Toastify({
+        className: 'capitalize',
+        text: detail.message,
+        gravity: 'top',
+        position: 'right',
+        style: {
+            backdropColor: 'red'
+        }
+    }).showToast()
+})
+
 const dropdowns = document.querySelectorAll('#sidebar span[data-dropdown]')
 
 dropdowns.forEach((elem) => {
