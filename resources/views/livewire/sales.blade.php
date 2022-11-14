@@ -96,10 +96,10 @@
         </div>
     </div>
 
-    {{-- Create Order --}}
+    {{-- Create Sale --}}
     <x-modal :open="$showModal" size="lg" cleanAction="resetValues">
         <x-slot:title>
-             Agregar Order
+             Agregar Venta
         </x-slot:title>
 
         <form wire:submit.prevent="save">
@@ -318,7 +318,7 @@
     {{-- Display Order--}}
     <x-modal :open="$saleIdToDisplay && $saleToDisplay" size="lg" cleanAction="resetOrderIds">
         <x-slot:title>
-            Orden
+            Venta
         </x-slot:title>
 
         @if($saleIdToDisplay && $saleToDisplay)
@@ -377,25 +377,4 @@
             </div>
         @endif
     </x-modal>
-
-    {{-- Approve Order--}}
-    <!-- Approve Order -->
-    <x-modal :open="(bool) $saleIdToApprove" size="xs" cleanAction="resetOrderIds">
-        <x-slot:title>
-            Desea aprobar esta orden?
-        </x-slot:title>
-
-        @error('error')
-        <h4 class="text-red-600">{{ $message }}</h4>
-        @enderror
-
-        <div class="flex gap-4">
-            <button wire:click="approveOrder" class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">Aprobar</button>
-            <button wire:click="resetOrderIds" class="text-white bg-gray-600 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">Cancelar</button>
-        </div>
-    </x-modal>
-
-    <div class="bg-white p-4 sticky bottom-0">
-        {{ $sales->links() }}
-    </div>
 </main>
