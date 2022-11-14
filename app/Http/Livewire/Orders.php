@@ -46,6 +46,8 @@ class Orders extends Component
 
     public array $quantities = [];
 
+    public array $prices = [];
+
     public ?string $requiredDate = null;
 
     public int $orderIdToApprove = 0;
@@ -75,6 +77,12 @@ class Orders extends Component
             $order = Order::query()
                 ->find($this->orderIdToApprove);
 
+            if ($order->orderDetails()->count() !== count(array_filter($this->prices))) {
+                $this->dispatchBrowserEvent('wire::error', ['message' => 'Debe llenar todos los precios.']);
+
+                return;
+            }
+
             $order->update(['order_status' => OrderStatus::COMPLETED()]);
 
             $orderDetails = $order->orderDetails()->with('product.stock')->get();
@@ -88,6 +96,8 @@ class Orders extends Component
                 } else {
                     $product->stock()->update(['quantity' => $product->stock->quantity + $orderDetail->quantity]);
                 }
+
+                $product->prices()->create(['price' => $this->prices[$product->id]]);
             });
 
             $this->dispatchBrowserEvent('wire::message', ['message' => 'Solicitud aprobada correctamente.']);

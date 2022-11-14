@@ -23,9 +23,7 @@ window.addEventListener('wire::error', ({ detail }) => {
         text: detail.message,
         gravity: 'top',
         position: 'right',
-        style: {
-            backdropColor: 'red'
-        }
+        backgroundColor: 'rgb(220 38 38)'
     }).showToast()
 })
 

@@ -85,13 +85,13 @@
                                             </svg>
                                             Order aprobada
                                         </button>
-                                    @else
-                                        <button wire:click="$set('orderIdToApprove', {{ $order->id }})" type="button" data-modal-toggle="delete-user-modal" class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
-                                            <svg class="mr-2 h-5 w-5" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                                <path d="M448 240v96c0 3.084-.356 6.159-1.063 9.162l-32 136C410.686 499.23 394.562 512 376 512H168a40.004 40.004 0 0 1-32.35-16.473l-127.997-176c-12.993-17.866-9.043-42.883 8.822-55.876 17.867-12.994 42.884-9.043 55.877 8.823L104 315.992V40c0-22.091 17.908-40 40-40s40 17.909 40 40v200h8v-40c0-22.091 17.908-40 40-40s40 17.909 40 40v40h8v-24c0-22.091 17.908-40 40-40s40 17.909 40 40v24h8c0-22.091 17.908-40 40-40s40 17.909 40 40zm-256 80h-8v96h8v-96zm88 0h-8v96h8v-96zm88 0h-8v96h8v-96z"/>
-                                            </svg>
-                                            Aprobar Order
-                                        </button>
+{{--                                    @else--}}
+{{--                                        <button wire:click="$set('orderIdToApprove', {{ $order->id }})" type="button" data-modal-toggle="delete-user-modal" class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">--}}
+{{--                                            <svg class="mr-2 h-5 w-5" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">--}}
+{{--                                                <path d="M448 240v96c0 3.084-.356 6.159-1.063 9.162l-32 136C410.686 499.23 394.562 512 376 512H168a40.004 40.004 0 0 1-32.35-16.473l-127.997-176c-12.993-17.866-9.043-42.883 8.822-55.876 17.867-12.994 42.884-9.043 55.877 8.823L104 315.992V40c0-22.091 17.908-40 40-40s40 17.909 40 40v200h8v-40c0-22.091 17.908-40 40-40s40 17.909 40 40v40h8v-24c0-22.091 17.908-40 40-40s40 17.909 40 40v24h8c0-22.091 17.908-40 40-40s40 17.909 40 40zm-256 80h-8v96h8v-96zm88 0h-8v96h8v-96zm88 0h-8v96h8v-96z"/>--}}
+{{--                                            </svg>--}}
+{{--                                            Aprobar Order--}}
+{{--                                        </button>--}}
                                     @endif
                                 </td>
                             </tr>
@@ -322,6 +322,9 @@
                             <th scope="col" class="p-4 text-left text-xs font-medium text-white uppercase">
                                 Cantidad
                             </th>
+                            <th scope="col" class="p-4 text-left text-xs font-medium text-white uppercase">
+                                Price
+                            </th>
                         </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -334,6 +337,9 @@
                                 <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $orderDetail->product->model->brand->name }}</td>
                                 <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">
                                     <x-inputs.text :value="$orderDetail->quantity" readonly type="number" :id="'selected_'.$orderDetail->id" :name="'selected_'.$orderDetail->id" min="1" />
+                                </td>
+                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">
+                                    <x-inputs.text placeholder="Ingresa el precio" wire:model.defer="prices.{{ $orderDetail->product->id }}" type="number" :id="'price_'.$orderDetail->product->id" :name="'price_'.$orderDetail->product->id" min="1" />
                                 </td>
                             </tr>
                         @endforeach
