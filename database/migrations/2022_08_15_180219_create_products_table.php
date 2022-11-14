@@ -21,7 +21,7 @@ return new class () extends Migration {
             $table->string('handle');
             $table->string('description');
             $table->foreignId('model_id')->constrained('models');
-            $table->unsignedInteger('color_id')->nullable();
+            $table->unsignedBigInteger('color_id')->nullable();
             $table->foreign('color_id')->references('id')->on('colors');
             $table->foreignId('category_id')->constrained('categories');
             $table->timestamps();
