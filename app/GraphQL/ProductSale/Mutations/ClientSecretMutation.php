@@ -3,6 +3,8 @@
 namespace App\GraphQL\ProductSale\Mutations;
 
 use App\GraphQL\Mutations\BaseMutation;
+use App\Http\Stats\SalesStats;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
@@ -18,10 +20,26 @@ class ClientSecretMutation extends BaseMutation
         try {
             /** @var \App\Models\User $user */
             $user = $context->user();
+            logger($args);
 
             $intent = $user->payWith($args['input']['amount'], ['card']);
 
+            $productSale = $user->sales()->create(array_merge(
+                    Arr::only($args['input'],['amount']),
+                    ['tax' => 15, 'total'=> $args['input']['amount'] + ($args['input']['amount'] * .15)]
+                )
+            );
+
+            $data = collect($args['input']['products'])->map(function ($d) {
+                return Arr::except($d, ['name', 'description']);
+            })->toArray();
+
+            $productSale->saleDetails()->createMany($data);
+            SalesStats::increase(1);
+
+
             DB::commit();
+
         } catch (Throwable $error) {
             DB::rollBack();
 
