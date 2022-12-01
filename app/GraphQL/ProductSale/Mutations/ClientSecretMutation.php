@@ -19,10 +19,7 @@ class ClientSecretMutation extends BaseMutation
             /** @var \App\Models\User $user */
             $user = $context->user();
 
-//            $payment = $user->pay(
-//                $args['input']['amount']
-//            );
-            $intent = $user->createSetupIntent(['payment_method_types' => ['card']]);
+            $intent = $user->payWith($args['input']['amount'], ['card']);
 
             DB::commit();
         } catch (Throwable $error) {
