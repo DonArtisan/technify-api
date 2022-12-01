@@ -24,7 +24,7 @@ class ProductSaleFactory extends Factory
 
         return [
             'buyerable_id' => $buyerable::factory(),
-            'buyerable_type' => $buyerable,
+            'buyerable_type' => 'user',
             'amount' => 0,
             'tax' => 0.15,
             'total' => 0,

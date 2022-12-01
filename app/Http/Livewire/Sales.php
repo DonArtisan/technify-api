@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Http\Stats\SalesStats;
 use App\Models\Customer;
 use App\Models\Model;
 use App\Models\ProductSale as Sale;
@@ -46,6 +47,10 @@ class Sales extends Component
     public ?Sale $saleToEdit = null;
 
     public ?Customer $customerSelected = null;
+
+    public string $salesType = '';
+
+    public string $filteredDate = '';
 
     public float $subtotal = 0;
 
@@ -108,6 +113,8 @@ class Sales extends Component
                     ]);
                 });
 
+            SalesStats::increase(1, $sale->created_at);
+
             DB::commit();
         } catch (\Throwable $exception) {
             DB::rollBack();
@@ -167,7 +174,12 @@ class Sales extends Component
     {
         $sales = Sale::query()
             ->with('buyerable')
-            ->where('buyerable_type', 'customer')
+            ->when($this->salesType, function ($query, $salesType) {
+                $query->where('buyerable_type', $salesType);
+            })
+            ->when($this->filteredDate, function ($query, $date) {
+                $query->whereDate('created_at', $date);
+            })
             ->latest()
             ->paginate();
 
