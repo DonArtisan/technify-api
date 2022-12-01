@@ -14,10 +14,14 @@ class CustomerFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            //
+            'address' => fake()->address,
+            'dni' => fake()->numerify('###-#######-###').fake()->randomLetter(),
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+            'phone' => fake()->numerify('8#######'),
         ];
     }
 }

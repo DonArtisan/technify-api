@@ -5,15 +5,17 @@
                 <h1 class="text-xl sm:text-2xl font-semibold text-gray-900">Ventas</h1>
             </div>
             <div class="sm:flex">
-                <div class="hidden sm:flex items-center sm:divide-x sm:divide-gray-100 mb-3 sm:mb-0">
-{{--                    <form class="lg:pr-3" action="#" method="GET">--}}
-{{--                        <label for="sellers-search" class="sr-only">Search</label>--}}
-{{--                        <div class="mt-1 relative lg:w-64 xl:w-96">--}}
-{{--                            <input wire:model.debounce.1000ms="searchBySeller" type="text" name="email" id="sellers-search"--}}
-{{--                                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"--}}
-{{--                                   placeholder="Buscar por vendedor">--}}
-{{--                        </div>--}}
-{{--                    </form>--}}
+                <div class="hidden sm:flex items-center sm:divide-x sm:divide-gray-100 mb-3 sm:mb-0 gap-4">
+                    <div>
+                        <x-inputs.select wire:model="salesType" id="sales_type" class="pr-8">
+                            <option value="">seleccionar por tipo de venta</option>
+                            <option value="user">Online</option>
+                            <option value="customer">Local</option>
+                        </x-inputs.select>
+                    </div>
+                    <div>
+                        <x-inputs.text wire:model="filteredDate" id="filteredDate" type="date" :max="now()->toDateString()" />
+                    </div>
                 </div>
                 <div class="flex items-center space-x-2 sm:space-x-3 ml-auto">
                     <button wire:click="showAddModal" type="button" data-modal-toggle="add-user-modal" class="w-1/2 text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center sm:w-auto">

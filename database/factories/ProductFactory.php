@@ -32,9 +32,11 @@ class ProductFactory extends Factory
         ];
     }
 
-    public function configure()
+    public function configure(): self
     {
         return $this->afterCreating(function (Product $product) {
+            $product->stock()->create(['quantity' => fake()->randomNumber()]);
+
             Price::factory()->create([
                 'product_id' => $product->id,
             ]);

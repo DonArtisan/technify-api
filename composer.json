@@ -9,7 +9,7 @@
     ],
     "require": {
         "php": "^8.0.2",
-        "bensampo/laravel-enum": "^6.0",
+        "bensampo/laravel-enum": "^6.1",
         "cviebrock/eloquent-sluggable": "^9.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/cashier": "^14.2.1",
@@ -32,7 +32,7 @@
         "brianium/paratest": "^6.6",
         "fakerphp/faker": "^1.9.1",
         "laravel/breeze": "^1.14",
-        "laravel/pint": "^1.0",
+        "laravel/pint": "^1.2",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
