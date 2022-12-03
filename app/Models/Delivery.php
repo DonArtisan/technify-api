@@ -11,14 +11,19 @@ class Delivery extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'delivery_date',
+        'delivery_place',
+        'sale_id',
+        'status'
+    ];
 
     protected $casts = [
         'status' => DeliveryStatus::class
     ];
 
-    public function productSale(): BelongsTo
+    public function sale(): BelongsTo
     {
-        return $this->belongsTo(ProductSale::class);
+        return $this->belongsTo(ProductSale::class, 'sale_id');
     }
 }

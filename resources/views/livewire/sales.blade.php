@@ -114,7 +114,7 @@
             <div class="flex mt-2">
                 <div class="flex-1">
                     <x-inputs.text readonly type="text" name="customer" id="customer" label="Cliente"
-                                   value="{{ $customerSelected ? $customerSelected->first_name.' - '.$customerSelected->last_name : null }}" />
+                                   value="{{ $customerSelected ? $customerSelected?->person->first_name.' - '.$customerSelected?->person->last_name : null }}" />
                 </div>
                 <button wire:click="$set('showModalCustomer', true)" type="button" class="btn-primary px-3 py-3.5 mt-auto"><i class="fas fa-mouse-pointer"></i></button>
                 @error('customer')
@@ -287,17 +287,18 @@
                             Dirección personalizada
                         </label>
                     </div>
-                @endif
 
-                @if($deliveryTypeAddress == 'custom')
                     <div>
                         <div class="grid grid-cols-6 gap-6">
-                            <div class="col-span-6 sm:col-span-3">
-                                <x-inputs.text wire:model.defer="deliveryInfo.address" type="text" name="address" id="address" label="Dirección" />
-                                @error('deliveryInfo.address')
-                                <p class="text-red-500">{{ $message }}</p>
-                                @enderror
-                            </div>
+
+                            @if($deliveryTypeAddress == 'custom')
+                                <div class="col-span-6 sm:col-span-3">
+                                    <x-inputs.text wire:model.defer="deliveryInfo.address" type="text" name="address" id="address" label="Dirección" />
+                                    @error('deliveryInfo.address')
+                                    <p class="text-red-500">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            @endif
                             <div class="col-span-6 sm:col-span-3">
                                 <x-inputs.text wire:model.defer="deliveryInfo.date" type="date" name="delivery_date" id="delivery_date" label="Fecha" />
                                 @error('deliveryInfo.date')
@@ -369,8 +370,8 @@
                                     <div class="text-base font-semibold text-gray-900">{{ $customer->name }}</div>
                                 </div>
                             </td>
-                            <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $customer->dni }}</td>
-                            <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $customer->phone }}</td>
+                            <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $customer->person?->dni }}</td>
+                            <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $customer->person?->phone_number }}</td>
                         </tr>
                     @empty
                         <p>No hay registros para este filtro.</p>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Enums\DeliveryStatus;
 use App\Http\Stats\SalesStats;
 use App\Models\Customer;
 use App\Models\Model;
@@ -58,6 +59,11 @@ class Sales extends Component
 
     public bool $isDelivery = false;
     public string $deliveryTypeAddress = '';
+
+    public array $deliveryInfo = [
+        'address',
+        'date'
+    ];
 
     public function calculate()
     {
@@ -118,6 +124,19 @@ class Sales extends Component
                 });
 
             SalesStats::increase(1, $sale->created_at);
+
+            if ($this->isDelivery) {
+                $deliveryData['status'] = DeliveryStatus::PENDING;
+                $deliveryData['delivery_date'] = $this->deliveryInfo['date'];
+
+                if ($this->deliveryTypeAddress === 'custom') {
+                    $deliveryData['delivery_place'] = $this->deliveryInfo['address'];
+                } else {
+                    $deliveryData['delivery_place'] = $this->customerSelected->person->home_address;
+                }
+
+                $sale->delivery()->create($deliveryData);
+            }
 
             DB::commit();
         } catch (\Throwable $exception) {
@@ -240,7 +259,10 @@ class Sales extends Component
 
         if ($this->customerSearch) {
             $customers = Customer::query()
-                ->where('first_name', 'ilike', "%$this->customerSearch%")
+                ->with('person')
+                ->whereHas('person', function ($query) {
+                    $query->where('first_name', 'ilike', "%$this->customerSearch%");
+                })
                 ->get();
         }
 

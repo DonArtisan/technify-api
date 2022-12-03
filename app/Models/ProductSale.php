@@ -37,6 +37,6 @@ class ProductSale extends Model
 
     public function delivery(): HasOne
     {
-        return $this->hasOne(Delivery::class);
+        return $this->hasOne(Delivery::class, 'sale_id');
     }
 }
