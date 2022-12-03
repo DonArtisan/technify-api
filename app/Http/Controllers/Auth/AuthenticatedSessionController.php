@@ -59,18 +59,27 @@ class AuthenticatedSessionController extends Controller
         $email = $request->input('email');
 
         $status = $this->guard()->attempt(['password' => $request->input('password'), function (Builder $query) use ($email) {
-            $query->whereHas('person', function ($query) use ($email) {
-                $query->where('email', $email);
-            });
+            $query
+                ->whereHas('person', function ($query) use ($email) {
+                    $query->where('email', $email);
+                 })
+                ->whereHas('roles', function ($query) {
+                    $query->where('name', 'admin');
+                });
         }]);
 
         if (! $status) {
             Session::put($this->guardIdentifier, 'sellers');
 
-            return $this->guard('sellers')->attempt(
-                $request->only(['email', 'password']),
-                $request->boolean('remember')
-            );
+            return $this->guard('sellers')->attempt(['password' => $request->input('password'), function (Builder $query) use ($email) {
+                $query
+                    ->whereHas('person', function ($query) use ($email) {
+                        $query->where('email', $email);
+                    })
+                    ->whereHas('roles', function ($query) {
+                        $query->where('name', 'seller');
+                    });
+            }]);
         }
 
         return $status;

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Http\Stats\UserStats;
+use App\Models\Person;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -22,6 +23,7 @@ class UserFactory extends Factory
         UserStats::increase(1);
 
         return [
+            'person_id' => Person::factory(),
             'email_verified_at' => now(),
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),

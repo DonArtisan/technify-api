@@ -15,6 +15,7 @@ return new class () extends Migration {
         // Create Admin
         /** @var User $user */
         $user = $person->user()->create([
+            'email_verified_at' => now(),
             'password' => bcrypt('Technify1234'),
         ]);
 
