@@ -34,6 +34,8 @@ type User {
 
     password: String!
 
+    person: Person @with(relation: "person") @belongsTo
+
     "When the account was created."
     created_at: DateTime!
 
