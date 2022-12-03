@@ -21,7 +21,7 @@ class ProductSaleFactory extends Factory
      */
     public function definition()
     {
-        [$buyerable] = $this->buyerable();
+//        [$buyerable] = $this->buyerable();
 
         return [
             'buyerable_id' => User::factory()->for(Person::factory()),
@@ -33,12 +33,12 @@ class ProductSaleFactory extends Factory
         ];
     }
 
-    public function buyerable()
-    {
-        return $this->faker->randomElement([
-            User::class,
-        ]);
-    }
+//    public function buyerable()
+//    {
+//        return $this->faker->randomElement([
+//            User::class,
+//        ]);
+//    }
 
     public function configure()
     {
