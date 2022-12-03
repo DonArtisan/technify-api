@@ -48,6 +48,8 @@ class Orders extends Component
 
     public array $prices = [];
 
+    public array $gains = [];
+
     public ?string $requiredDate = null;
 
     public int $orderIdToApprove = 0;
@@ -77,8 +79,8 @@ class Orders extends Component
             $order = Order::query()
                 ->find($this->orderIdToApprove);
 
-            if ($order->orderDetails()->count() !== count(array_filter($this->prices))) {
-                $this->dispatchBrowserEvent('wire::error', ['message' => 'Debe llenar todos los precios.']);
+            if ($order->orderDetails()->count() !== count(array_filter($this->gains))) {
+                $this->dispatchBrowserEvent('wire::error', ['message' => 'Debe llenar todos los márgenes de ganancia.']);
 
                 return;
             }
@@ -97,8 +99,8 @@ class Orders extends Component
                     $product->stock()->update(['quantity' => $product->stock->quantity + $orderDetail->quantity]);
                 }
 
-                $orderDetail->update(['price' => $this->prices[$product->id]]);
-                $product->prices()->create(['price' => $this->prices[$product->id]]);
+                $orderDetail->update(['gain' => $this->gains[$product->id], 'unit_price_with_gain' => (int) ($orderDetail->price + ($orderDetail->price * ($this->gains[$product->id] / 100)))]);
+                $product->prices()->create(['price' => $orderDetail->price + ($orderDetail->price * ($this->gains[$product->id] / 100))]);
             });
 
             $this->dispatchBrowserEvent('wire::message', ['message' => 'Solicitud aprobada correctamente.']);
@@ -134,21 +136,29 @@ class Orders extends Component
                 'total' => 0,
             ]);
 
-            $productIds = Model::query()
-                ->with('product:id,model_id,name')
+            $products = Model::query()
+                ->with('product:id,model_id,name,sale_price')
                 ->whereIn('id', $this->modelsIdSelected)
                 ->get()
-                ->pluck('product.id');
+                ->pluck('product');
 
-            $data = $productIds->map(function (int $id) {
+            $total = 0;
+
+            $data = $products->map(function (Product $product) use (&$total) {
+                $total += ($product->sale_price * $this->quantities[$product->id]);
+
                 return [
-                    'product_id' => $id,
-                    'quantity' => $this->quantities[$id],
-                    'price' => 0,
+                    'product_id' => $product->id,
+                    'quantity' => $this->quantities[$product->id],
+                    'price' => $product->sale_price,
+                    'gain' => 0,
+                    'unit_price_with_gain' => 0,
                 ];
             });
 
             $order->orderDetails()->createMany($data);
+
+            $order->update(['total' => $total]);
 
             DB::commit();
         } catch (\Throwable $exception) {
@@ -208,15 +218,15 @@ class Orders extends Component
     public function render(): View
     {
         $orders = Order::query()
-            ->with(['supplier', 'orderable'])
+            ->with(['supplier.person', 'orderable.person'])
             ->when($this->searchBySeller, function (Builder $query, $search) {
-                $query->whereHas('orderable', function (Builder $query) use ($search) {
+                $query->whereHas('orderable.person', function (Builder $query) use ($search) {
                     $query->where('first_name', 'ilike', "%$search%");
                 });
             })
             ->when($this->searchBySupplier, function (Builder $query, $search) {
-                $query->whereHas('supplier', function (Builder $query) use ($search) {
-                    $query->where('agent_name', 'ilike', "%$search%");
+                $query->whereHas('supplier.person', function (Builder $query) use ($search) {
+                    $query->where('first_name', 'ilike', "%$search%");
                 });
             })
             ->latest()
@@ -228,13 +238,18 @@ class Orders extends Component
 
         if ($this->supplierSearch) {
             $suppliers = Supplier::query()
-                ->where('agent_name', 'ilike', "%$this->supplierSearch%")
+                ->with('person')
+                ->when($this->supplierSearch, function (Builder $query, $search) {
+                    $query->whereHas('person', function ($query) use ($search) {
+                        $query->where('first_name', 'ilike', "%$search%");
+                    });
+                })
                 ->get();
         }
 
         if ($this->productSearch) {
             $models = Model::query()
-                ->with('product:id,model_id,name', 'brand:id,name')
+                ->with('product:id,model_id,name,sale_price', 'brand:id,name')
                 ->whereNotIn('id', $this->modelsIdSelected)
                 ->where(function (Builder $query) {
                     $query->where('model_name', 'ilike', "%$this->productSearch%")
@@ -254,7 +269,7 @@ class Orders extends Component
                 ->get();
 
             $modelsSelected = Model::query()
-                ->with('product:id,model_id,name', 'brand:id,name')
+                ->with('product:id,model_id,name,sale_price', 'brand:id,name')
                 ->whereIn('id', $this->modelsIdSelected)
                 ->get();
         }
@@ -264,7 +279,7 @@ class Orders extends Component
 
         if ($this->orderIdToDisplay) {
             $orderToDisplay = Order::query()
-                ->with('orderDetails.product.model.brand', 'supplier')
+                ->with('orderDetails.product.model.brand', 'supplier.person')
                 ->find($this->orderIdToDisplay);
 
             $orderDetails = $orderToDisplay->orderDetails;

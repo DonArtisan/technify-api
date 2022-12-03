@@ -66,6 +66,13 @@ class Sales extends Component
         'date',
     ];
 
+    public function updatedIsDelivery($value)
+    {
+        if ($value) {
+            $this->deliveryInfo['date'] = now()->addDays(7)->toDateString();
+        }
+    }
+
     public function calculate()
     {
         $modelsSelected = Model::query()
@@ -152,7 +159,7 @@ class Sales extends Component
 
         $this->reset();
 
-        $this->dispatchBrowserEvent('wire::message', ['message' => 'order guardada.']);
+        $this->dispatchBrowserEvent('wire::message', ['message' => 'venta guardada.']);
     }
 
     public function showAddModal(): void

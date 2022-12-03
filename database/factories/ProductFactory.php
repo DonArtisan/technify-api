@@ -29,6 +29,7 @@ class ProductFactory extends Factory
             'color_id' => Color::factory(),
             'model_id' => Model::factory(),
             'status' => ProductStatus::getRandomValue(),
+            'sale_price' => fake()->numerify(),
         ];
     }
 

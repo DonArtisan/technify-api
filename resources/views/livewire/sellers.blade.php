@@ -142,7 +142,7 @@
                     @enderror
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.text wire:model.defer="data.hired_at" type="date" name="hired_at" id="hired_at" label="Contratado en" :max="now()->toDateString()" />
+                    <x-inputs.text wire:model.defer="data.hired_at" type="date" name="hired_at" id="hired_at" label="Contratado en" :disabled="$isEdit" :max="now()->toDateString()" />
                     @error('data.hired_at')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror
