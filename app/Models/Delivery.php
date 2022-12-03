@@ -19,7 +19,7 @@ class Delivery extends Model
     ];
 
     protected $casts = [
-        'status' => DeliveryStatus::class
+        'status' => DeliveryStatus::class,
     ];
 
     public function sale(): BelongsTo

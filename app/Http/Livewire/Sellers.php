@@ -32,7 +32,7 @@ class Sellers extends Component
         'password',
         'home_address',
         'dni',
-        'phone_number'
+        'phone_number',
     ];
 
     protected array $rules = [
@@ -148,7 +148,6 @@ class Sellers extends Component
                 $query->whereHas('person', function ($query) use ($search) {
                     $query->where('first_name', 'ilike', "%$search%");
                 });
-
             })
             ->latest()
             ->paginate();
