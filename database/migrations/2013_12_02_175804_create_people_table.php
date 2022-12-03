@@ -18,7 +18,7 @@ return new class () extends Migration {
             $table->string('first_name');
             $table->string('last_name');
             $table->string('phone_number')->unique();
-            $table->String('home_address');
+            $table->String('home_address')->nullable();
             $table->string('email')->unique();
             $table->timestamps();
         });

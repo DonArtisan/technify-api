@@ -23,14 +23,7 @@ class Seller extends Authenticatable implements HasMedia
 
     public const MEDIA_COLLECTION_PICTURE = 'picture';
 
-    protected $fillable = [
-        'carnet',
-        'email',
-        'first_name',
-        'hired_at',
-        'last_name',
-        'password',
-    ];
+    protected $guarded = [];
 
     protected $casts = [
         'hired_at' => 'date',
