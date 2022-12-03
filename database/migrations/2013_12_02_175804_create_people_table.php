@@ -14,7 +14,7 @@ return new class () extends Migration {
     {
         Schema::create('people', function (Blueprint $table) {
             $table->id();
-            $table->string('dni')->unique();
+            $table->string('dni')->nullable()->unique();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('phone_number')->unique();
