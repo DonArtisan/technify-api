@@ -10,6 +10,14 @@ input PaymentInput {
     saleId: ID @globalId(decode: ID) @rename(attribute: "sale_id")
 }
 
+input DeliveryInput {
+    id: ID @globalId(decode: ID)
+    productSaleId: ID @globalId(decode: ID) @rename(attribute: "sale_id")
+    deliveryDate: Date @rename(attribute: "delivery_date")
+    deliveryPlace: String @rename(attribute: "delivery_place")
+    status: DeliveryStatus @rename(attribute: "deliveries_status_enum")
+}
+
 input ClientSecretInput {
     amount: Float
     products: [PaymentInput!]!

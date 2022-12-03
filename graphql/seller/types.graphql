@@ -19,6 +19,8 @@ type Seller {
 
     carnet: String!
 
+    productSale: ProductSale @hasMany
+
     hiredAt: Date! @rename(attribute: "hired_at")
 
     "When the email was verified."

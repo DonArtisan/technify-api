@@ -14,12 +14,9 @@ return new class () extends Migration {
     {
         Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('person_id')->constrained('people');
             $table->string('RUC')->unique();
             $table->string('branch');
-            $table->string('address');
-            $table->string('phone_number');
-            $table->string('agent_name');
-            $table->string('email');
             $table->timestamps();
         });
     }

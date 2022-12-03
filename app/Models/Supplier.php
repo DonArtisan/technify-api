@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Supplier extends Model
 {
@@ -17,4 +18,9 @@ class Supplier extends Model
         'email',
         'phone_number',
     ];
+
+    public function person(): BelongsTo
+    {
+        return $this->belongsTo(Person::class);
+    }
 }
