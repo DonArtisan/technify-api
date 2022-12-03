@@ -26,9 +26,9 @@ class ClientSecretMutation extends BaseMutation
 
             $productSale = $user->sales()->create(
                 array_merge(
-                Arr::only($args['input'], ['amount']),
-                ['tax' => 15, 'total' => $args['input']['amount'] + ($args['input']['amount'] * .15)]
-            )
+                    Arr::only($args['input'], ['amount']),
+                    ['tax' => 15, 'total' => $args['input']['amount'] + ($args['input']['amount'] * .15)]
+                )
             );
 
             $data = collect($args['input']['products'])->map(function ($d) {

@@ -16,12 +16,11 @@ class DeliveryCreateMutation extends BaseMutation
     {
         try {
             $delivery = Delivery::create(
-                    Arr::only(
-                        $args['input'],
-                        ['productSaleId', 'sellerId', 'deliveryDate', 'deliveryPlace', 'status']
-                    )
+                Arr::only(
+                    $args['input'],
+                    ['productSaleId', 'sellerId', 'deliveryDate', 'deliveryPlace', 'status']
+                )
             );
-
         } catch (Throwable $error) {
             throw new Error($error);
         }

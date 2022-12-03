@@ -4,7 +4,6 @@ namespace App\GraphQL\Mutations;
 
 use App\Http\Stats\UserStats;
 use App\Models\Person;
-use App\Models\User;
 use Error;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
@@ -21,10 +20,10 @@ class UserRegisterMutation extends BaseMutation
     {
         try {
             $person = Person::create(
-                    Arr::only(
-                        $args['input'],
-                        ['first_name', 'last_name', 'email', 'dni', 'phone_number', 'home_address']
-                    )
+                Arr::only(
+                    $args['input'],
+                    ['first_name', 'last_name', 'email', 'dni', 'phone_number', 'home_address']
+                )
             );
 
             $user = $person->user()->create(['password' => Hash::make($args['input']['password'])]);
