@@ -34,7 +34,7 @@ class UserLoginMutation extends BaseMutation
     public function rules(): array
     {
         return [
-            'email' => ['required', Rule::exists(User::class, 'email')],
+            'email' => ['required', Rule::exists(Person::class, 'email')],
             'password' => ['required'],
         ];
     }
