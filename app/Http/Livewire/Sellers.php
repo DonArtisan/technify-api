@@ -104,6 +104,7 @@ class Sellers extends Component
             return;
         }
 
+        $seller->person()->delete();
         $seller->delete();
 
         $this->dispatchBrowserEvent('wire::message', ['message' => 'usuario borrado.']);
