@@ -3,7 +3,6 @@
 namespace App\GraphQL\Mutations;
 
 use App\Models\Person;
-use App\Models\User;
 use Error;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -34,7 +33,7 @@ class UserLoginMutation extends BaseMutation
     public function rules(): array
     {
         return [
-            'email' => ['required', Rule::exists(User::class, 'email')],
+            'email' => ['required', Rule::exists(Person::class, 'email')],
             'password' => ['required'],
         ];
     }
