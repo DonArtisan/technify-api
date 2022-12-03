@@ -56,7 +56,7 @@ class Suppliers extends Component
             'first_name',
             'last_name',
             'phone_number',
-            'home_address'
+            'home_address',
         ]);
 
         $data['branch'] = $this->data['branch'];
