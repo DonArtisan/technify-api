@@ -130,7 +130,7 @@ class Products extends Component
             'color_id',
             'description',
             'name',
-            'sale_price'
+            'sale_price',
         ]);
 
         $this->data['brand_id'] = $product->model->brand_id;
