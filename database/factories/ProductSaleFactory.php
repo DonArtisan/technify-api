@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Http\Stats\SalesStats;
+use App\Models\Person;
 use App\Models\ProductSale;
 use App\Models\ProductSaleDetail;
 use App\Models\User;
@@ -20,10 +21,10 @@ class ProductSaleFactory extends Factory
      */
     public function definition()
     {
-        $buyerable = $this->buyerable();
+        [$buyerable] = $this->buyerable();
 
         return [
-            'buyerable_id' => $buyerable::factory(),
+            'buyerable_id' => User::factory()->for(Person::factory()),
             'buyerable_type' => 'user',
             'amount' => 0,
             'tax' => 0.15,

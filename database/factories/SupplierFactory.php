@@ -18,11 +18,7 @@ class SupplierFactory extends Factory
     {
         return [
             'RUC' => fake()->uuid(),
-            'address' => fake()->address(),
-            'agent_name' => fake()->company(),
             'branch' => fake()->company(),
-            'email' => fake()->email(),
-            'phone_number' => fake()->phoneNumber(),
         ];
     }
 }

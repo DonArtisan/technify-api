@@ -19,9 +19,6 @@ class SellerFactory extends Factory
     public function definition(): array
     {
         return [
-            'first_name' => fake()->name(),
-            'last_name' => fake()->lastName(),
-            'email' => fake()->safeEmail(),
             'password' => bcrypt('password'),
             'carnet' => now()->year.'-'.Str::random(5),
             'hired_at' => now(),
