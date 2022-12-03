@@ -290,7 +290,6 @@
 
                     <div>
                         <div class="grid grid-cols-6 gap-6">
-
                             @if($deliveryTypeAddress == 'custom')
                                 <div class="col-span-6 sm:col-span-3">
                                     <x-inputs.text wire:model.defer="deliveryInfo.address" type="text" name="address" id="address" label="Dirección" />
@@ -432,6 +431,27 @@
                         @endforeach
                         </tbody>
                     </table>
+                </div>
+
+                <div class="space-y-4 pb-4">
+                    <p>
+                        Delivery <span @class(['font-bold', 'text-blue-700' => isset($saleToDisplay->delivery)])>{{isset($saleToDisplay->delivery) ? 'Si' : 'No'}}</span>
+                    </p>
+
+                    @if($delivery = $saleToDisplay->delivery)
+                        <h4>La venta selecciono delivery</h4>
+
+                        <div>
+                            <div class="grid grid-cols-6 gap-6">
+                                <div class="col-span-6 sm:col-span-3">
+                                    <x-inputs.text type="text" name="address" id="address" label="Dirección" :value="$delivery->delivery_place" readonly disabled />
+                                </div>
+                                <div class="col-span-6 sm:col-span-3">
+                                    <x-inputs.text type="date" name="delivery_date" id="delivery_date" label="Fecha" :value="$delivery->delivery_date" readonly disabled/>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         @endif
