@@ -62,7 +62,7 @@ class AuthenticatedSessionController extends Controller
             $query
                 ->whereHas('person', function ($query) use ($email) {
                     $query->where('email', $email);
-                 })
+                })
                 ->whereHas('roles', function ($query) {
                     $query->where('name', 'admin');
                 });
