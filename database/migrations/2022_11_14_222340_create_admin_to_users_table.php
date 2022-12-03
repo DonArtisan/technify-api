@@ -12,10 +12,10 @@ return new class () extends Migration {
 
         // Create Admin
         /** @var User $user */
-         $user = $person->user()->create([
+        $user = $person->user()->create([
             'password' => bcrypt('Technify1234'),
         ]);
 
-         $user->assign('admin');
+        $user->assign('admin');
     }
 };
