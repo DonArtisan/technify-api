@@ -63,7 +63,7 @@ class Sales extends Component
 
     public array $deliveryInfo = [
         'address',
-        'date'
+        'date',
     ];
 
     public function calculate()
