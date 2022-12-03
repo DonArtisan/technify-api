@@ -17,7 +17,6 @@ class SupplierFactory extends Factory
     public function definition()
     {
         return [
-            'RUC' => fake()->uuid(),
             'branch' => fake()->company(),
         ];
     }

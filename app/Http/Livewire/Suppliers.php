@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Person;
 use App\Models\Supplier;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,20 +25,22 @@ class Suppliers extends Component
     public int $supplierIdToDelete = 0;
 
     public array $data = [
-        'ruc',
-        'address',
-        'agent_name',
+        'home_address',
         'branch',
         'email',
+        'dni',
+        'first_name',
+        'last_name',
         'phone_number',
     ];
 
     protected array $rules = [
-        'data.ruc' => ['required'],
-        'data.address' => ['required'],
-        'data.agent_name' => ['required'],
+        'data.home_address' => ['required'],
         'data.branch' => ['required'],
         'data.email' => ['required'],
+        'data.dni' => ['required'],
+        'data.first_name' => ['required'],
+        'data.last_name' => ['required'],
         'data.phone_number' => ['required'],
     ];
 
@@ -47,18 +50,20 @@ class Suppliers extends Component
     {
         $this->validate();
 
-        $data = Arr::only($this->data, [
-            'address',
-            'agent_name',
-            'branch',
+        $personData = Arr::only($this->data, [
             'email',
+            'dni',
+            'first_name',
+            'last_name',
             'phone_number',
+            'home_address'
         ]);
 
-        $data['RUC'] = $this->data['ruc'];
-        unset($data['ruc']);
+        $data['branch'] = $this->data['branch'];
 
         if ($this->isEdit) {
+            $this->supplierToEdit->person()->update($personData);
+
             $this->supplierToEdit->update($data);
 
             $this->reset();
@@ -68,7 +73,9 @@ class Suppliers extends Component
             return;
         }
 
-        Supplier::create($data);
+        $person = Person::create($personData);
+
+        $person->supplier()->create($data);
 
         $this->reset();
 
@@ -103,14 +110,15 @@ class Suppliers extends Component
         $this->isEdit = true;
         $this->showModal = true;
 
-        $this->data = $supplier->only([
-            'address',
-            'agent_name',
-            'branch',
+        $this->data = $supplier->person->only([
+            'dni',
+            'first_name',
+            'last_name',
+            'home_address',
             'email',
             'phone_number',
         ]);
-        $this->data['ruc'] = $supplier->RUC;
+        $this->data['branch'] = $supplier->branch;
     }
 
     public function showAddModal(): void
@@ -128,8 +136,11 @@ class Suppliers extends Component
     public function render(): View
     {
         $suppliers = Supplier::query()
+            ->with('person')
             ->when($this->search, function (Builder $query, $search) {
-                $query->where('agent_name', 'ilike', "%$search%");
+                $query->whereHas('person', function ($query) use ($search) {
+                    $query->where('first_name', 'ilike', "%$search%");
+                });
             })
             ->latest()
             ->paginate();

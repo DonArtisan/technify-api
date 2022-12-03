@@ -55,11 +55,11 @@
                             <tr class="hover:bg-gray-100">
                                 <td class="p-4 flex items-center whitespace-nowrap space-x-6 mr-12 lg:mr-0">
                                     <div class="text-sm font-normal text-gray-500">
-                                        <div class="text-base font-semibold text-gray-900">{{ $supplier->agent_name }}</div>
-                                        <div class="text-sm font-normal text-gray-500">{{ $supplier->email }}</div>
+                                        <div class="text-base font-semibold text-gray-900">{{ $supplier->name }}</div>
+                                        <div class="text-sm font-normal text-gray-500">{{ $supplier->person?->email }}</div>
                                     </div>
                                 </td>
-                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $supplier->RUC }}</td>
+                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $supplier->person?->dni }}</td>
                                 <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $supplier->branch }}</td>
                                 <td class="p-4 whitespace-nowrap space-x-2">
                                     <button wire:click="edit({{ $supplier->id }})" type="button" data-modal-toggle="user-modal" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
@@ -92,14 +92,20 @@
         <form wire:submit.prevent="save">
             <div class="grid grid-cols-6 gap-6">
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.text wire:model.defer="data.ruc" type="text" name="ruc" id="ruc" label="RUC" />
-                    @error('data.ruc')
+                    <x-inputs.text wire:model.defer="data.dni" type="text" name="dni" id="dni" label="RUC" />
+                    @error('data.dni')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.text wire:model.defer="data.agent_name" type="text" id="agent_name" name="agent_name" label="Nombre del agente"/>
-                    @error('data.agent_name')
+                    <x-inputs.text wire:model.defer="data.first_name" type="text" id="first_name" name="last_name" label="Nombre"/>
+                    @error('data.first_name')
+                    <p class="text-red-500">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div class="col-span-6 sm:col-span-3">
+                    <x-inputs.text wire:model.defer="data.last_name" type="text" id="last_name" name="last_name" label="Apellido"/>
+                    @error('data.last_name')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
@@ -116,8 +122,8 @@
                     @enderror
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.text wire:model.defer="data.address" type="text" name="address" id="address" label="Dirección"/>
-                    @error('data.address')
+                    <x-inputs.text wire:model.defer="data.home_address" type="text" name="home_address" id="home_address" label="Dirección"/>
+                    @error('data.home_address')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>

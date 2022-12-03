@@ -7,6 +7,8 @@ use App\Models\Seller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -52,18 +54,19 @@ class Sellers extends Component
     {
         if ($this->isEdit) {
             $this->validate([
-                'data.first_name' => ['required'],
-                'data.hired_at' => ['required', 'before_or_equal:today'],
-                'data.last_name' => ['required'],
+                ...$this->rules,
+                'data.password' => ['sometimes'],
+                'data.email' => ['required']
             ]);
 
-            $data = Arr::only($this->data, ['first_name', 'last_name', 'email']);
+            $personData = Arr::only($this->data, ['first_name', 'last_name', 'email', 'dni', 'phone_number', 'home_address']);
 
-            if ($this->data['password']) {
+            if (isset($this->data['password'])) {
                 $data['password'] = bcrypt($this->data['password']);
+                $this->sellerToEdit->update($data);
             }
 
-            $this->sellerToEdit->update($data);
+            $this->sellerToEdit->person()->update($personData);
 
             $this->reset();
 
@@ -120,12 +123,16 @@ class Sellers extends Component
         $this->isEdit = true;
         $this->showModal = true;
 
-        $this->data = $seller->only([
-            'email',
+        $this->data = $seller->person->only([
+            'dni',
             'first_name',
-            'hired_at',
             'last_name',
+            'home_address',
+            'email',
+            'phone_number',
         ]);
+
+        $this->data['hired_at'] = $seller->hired_at->toDateString();
     }
 
     public function showUserModal(): void
