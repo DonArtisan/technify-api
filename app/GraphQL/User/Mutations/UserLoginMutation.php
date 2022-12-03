@@ -23,8 +23,18 @@ class UserLoginMutation extends BaseMutation
             throw new Error($error);
         }
 
+        if (! $user || !Hash::check($args['input']['password'], $user->password)) {
+            return [
+                'userAuth' => null,
+                'userErrors' => [
+                    ['field' => ['email'], 'message' => 'Las credenciales no concuerdan con nuestros registros.']
+                ],
+                'userToken' => null
+            ];
+        }
+
         return [
-            'userAuth' => ! $user ?: Hash::check($args['input']['password'], $user->password),
+            'userAuth' => $user,
             'userErrors' => [],
             'userToken' => $user->createToken('auth_token')->plainTextToken,
         ];
