@@ -92,7 +92,7 @@ class Suppliers extends Component
         }
 
         $supplier->person()->delete();
-        
+
         $supplier->delete();
 
         $this->dispatchBrowserEvent('wire::message', ['message' => 'supplier deleted.']);
