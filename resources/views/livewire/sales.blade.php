@@ -300,7 +300,7 @@
                                 </div>
                             @endif
                             <div class="col-span-6 sm:col-span-3">
-                                <x-inputs.text wire:model.defer="deliveryInfo.date" type="date" name="delivery_date" id="delivery_date" label="Fecha" />
+                                <x-inputs.text wire:model.defer="deliveryInfo.date" type="date" name="delivery_date" id="delivery_date" label="Fecha"/>
                                 @error('deliveryInfo.date')
                                 <p class="text-red-500">{{ $message }}</p>
                                 @enderror
