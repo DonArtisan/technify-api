@@ -7,8 +7,6 @@ use App\Models\Seller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -56,7 +54,7 @@ class Sellers extends Component
             $this->validate([
                 ...$this->rules,
                 'data.password' => ['sometimes'],
-                'data.email' => ['required']
+                'data.email' => ['required'],
             ]);
 
             $personData = Arr::only($this->data, ['first_name', 'last_name', 'email', 'dni', 'phone_number', 'home_address']);

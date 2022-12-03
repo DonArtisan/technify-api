@@ -56,7 +56,7 @@ class Suppliers extends Component
             'first_name',
             'last_name',
             'phone_number',
-            'home_address'
+            'home_address',
         ]);
 
         $data['branch'] = $this->data['branch'];
@@ -92,7 +92,7 @@ class Suppliers extends Component
         }
 
         $supplier->person()->delete();
-        
+
         $supplier->delete();
 
         $this->dispatchBrowserEvent('wire::message', ['message' => 'supplier deleted.']);
