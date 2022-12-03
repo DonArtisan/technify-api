@@ -257,6 +257,7 @@ class Sales extends Component
                     'saleDetails.product.model.brand',
                     'saleDetails.product.stock',
                     'saleDetails.product.price',
+                    'delivery'
                 )
                 ->find($this->saleIdToDisplay);
 
