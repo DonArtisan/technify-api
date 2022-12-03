@@ -10,14 +10,7 @@ class Supplier extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'RUC',
-        'address',
-        'agent_name',
-        'branch',
-        'email',
-        'phone_number',
-    ];
+    protected $guarded = [];
 
     public function person(): BelongsTo
     {
