@@ -1,14 +1,16 @@
 input PaymentInput {
-    id: ID @globalId(decode: ID)
+    id: ID @globalId(decode: ID) @rename(attribute: "product_id")
     amount: Float
     tax: Float
     total: Float
-    productId: ID  @globalId(decode: ID) @rename(attribute: "product_id")
-    quantity: Int
-    price: Float
+    qty: Int @rename(attribute: "quantity")
+    currentPrice: Float @rename(attribute: "price")
+    name: String
+    description: String
     saleId: ID @globalId(decode: ID) @rename(attribute: "sale_id")
 }
 
 input ClientSecretInput {
     amount: Float
+    products: [PaymentInput!]!
 }
