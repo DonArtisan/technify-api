@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Person;
 use App\Models\Seller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,12 +30,18 @@ class Sellers extends Component
         'hired_at',
         'last_name',
         'password',
+        'home_address',
+        'dni',
+        'phone_number'
     ];
 
     protected array $rules = [
         'data.first_name' => ['required'],
-        'data.email' => ['required', 'email', 'unique:users,email', 'unique:sellers,email'],
+        'data.email' => ['required', 'email', 'unique:people,email'],
         'data.hired_at' => ['required', 'before_or_equal:today'],
+        'data.dni' => ['required'],
+        'data.home_address' => ['required'],
+        'data.phone_number' => ['required'],
         'data.last_name' => ['required'],
         'data.password' => ['required'],
     ];
@@ -67,11 +74,13 @@ class Sellers extends Component
 
         $this->validate();
 
-        $data = Arr::only($this->data, ['first_name', 'last_name', 'hired_at', 'email']);
+        $data = Arr::only($this->data, ['first_name', 'last_name', 'email', 'dni', 'phone_number', 'home_address']);
+
+        $person = Person::create($data);
 
         /** @var Seller $seller */
-        $seller = Seller::create([
-            ...$data,
+        $seller = $person->seller()->create([
+            'hired_at' => $this->data['hired_at'],
             'carnet' => getRandomCarnet(),
             'password' => bcrypt($this->data['password']),
         ]);
@@ -134,8 +143,12 @@ class Sellers extends Component
     public function render(): View
     {
         $users = Seller::query()
+            ->with('person')
             ->when($this->search, function (Builder $query, $search) {
-                $query->where('first_name', 'ilike', "%$search%");
+                $query->whereHas('person', function ($query) use ($search) {
+                    $query->where('first_name', 'ilike', "%$search%");
+                });
+
             })
             ->latest()
             ->paginate();

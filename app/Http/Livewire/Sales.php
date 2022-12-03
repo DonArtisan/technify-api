@@ -56,6 +56,9 @@ class Sales extends Component
 
     public float $total = 0;
 
+    public bool $isDelivery = false;
+    public string $deliveryTypeAddress = '';
+
     public function calculate()
     {
         $modelsSelected = Model::query()
@@ -76,13 +79,14 @@ class Sales extends Component
     public function save(): void
     {
         /** @var Seller|User $seller */
-        $user = Auth::user();
+        $sellerId = Auth::id();
 
         try {
             DB::beginTransaction();
 
             /** @var Sale $sale */
             $sale = $this->customerSelected->sales()->create([
+                'seller_id' => $sellerId,
                 'amount' => collect($this->quantities)->sum(),
                 'tax' => 15,
                 'total' => $this->total,
@@ -173,7 +177,7 @@ class Sales extends Component
     public function render(): View
     {
         $sales = Sale::query()
-            ->with('buyerable')
+            ->with('buyerable.person', 'seller.person')
             ->when($this->salesType, function ($query, $salesType) {
                 $query->where('buyerable_type', $salesType);
             })
@@ -222,7 +226,7 @@ class Sales extends Component
         if ($this->saleIdToDisplay) {
             $saleToDisplay = Sale::query()
                 ->with(
-                    'buyerable',
+                    'buyerable.person',
                     'saleDetails.product.model.brand',
                     'saleDetails.product.stock',
                     'saleDetails.product.price',

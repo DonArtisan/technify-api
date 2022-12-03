@@ -18,8 +18,8 @@ class Customer extends Model
 
     public function name(): Attribute
     {
-        return Attribute::make(
-            get: fn ($_, $attributes) => $attributes['first_name'].' '.$attributes['last_name']
+        return Attribute::get(
+            fn () => trim(sprintf('%s %s', $this->person->first_name, $this->person->last_name))
         );
     }
 

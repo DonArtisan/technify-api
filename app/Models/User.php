@@ -78,7 +78,7 @@ class User extends Authenticatable implements HasMedia
     public function name(): Attribute
     {
         return Attribute::get(
-            fn () => trim("$this->first_name $this->last_name")
+            fn () => trim(sprintf('%s %s', $this->person->first_name, $this->person->last_name))
         );
     }
 

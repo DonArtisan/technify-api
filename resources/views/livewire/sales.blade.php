@@ -45,6 +45,9 @@
                                 Cliente
                             </th>
                             <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                Seller
+                            </th>
+                            <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                                 Amount
                             </th>
                             <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
@@ -63,6 +66,9 @@
                                 </td>
                                 <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">
                                     {{ $sale->buyerable->name }}
+                                </td>
+                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">
+                                    {{ $sale->seller?->name }}
                                 </td>
                                 <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $sale->amount }}</td>
                                 <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $sale->total }}</td>
@@ -243,6 +249,64 @@
                         </span>
                     </li>
                 </ul>
+            </div>
+
+            <div class="space-y-4">
+                <label>
+                    <input wire:model="isDelivery"
+                        id="delivery"
+                       type="checkbox"
+                       class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                           name="delivery">
+                    Delivery?
+                </label>
+
+                @if($isDelivery)
+                    <div>
+                        <label class="mr-4">
+                            <input wire:model="deliveryTypeAddress"
+                                   id="delivery_type_address"
+                                   type="radio"
+                                   value="client"
+                                   class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                   name="delivery_type_address"
+                                    @checked(old('delivery_type_address') == 'client')
+                            >
+                            Misma dirección del cliente
+                        </label>
+
+                        <label>
+                            <input wire:model="deliveryTypeAddress"
+                                   id="delivery_type_address"
+                                   type="radio"
+                                   value="custom"
+                                   class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                   name="delivery_type_address"
+                                   @checked(old('delivery_type_address') == 'custom')
+                            >
+                            Dirección personalizada
+                        </label>
+                    </div>
+                @endif
+
+                @if($deliveryTypeAddress == 'custom')
+                    <div>
+                        <div class="grid grid-cols-6 gap-6">
+                            <div class="col-span-6 sm:col-span-3">
+                                <x-inputs.text wire:model.defer="deliveryInfo.address" type="text" name="address" id="address" label="Dirección" />
+                                @error('deliveryInfo.address')
+                                <p class="text-red-500">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="col-span-6 sm:col-span-3">
+                                <x-inputs.text wire:model.defer="deliveryInfo.date" type="date" name="delivery_date" id="delivery_date" label="Fecha" />
+                                @error('deliveryInfo.date')
+                                <p class="text-red-500">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
 
             <div class="items-center pt-2 mt-4 border-t border-gray-200 rounded-b">
