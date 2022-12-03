@@ -24,10 +24,11 @@ class ClientSecretMutation extends BaseMutation
 
             $intent = $user->payWith($args['input']['amount'], ['card']);
 
-            $productSale = $user->sales()->create(array_merge(
-                    Arr::only($args['input'],['amount']),
-                    ['tax' => 15, 'total'=> $args['input']['amount'] + ($args['input']['amount'] * .15)]
-                )
+            $productSale = $user->sales()->create(
+                array_merge(
+                Arr::only($args['input'], ['amount']),
+                ['tax' => 15, 'total' => $args['input']['amount'] + ($args['input']['amount'] * .15)]
+            )
             );
 
             $data = collect($args['input']['products'])->map(function ($d) {
@@ -37,9 +38,7 @@ class ClientSecretMutation extends BaseMutation
             $productSale->saleDetails()->createMany($data);
             SalesStats::increase(1);
 
-
             DB::commit();
-
         } catch (Throwable $error) {
             DB::rollBack();
 
