@@ -57,6 +57,7 @@ class Sales extends Component
     public float $total = 0;
 
     public bool $isDelivery = false;
+
     public string $deliveryTypeAddress = '';
 
     public function calculate()
