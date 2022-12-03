@@ -28,8 +28,8 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([ProductSeeder::class]);
-        Seller::factory()->for(Person::factory())->count(10)->create();
-        Supplier::factory()->for(Person::factory())->count(20)->create();
+        Seller::factory()->count(10)->create();
+        Supplier::factory()->count(20)->create();
         ProductSale::factory()->count(5)->create();
         Customer::factory()->for(Person::factory())->count(10)->create();
     }

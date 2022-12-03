@@ -14,10 +14,12 @@ return new class () extends Migration {
     {
         Schema::create('order_details', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('order_id')->constrained('orders');
             $table->foreignId('product_id')->constrained('products');
             $table->decimal('price');
             $table->unsignedInteger('quantity');
-            $table->foreignId('order_id')->constrained('orders');
+            $table->integer('gain');
+            $table->integer('unit_price_with_gain');
             $table->timestamps();
         });
     }

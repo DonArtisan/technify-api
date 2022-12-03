@@ -11,10 +11,12 @@ class OrderDetail extends Model
     use HasFactory;
 
     protected $fillable = [
+        'gain',
         'order_id',
         'price',
         'product_id',
         'quantity',
+        'unit_price_with_gain'
     ];
 
     public function product(): BelongsTo

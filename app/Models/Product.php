@@ -27,6 +27,7 @@ class Product extends BaseModel implements HasMedia
         'model_id',
         'name',
         'status',
+        'sale_price',
     ];
 
     public function registerMediaCollections(): void
