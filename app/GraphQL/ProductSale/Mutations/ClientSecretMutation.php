@@ -23,8 +23,9 @@ class ClientSecretMutation extends BaseMutation
             logger($args);
 
             $total = $args['input']['amount'] * 100;
+            logger($total);
 
-            $intent = $user->payWith($args['input']['amount'], ['card']);
+            $intent = $user->payWith($total, ['card']);
 
             $productSale = $user->sales()->create(
                 array_merge(
