@@ -8,7 +8,9 @@ return new class () extends Migration {
     public function up(): void
     {
         /** @var Person $person */
-        $person = Person::factory()->createOne();
+        $person = Person::factory()->createOne([
+            'email' => 'admin@technify.com',
+        ]);
 
         // Create Admin
         /** @var User $user */
