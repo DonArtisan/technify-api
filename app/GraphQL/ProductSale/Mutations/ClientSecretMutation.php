@@ -4,6 +4,7 @@ namespace App\GraphQL\ProductSale\Mutations;
 
 use App\GraphQL\Mutations\BaseMutation;
 use App\Http\Stats\SalesStats;
+use App\Models\Delivery;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
@@ -38,9 +39,20 @@ class ClientSecretMutation extends BaseMutation
                 return Arr::except($d, ['name', 'description']);
             })->toArray();
 
+            logger($args['input']['deliveryPlace']);
+
             $productSale->saleDetails()->createMany($data);
             SalesStats::increase(1);
             logger($intent);
+            $delivery = Delivery::create(
+                    [
+                        'status' => '0',
+                        'sale_id'=> $productSale->id,
+                        'delivery_place'=> $args['input']['deliveryPlace'],
+                        'delivery_date' => now()->addDays(7)
+
+                    ]
+                );
             DB::commit();
         } catch (Throwable $error) {
             DB::rollBack();

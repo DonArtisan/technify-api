@@ -21,4 +21,5 @@ input DeliveryInput {
 input ClientSecretInput {
     amount: Float
     products: [PaymentInput!]!
+    deliveryPlace: String
 }
