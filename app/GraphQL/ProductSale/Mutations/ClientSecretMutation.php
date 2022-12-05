@@ -45,14 +45,14 @@ class ClientSecretMutation extends BaseMutation
             SalesStats::increase(1);
             logger($intent);
             $delivery = Delivery::create(
-                    [
-                        'status' => '0',
-                        'sale_id'=> $productSale->id,
-                        'delivery_place'=> $args['input']['deliveryPlace'],
-                        'delivery_date' => now()->addDays(7)
+                [
+                    'status' => '0',
+                    'sale_id' => $productSale->id,
+                    'delivery_place' => $args['input']['deliveryPlace'],
+                    'delivery_date' => now()->addDays(7),
 
-                    ]
-                );
+                ]
+            );
             DB::commit();
         } catch (Throwable $error) {
             DB::rollBack();
