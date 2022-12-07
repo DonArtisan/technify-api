@@ -3,7 +3,7 @@ input PaymentInput {
     amount: Float
     tax: Float
     total: Float
-    qty: Int @rename(attribute: "quantity")
+    quantity: Int @rename(attribute: "quantity")
     currentPrice: Float @rename(attribute: "price")
     name: String
     description: String
