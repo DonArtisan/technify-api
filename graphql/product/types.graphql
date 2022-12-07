@@ -68,6 +68,7 @@ type Product @model(class: "App\\Models\\Product") {
     discount: Discount @hasOne
     model: Model! @belongsTo
     status: ProductStatus
+    currentStock: Int @field(resolver: "App\\GraphQL\\Product\\CurrentStockResolver")
     image: Image
     @with(relation: "media")
     @field(resolver: "App\\GraphQL\\Product\\Types\\ProductImage")

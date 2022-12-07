@@ -7,6 +7,6 @@ extend type Query {
         query: String @builder(method: "App\\GraphQL\\Product\\Builders\\ProductQueryBuilder")
         status: ProductStatus @eq
         categoryId: ID @globalId(decode: ID) @eq(key: "category_id")
-    ): [Product!]! @paginate(type: CONNECTION) @orderBy(column: "created_at", direction: DESC)
+    ): [Product!]! @paginate(type: CONNECTION) @orderBy(column: "created_at", direction: DESC) @with(relation: "stock")
 
 }
