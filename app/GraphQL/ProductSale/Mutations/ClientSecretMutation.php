@@ -5,7 +5,6 @@ namespace App\GraphQL\ProductSale\Mutations;
 use App\GraphQL\Mutations\BaseMutation;
 use App\Http\Stats\SalesStats;
 use App\Models\Delivery;
-use App\Models\ProductSale;
 use App\Models\ProductSaleDetail;
 use App\Models\Stock;
 use Illuminate\Database\Eloquent\Collection;
@@ -43,7 +42,6 @@ class ClientSecretMutation extends BaseMutation
                 return Arr::except($values, ['name', 'description']);
             })->toArray();
 
-
             logger($args['input']['deliveryPlace']);
 
             /** @var Collection<ProductSaleDetail> $productDetails */
@@ -54,14 +52,14 @@ class ClientSecretMutation extends BaseMutation
             SalesStats::increase(1);
             logger($intent);
             $delivery = Delivery::create(
-                    [
-                        'status' => '0',
-                        'sale_id'=> $productSale->id,
-                        'delivery_place'=> $args['input']['deliveryPlace'],
-                        'delivery_date' => now()->addDays(7)
+                [
+                    'status' => '0',
+                    'sale_id' => $productSale->id,
+                    'delivery_place' => $args['input']['deliveryPlace'],
+                    'delivery_date' => now()->addDays(7),
 
-                    ]
-                );
+                ]
+            );
 
             Stock::query()
                 ->whereIn('product_id', $productDetails->pluck('product_id'))
