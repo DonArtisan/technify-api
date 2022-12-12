@@ -39,7 +39,7 @@ class ClientSecretMutation extends BaseMutation
             );
 
             $data = collect($args['input']['products'])->map(function ($values) {
-                return Arr::except($values, ['name', 'description']);
+                return Arr::except($values, ['name', 'description', 'image']);
             })->toArray();
 
             logger($args['input']['deliveryPlace']);

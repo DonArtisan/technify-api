@@ -3,11 +3,16 @@ input PaymentInput {
     amount: Float
     tax: Float
     total: Float
-    quantity: Int @rename(attribute: "quantity")
+    quantity: Int
     currentPrice: Float @rename(attribute: "price")
     name: String
+    image: imageType
     description: String
     saleId: ID @globalId(decode: ID) @rename(attribute: "sale_id")
+}
+
+input imageType {
+    originalSrc: String
 }
 
 input DeliveryInput {
