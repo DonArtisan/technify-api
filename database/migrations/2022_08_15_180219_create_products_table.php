@@ -22,7 +22,6 @@ return new class () extends Migration {
             $table->string('name');
             $table->string('description');
             $table->string('handle');
-            $table->decimal('sale_price');
             $table->timestamps();
         });
 

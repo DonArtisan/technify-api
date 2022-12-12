@@ -28,15 +28,14 @@ class ProductFactory extends Factory
             'category_id' => Category::factory(),
             'color_id' => Color::factory(),
             'model_id' => Model::factory(),
-            'status' => ProductStatus::getRandomValue(),
-            'sale_price' => fake()->numerify(),
+            'status' => ProductStatus::ACTIVE,
         ];
     }
 
     public function configure(): self
     {
         return $this->afterCreating(function (Product $product) {
-            $product->stock()->create(['quantity' => fake()->randomNumber()]);
+            $product->stock()->create(['quantity' => fake()->randomNumber(2)]);
 
             Price::factory()->create([
                 'product_id' => $product->id,

@@ -150,12 +150,6 @@
                     @enderror
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.text wire:model.defer="data.sale_price" type="number" name="sale_price" id="sale_price" label="Precio de compra" />
-                    @error('data.sale_price')
-                    <p class="text-red-500">{{ $message }}</p>
-                    @enderror
-                </div>
-                <div class="col-span-6 sm:col-span-3">
                     <div class="flex flex-wrap justify-between">
                         <div class="flex-1">
                             <x-inputs.select wire:model.defer="data.brand_id" id="brand_id" label="Brand">

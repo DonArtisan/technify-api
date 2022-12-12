@@ -42,10 +42,8 @@ class ProductSaleFactory extends Factory
 //        ]);
 //    }
 
-    public function configure()
+    public function configure(): self
     {
-        logger('what');
-
         return $this->afterCreating(function (ProductSale $sale) {
             $r = rand(1, 3);
             for ($i = 0; $i < $r; $i++) {

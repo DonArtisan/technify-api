@@ -79,8 +79,8 @@ class Orders extends Component
             $order = Order::query()
                 ->find($this->orderIdToApprove);
 
-            if ($order->orderDetails()->count() !== count(array_filter($this->gains))) {
-                $this->dispatchBrowserEvent('wire::error', ['message' => 'Debe llenar todos los márgenes de ganancia.']);
+            if ($order->orderDetails()->count() !== count(array_filter($this->prices))) {
+                $this->dispatchBrowserEvent('wire::error', ['message' => 'Debe llenar todos los precios.']);
 
                 return;
             }
@@ -89,7 +89,9 @@ class Orders extends Component
 
             $orderDetails = $order->orderDetails()->with('product.stock')->get();
 
-            $orderDetails->each(function (OrderDetail $orderDetail) {
+            $total = 0;
+
+            $orderDetails->each(function (OrderDetail $orderDetail) use (&$total) {
                 /** @var Product $product */
                 $product = $orderDetail->product;
 
@@ -99,9 +101,16 @@ class Orders extends Component
                     $product->stock()->update(['quantity' => $product->stock->quantity + $orderDetail->quantity]);
                 }
 
-                $orderDetail->update(['gain' => $this->gains[$product->id], 'unit_price_with_gain' => (int) ($orderDetail->price + ($orderDetail->price * ($this->gains[$product->id] / 100)))]);
-                $product->prices()->create(['price' => $orderDetail->price + ($orderDetail->price * ($this->gains[$product->id] / 100))]);
+                $price = $this->prices[$product->id];
+
+                $orderDetail->update(['price' => $price, 'gain' => 10, 'unit_price_with_gain' => (int) ($price + ($price * 0.10))]);
+
+                $product->prices()->create(['price' => (int) ($price + ($price * 0.10))]);
+
+                $total += ($price * $orderDetail->quantity);
             });
+
+            $order->update(['total' => $total]);
 
             $this->dispatchBrowserEvent('wire::message', ['message' => 'Solicitud aprobada correctamente.']);
 
@@ -137,28 +146,22 @@ class Orders extends Component
             ]);
 
             $products = Model::query()
-                ->with('product:id,model_id,name,sale_price')
+                ->with('product:id,model_id,name')
                 ->whereIn('id', $this->modelsIdSelected)
                 ->get()
                 ->pluck('product');
 
-            $total = 0;
-
-            $data = $products->map(function (Product $product) use (&$total) {
-                $total += ($product->sale_price * $this->quantities[$product->id]);
-
+            $data = $products->map(function (Product $product) {
                 return [
                     'product_id' => $product->id,
                     'quantity' => $this->quantities[$product->id],
-                    'price' => $product->sale_price,
-                    'gain' => 0,
+                    'price' => 0,
+                    'gain' => 10,
                     'unit_price_with_gain' => 0,
                 ];
             });
 
             $order->orderDetails()->createMany($data);
-
-            $order->update(['total' => $total]);
 
             DB::commit();
         } catch (\Throwable $exception) {
@@ -249,7 +252,7 @@ class Orders extends Component
 
         if ($this->productSearch) {
             $models = Model::query()
-                ->with('product:id,model_id,name,sale_price', 'brand:id,name')
+                ->with('product:id,model_id,name', 'brand:id,name')
                 ->whereNotIn('id', $this->modelsIdSelected)
                 ->where(function (Builder $query) {
                     $query->where('model_name', 'ilike', "%$this->productSearch%")
@@ -269,7 +272,7 @@ class Orders extends Component
                 ->get();
 
             $modelsSelected = Model::query()
-                ->with('product:id,model_id,name,sale_price', 'brand:id,name')
+                ->with('product:id,model_id,name', 'brand:id,name')
                 ->whereIn('id', $this->modelsIdSelected)
                 ->get();
         }

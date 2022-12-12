@@ -40,7 +40,6 @@ class Products extends Component
         'description',
         'model_name',
         'name',
-        'sale_price',
     ];
 
     protected array $rules = [
@@ -50,7 +49,6 @@ class Products extends Component
         'data.description' => ['required', 'string', 'min:6'],
         'data.model_name' => ['required'],
         'data.name' => ['required', 'string', 'min:2'],
-        'data.sale_price' => ['required', 'numeric'],
     ];
 
     public ?Product $productToEdit = null;
@@ -60,7 +58,7 @@ class Products extends Component
     public function save(): void
     {
         if ($this->isEdit) {
-            $this->productToEdit->update(Arr::only($this->data, ['name', 'description', 'color_id', 'category_id', 'sale_price']));
+            $this->productToEdit->update(Arr::only($this->data, ['name', 'description', 'color_id', 'category_id']));
 
             $this->productToEdit->model()->update(Arr::only($this->data, ['model_name', 'brand_id']));
 
@@ -77,7 +75,7 @@ class Products extends Component
 
         $this->validate();
 
-        $data = Arr::only($this->data, ['name', 'description', 'color_id', 'category_id', 'sale_price']);
+        $data = Arr::only($this->data, ['name', 'description', 'color_id', 'category_id']);
         $data['status'] = ProductStatus::ACTIVE;
 
         /** @var Model $model */
@@ -130,7 +128,6 @@ class Products extends Component
             'color_id',
             'description',
             'name',
-            'sale_price',
         ]);
 
         $this->data['brand_id'] = $product->model->brand_id;
