@@ -26,7 +26,7 @@ type Price @model(class: "App\\Models\\Price") {
 type Category @model(class: "App\\Models\\Category") {
     id: ID! @globalId
     name: String!
-    products: [Product!]! @hasMany(type: CONNECTION)
+    products: [Product!]! @hasMany(type: CONNECTION, scopes: ["hasStock"])
     created_at: DateTime! @rename(attribute: "created_at")
     updated_at: DateTime! @rename(attribute: "updated_at")
 }
