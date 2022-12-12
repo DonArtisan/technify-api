@@ -17,7 +17,7 @@ class ProductSeeder extends Seeder
     {
         $categories = Category::pluck('id');
         $categories->each(function ($category) {
-            Product::factory()->count(10)->create([
+            Product::factory()->createOne([
                 'category_id' => $category,
             ]);
         });
