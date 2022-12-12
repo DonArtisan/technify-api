@@ -35,11 +35,23 @@ class ProductFactory extends Factory
     public function configure(): self
     {
         return $this->afterCreating(function (Product $product) {
-            $product->stock()->create(['quantity' => fake()->randomNumber(2)]);
+            $product->stock()->create(['quantity' => fake()->randomNumber()]);
+            $url = 'https://source.unsplash.com/random/400x400';
+            $product->addMediaFromUrl($url)->toMediaCollection(Product::MEDIA_COLLECTION_IMAGE);
 
             Price::factory()->create([
                 'product_id' => $product->id,
             ]);
         });
     }
+
+//    public function configure()
+//    {
+//        return $this->afterCreating(function (Post $post) {
+//            $url = 'https://source.unsplash.com/random/1200x800';
+//            $post
+//                ->addMediaFromUrl($url)
+//                ->toMediaCollection(Post::MEDIA_COLLECTION_BANNER);
+//        });
+//    }
 }

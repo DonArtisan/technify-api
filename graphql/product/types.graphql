@@ -26,7 +26,7 @@ type Price @model(class: "App\\Models\\Price") {
 type Category @model(class: "App\\Models\\Category") {
     id: ID! @globalId
     name: String!
-    products: [Product!]! @hasMany(type: CONNECTION)
+    products: [Product!]! @hasMany(type: CONNECTION, scopes: ["hasStock"])
     created_at: DateTime! @rename(attribute: "created_at")
     updated_at: DateTime! @rename(attribute: "updated_at")
 }
@@ -68,6 +68,7 @@ type Product @model(class: "App\\Models\\Product") {
     discount: Discount @hasOne
     model: Model! @belongsTo
     status: ProductStatus
+    currentStock: Int @field(resolver: "App\\GraphQL\\Product\\CurrentStockResolver")
     image: Image
     @with(relation: "media")
     @field(resolver: "App\\GraphQL\\Product\\Types\\ProductImage")
