@@ -22,7 +22,7 @@ class ImageType
 
     public function originalSrc(Media $media): string
     {
-        return $media->getTemporaryUrl(now()->addHour());
+        return $media->getUrl();
     }
 
     public function transformedSrc(Media $media, array $args): string
