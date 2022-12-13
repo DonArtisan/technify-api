@@ -328,7 +328,7 @@
                             </th>
                             @if($orderToDisplay->order_status == \App\Enums\OrderStatus::COMPLETED())
                                 <th scope="col" class="p-4 text-left text-xs font-medium text-white uppercase">
-                                    Precio Unitario con Canancia
+                                    Precio Unitario con Ganancia
                                 </th>
                             @endif
                         </tr>
