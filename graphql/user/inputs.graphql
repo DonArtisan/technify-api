@@ -1,8 +1,10 @@
 input UserInput {
     id: ID @globalId(decode: ID)
+    dni: String
     firstName: String @rename(attribute: "first_name")
     lastName: String @rename(attribute: "last_name")
-    isBlocked: Boolean @rename(attribute: "is_blocked")
+    phoneNumber: String @rename(attribute: "phone_number")
+    homeAddress: String @rename(attribute: "home_address")
     email: String
     password: String
 }

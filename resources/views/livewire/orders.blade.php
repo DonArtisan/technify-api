@@ -48,7 +48,7 @@
                                 Fecha
                             </th>
                             <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                Order
+                                Proveedor
                             </th>
                             <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                                 Vendedor
@@ -69,8 +69,9 @@
                                         <div class="text-base font-semibold text-gray-900">{{ $order->required_date->toDateString() }}</div>
                                     </div>
                                 </td>
-                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $order->supplier->agent_name }}</td>
+                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $order->supplier->name }}</td>
                                 <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $order->orderable->name }}</td>
+                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $order->total }}</td>
                                 <td class="p-4 whitespace-nowrap space-x-2">
                                     <button wire:click="$set('orderIdToDisplay', {{ $order->id }})" type="button" data-modal-toggle="user-modal" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
                                         <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -119,7 +120,7 @@
             <div class="flex mt-2">
                 <div class="flex-1">
                     <x-inputs.text readonly type="text" name="ruc" id="ruc" label="Proveedor"
-                                   value="{{ $supplierSelected ? $supplierSelected->agent_name.' - '.$supplierSelected->branch : null }}" />
+                                   value="{{ $supplierSelected ? $supplierSelected->name.' - '.$supplierSelected->branch : null }}" />
                 </div>
                 <button wire:click="$set('showModalSupplier', true)" type="button" class="btn-primary px-3 py-3.5 mt-auto"><i class="fas fa-mouse-pointer"></i></button>
                 @error('supplier')
@@ -274,10 +275,10 @@
                             </td>
                             <td class="p-4 flex items-center whitespace-nowrap space-x-6 mr-12 lg:mr-0">
                                 <div class="text-sm font-normal text-gray-500">
-                                    <div class="text-base font-semibold text-gray-900">{{ $supplier->agent_name }}</div>
+                                    <div class="text-base font-semibold text-gray-900">{{ $supplier->name }}</div>
                                 </div>
                             </td>
-                            <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $supplier->RUC }}</td>
+                            <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $supplier->person?->dni }}</td>
                             <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $supplier->branch }}</td>
                         </tr>
                     @empty
@@ -302,7 +303,7 @@
                 </div>
                 <div>
                     <x-inputs.text readonly type="text" name="order_supplier" id="order_supplier" label="Proveedor"
-                                   :value="$orderToDisplay->supplier->agent_name.' - '.$orderToDisplay->supplier->branch" />
+                                   :value="$orderToDisplay->supplier->name.' - '.$orderToDisplay->supplier->branch" />
                 </div>
 
                 <h4 class="my-2">Productos Seleccionados</h4>
@@ -325,6 +326,11 @@
                             <th scope="col" class="p-4 text-left text-xs font-medium text-white uppercase">
                                 Price
                             </th>
+                            @if($orderToDisplay->order_status == \App\Enums\OrderStatus::COMPLETED())
+                                <th scope="col" class="p-4 text-left text-xs font-medium text-white uppercase">
+                                    Precio Unitario con Ganancia
+                                </th>
+                            @endif
                         </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -340,11 +346,14 @@
                                 </td>
                                 <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">
                                     @if($orderToDisplay->order_status == \App\Enums\OrderStatus::COMPLETED())
-                                        <x-inputs.text readonly placeholder="Ingresa el precio" type="number" :value="$orderDetail->price" :id="'price_'.$orderDetail->product->id" :name="'price_'.$orderDetail->product->id" min="1" />
+                                        <x-inputs.text readonly :value="$orderDetail->price" placeholder="Ingresa el precio" type="number" :id="'price_'.$orderDetail->product->id" :name="'price_'.$orderDetail->product->id" min="1" />
                                     @else
                                         <x-inputs.text placeholder="Ingresa el precio" wire:model.defer="prices.{{ $orderDetail->product->id }}" type="number" :id="'price_'.$orderDetail->product->id" :name="'price_'.$orderDetail->product->id" min="1" />
                                     @endif
                                 </td>
+                                @if($orderToDisplay->order_status == \App\Enums\OrderStatus::COMPLETED())
+                                    <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $orderDetail->unit_price_with_gain  }}</td>
+                                @endif
                             </tr>
                         @endforeach
                         </tbody>

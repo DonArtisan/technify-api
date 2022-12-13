@@ -2,7 +2,7 @@
 
 namespace App\GraphQL\Mutations;
 
-use App\Models\User;
+use App\Models\Person;
 use Error;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -17,13 +17,24 @@ class UserLoginMutation extends BaseMutation
     public function handle(mixed $root, array $args): array
     {
         try {
-            $user = User::whereEmail($args['input']['email'])->first();
+            $person = Person::whereEmail($args['input']['email'])->first();
+            $user = $person?->user;
         } catch (Throwable $error) {
             throw new Error($error);
         }
 
+        if (! $user || ! Hash::check($args['input']['password'], $user->password)) {
+            return [
+                'userAuth' => null,
+                'userErrors' => [
+                    ['field' => ['email'], 'message' => 'Las credenciales no concuerdan con nuestros registros.'],
+                ],
+                'userToken' => null,
+            ];
+        }
+
         return [
-            'userAuth' => ! $user ?: Hash::check($args['input']['password'], $user->password),
+            'userAuth' => $user,
             'userErrors' => [],
             'userToken' => $user->createToken('auth_token')->plainTextToken,
         ];
@@ -32,7 +43,7 @@ class UserLoginMutation extends BaseMutation
     public function rules(): array
     {
         return [
-            'email' => ['required', Rule::exists(User::class, 'email')],
+            'email' => ['required', Rule::exists(Person::class, 'email')],
             'password' => ['required'],
         ];
     }

@@ -7,6 +7,7 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -34,12 +35,7 @@ class User extends Authenticatable implements HasMedia
      * @var array<int, string>
      */
     protected $fillable = [
-        'email',
         'email_verified_at',
-        'first_name',
-        'is_admin',
-        'is_blocked',
-        'last_name',
         'password',
     ];
 
@@ -82,7 +78,7 @@ class User extends Authenticatable implements HasMedia
     public function name(): Attribute
     {
         return Attribute::get(
-            fn () => trim("$this->first_name $this->last_name")
+            fn () => trim(sprintf('%s %s', $this->person->first_name, $this->person->last_name))
         );
     }
 
@@ -99,5 +95,10 @@ class User extends Authenticatable implements HasMedia
     public function sales(): MorphMany
     {
         return $this->morphMany(ProductSale::class, 'buyerable');
+    }
+
+    public function person(): BelongsTo
+    {
+        return $this->belongsTo(Person::class);
     }
 }

@@ -9,7 +9,7 @@
                     <form class="lg:pr-3" action="#" method="GET">
                         <label for="users-search" class="sr-only">Search</label>
                         <div class="mt-1 relative lg:w-64 xl:w-96">
-                            <input wire:model.debounce.1000ms="search" type="text" name="address" id="suppliers-search"
+                            <input wire:model.debounce.1000ms="search" type="text" name="search" id="suppliers-search"
                                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                                    placeholder="Buscar por nombre">
                         </div>
@@ -58,12 +58,12 @@
                             <tr class="hover:bg-gray-100">
                                 <td class="p-4 flex items-center whitespace-nowrap space-x-6 mr-12 lg:mr-0">
                                     <div class="text-sm font-normal text-gray-500">
-                                        <div class="text-base font-semibold text-gray-900">{{ $customer->first_name }}</div>
+                                        <div class="text-base font-semibold text-gray-900">{{ $customer->person?->first_name }}</div>
                                     </div>
                                 </td>
-                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $customer->last_name }}</td>
-                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $customer->address ?? '--' }}</td>
-                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $customer->phone ?? '--' }}</td>
+                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $customer->person?->last_name }}</td>
+                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $customer->person?->home_address ?? '--' }}</td>
+                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $customer->person?->phone_number ?? '--' }}</td>
                                 <td class="p-4 whitespace-nowrap space-x-2">
                                     <button wire:click="edit({{ $customer->id }})" type="button" data-modal-toggle="user-modal" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
                                         <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -101,20 +101,26 @@
                     @enderror
                 </div>
                 <div class="col-span-6 sm:col-span-3">
+                    <x-inputs.text wire:model.defer="data.email" type="email" name="email" id="email" label="Email" placeholder="example@gmail.com" :readonly="$isEdit" />
+                    @error('data.email')
+                    <p class="text-red-500">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div class="col-span-6 sm:col-span-3">
                     <x-inputs.text wire:model.defer="data.dni" type="text" name="dni" id="dni" label="DNI" />
                     @error('data.dni')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.text wire:model.defer="data.address" type="text" name="address" id="address" label="Dirección" />
-                    @error('data.address')
+                    <x-inputs.text wire:model.defer="data.home_address" type="text" name="home_address" id="home_address" label="Dirección" />
+                    @error('data.home_address')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.text wire:model.defer="data.phone" type="phone" name="phone" id="phone" label="Teléfono" />
-                    @error('data.phone')
+                    <x-inputs.text wire:model.defer="data.phone_number" type="phone_number" name="phone_number" id="phone_number" label="Teléfono" />
+                    @error('data.phone_number')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>

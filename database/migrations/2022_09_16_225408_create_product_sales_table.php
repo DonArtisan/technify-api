@@ -15,6 +15,7 @@ return new class () extends Migration {
         Schema::create('product_sales', function (Blueprint $table) {
             $table->id();
             $table->morphs('buyerable');
+            $table->foreignId('seller_id')->nullable()->constrained('sellers');
             $table->decimal('amount');
             $table->decimal('tax');
             $table->decimal('total');

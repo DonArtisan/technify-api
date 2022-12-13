@@ -1,19 +1,24 @@
 <?php
 
+use App\Models\Person;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     public function up(): void
     {
-        // Create Admin
-         User::factory()->createOne([
-            'first_name' => 'Technify',
+        /** @var Person $person */
+        $person = Person::factory()->createOne([
             'email' => 'admin@technify.com',
-            'password' => bcrypt('Technify1234'),
-            'is_admin' => true,
-            'last_name' => 'Admin'
         ]);
+
+        // Create Admin
+        /** @var User $user */
+        $user = $person->user()->create([
+            'email_verified_at' => now(),
+            'password' => bcrypt('Technify1234'),
+        ]);
+
+        $user->assign('admin');
     }
 };

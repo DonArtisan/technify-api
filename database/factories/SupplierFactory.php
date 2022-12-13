@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Person;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,12 +18,8 @@ class SupplierFactory extends Factory
     public function definition()
     {
         return [
-            'RUC' => fake()->uuid(),
-            'address' => fake()->address(),
-            'agent_name' => fake()->company(),
+            'person_id' => Person::factory(),
             'branch' => fake()->company(),
-            'email' => fake()->email(),
-            'phone_number' => fake()->phoneNumber(),
         ];
     }
 }

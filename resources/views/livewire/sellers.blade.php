@@ -64,11 +64,11 @@
                                 <td class="p-4 flex items-center whitespace-nowrap space-x-6 mr-12 lg:mr-0">
                                     <img class="h-10 w-10 rounded-full" src="https://demo.themesberg.com/windster/images/users/neil-sims.png" alt="Neil Sims avatar">
                                     <div class="text-sm font-normal text-gray-500">
-                                        <div class="text-base font-semibold text-gray-900">{{ $user->first_name }}</div>
-                                        <div class="text-sm font-normal text-gray-500">{{ $user->email }}</div>
+                                        <div class="text-base font-semibold text-gray-900">{{ $user->person->first_name }}</div>
+                                        <div class="text-sm font-normal text-gray-500">{{ $user->person->email }}</div>
                                     </div>
                                 </td>
-                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $user->last_name }}</td>
+                                <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $user->person->last_name }}</td>
                                 <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">{{ $user->hired_at->toDateString() }}</td>
 {{--                                <td class="p-4 whitespace-nowrap text-base font-normal text-gray-900">--}}
 {{--                                    <div class="bg-gray-100 text-center rounded-md {{ $user->status }}">--}}
@@ -124,7 +124,25 @@
                     @enderror
                 </div>
                 <div class="col-span-6 sm:col-span-3">
-                    <x-inputs.text wire:model.defer="data.hired_at" type="date" name="hired_at" id="hired_at" label="Contratado en" :max="now()->toDateString()" />
+                    <x-inputs.text wire:model.defer="data.dni" type="text" name="dni" id="dni" label="DNI"/>
+                    @error('data.dni')
+                    <p class="text-red-500">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div class="col-span-6 sm:col-span-3">
+                    <x-inputs.text wire:model.defer="data.phone_number" type="text" name="phone_number" id="phone_number" label="Home number" />
+                    @error('data.phone_number')
+                    <p class="text-red-500">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div class="col-span-6 sm:col-span-3">
+                    <x-inputs.text wire:model.defer="data.home_address" type="text" name="home_address" id="home_address" label="Dirección"/>
+                    @error('data.home_address')
+                    <p class="text-red-500">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div class="col-span-6 sm:col-span-3">
+                    <x-inputs.text wire:model.defer="data.hired_at" type="date" name="hired_at" id="hired_at" label="Contratado en" :disabled="$isEdit" :max="now()->toDateString()" />
                     @error('data.hired_at')
                     <p class="text-red-500">{{ $message }}</p>
                     @enderror

@@ -1,18 +1,32 @@
-"Account of a person who utilizes this application."
-type User {
-    "Unique primary key."
+type Person {
     id: ID! @globalId
 
-    "User first name."
+    "Person first name."
     firstName: String! @rename(attribute: "first_name")
 
-    "User last name."
+    "Person last name."
     lastName: String! @rename(attribute: "last_name")
+
+    phoneNumber: String! @rename(attribute: "phone_number")
+
+    homeAddress: String! @rename(attribute: "home_address")
+
+    dni: String!
 
     "Unique email address."
     email: String!
 
-    isBlocked: Boolean @rename(attribute: "is_blocked")
+    "When the account was created."
+    created_at: DateTime!
+
+    "When the account was last updated."
+    updated_at: DateTime!
+}
+
+"Account of a person who utilizes this application."
+type User {
+    "Unique primary key."
+    id: ID! @globalId
 
     picture: Image
     @with(relation: "media")
@@ -20,8 +34,7 @@ type User {
 
     password: String!
 
-    "When the email was verified."
-    email_verified_at: DateTime
+    person: Person @with(relation: "person") @belongsTo
 
     "When the account was created."
     created_at: DateTime!

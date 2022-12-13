@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -55,18 +56,30 @@ class AuthenticatedSessionController extends Controller
     {
         Session::put($this->guardIdentifier, 'users');
 
-        $status = $this->guard()->attempt(
-            [...$request->only(['email', 'password']), 'is_admin' => true],
-            $request->boolean('remember')
-        );
+        $email = $request->input('email');
+
+        $status = $this->guard()->attempt(['password' => $request->input('password'), function (Builder $query) use ($email) {
+            $query
+                ->whereHas('person', function ($query) use ($email) {
+                    $query->where('email', $email);
+                })
+                ->whereHas('roles', function ($query) {
+                    $query->where('name', 'admin');
+                });
+        }]);
 
         if (! $status) {
             Session::put($this->guardIdentifier, 'sellers');
 
-            return $this->guard('sellers')->attempt(
-                $request->only(['email', 'password']),
-                $request->boolean('remember')
-            );
+            return $this->guard('sellers')->attempt(['password' => $request->input('password'), function (Builder $query) use ($email) {
+                $query
+                    ->whereHas('person', function ($query) use ($email) {
+                        $query->where('email', $email);
+                    })
+                    ->whereHas('roles', function ($query) {
+                        $query->where('name', 'seller');
+                    });
+            }]);
         }
 
         return $status;

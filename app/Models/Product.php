@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,7 +28,15 @@ class Product extends BaseModel implements HasMedia
         'model_id',
         'name',
         'status',
+        'sale_price',
     ];
+
+    public function scopeHasStock(Builder $query): Builder
+    {
+        return $query->whereHas('stock', function ($query) {
+            $query->where('quantity', '>', 0);
+        });
+    }
 
     public function registerMediaCollections(): void
     {

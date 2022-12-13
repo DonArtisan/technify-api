@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Person;
 use App\Models\Seller;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -19,9 +20,7 @@ class SellerFactory extends Factory
     public function definition(): array
     {
         return [
-            'first_name' => fake()->name(),
-            'last_name' => fake()->lastName(),
-            'email' => fake()->safeEmail(),
+            'person_id' => Person::factory(),
             'password' => bcrypt('password'),
             'carnet' => now()->year.'-'.Str::random(5),
             'hired_at' => now(),

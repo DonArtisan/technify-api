@@ -48,6 +48,8 @@ class Orders extends Component
 
     public array $prices = [];
 
+    public array $gains = [];
+
     public ?string $requiredDate = null;
 
     public int $orderIdToApprove = 0;
@@ -87,7 +89,9 @@ class Orders extends Component
 
             $orderDetails = $order->orderDetails()->with('product.stock')->get();
 
-            $orderDetails->each(function (OrderDetail $orderDetail) {
+            $total = 0;
+
+            $orderDetails->each(function (OrderDetail $orderDetail) use (&$total) {
                 /** @var Product $product */
                 $product = $orderDetail->product;
 
@@ -97,9 +101,16 @@ class Orders extends Component
                     $product->stock()->update(['quantity' => $product->stock->quantity + $orderDetail->quantity]);
                 }
 
-                $orderDetail->update(['price' => $this->prices[$product->id]]);
-                $product->prices()->create(['price' => $this->prices[$product->id]]);
+                $price = $this->prices[$product->id];
+
+                $orderDetail->update(['price' => $price, 'gain' => 10, 'unit_price_with_gain' => (int) ($price + ($price * 0.10))]);
+
+                $product->prices()->create(['price' => (int) ($price + ($price * 0.10))]);
+
+                $total += ($price * $orderDetail->quantity);
             });
+
+            $order->update(['total' => $total]);
 
             $this->dispatchBrowserEvent('wire::message', ['message' => 'Solicitud aprobada correctamente.']);
 
@@ -134,17 +145,19 @@ class Orders extends Component
                 'total' => 0,
             ]);
 
-            $productIds = Model::query()
+            $products = Model::query()
                 ->with('product:id,model_id,name')
                 ->whereIn('id', $this->modelsIdSelected)
                 ->get()
-                ->pluck('product.id');
+                ->pluck('product');
 
-            $data = $productIds->map(function (int $id) {
+            $data = $products->map(function (Product $product) {
                 return [
-                    'product_id' => $id,
-                    'quantity' => $this->quantities[$id],
+                    'product_id' => $product->id,
+                    'quantity' => $this->quantities[$product->id],
                     'price' => 0,
+                    'gain' => 10,
+                    'unit_price_with_gain' => 0,
                 ];
             });
 
@@ -208,15 +221,15 @@ class Orders extends Component
     public function render(): View
     {
         $orders = Order::query()
-            ->with(['supplier', 'orderable'])
+            ->with(['supplier.person', 'orderable.person'])
             ->when($this->searchBySeller, function (Builder $query, $search) {
-                $query->whereHas('orderable', function (Builder $query) use ($search) {
+                $query->whereHas('orderable.person', function (Builder $query) use ($search) {
                     $query->where('first_name', 'ilike', "%$search%");
                 });
             })
             ->when($this->searchBySupplier, function (Builder $query, $search) {
-                $query->whereHas('supplier', function (Builder $query) use ($search) {
-                    $query->where('agent_name', 'ilike', "%$search%");
+                $query->whereHas('supplier.person', function (Builder $query) use ($search) {
+                    $query->where('first_name', 'ilike', "%$search%");
                 });
             })
             ->latest()
@@ -228,7 +241,12 @@ class Orders extends Component
 
         if ($this->supplierSearch) {
             $suppliers = Supplier::query()
-                ->where('agent_name', 'ilike', "%$this->supplierSearch%")
+                ->with('person')
+                ->when($this->supplierSearch, function (Builder $query, $search) {
+                    $query->whereHas('person', function ($query) use ($search) {
+                        $query->where('first_name', 'ilike', "%$search%");
+                    });
+                })
                 ->get();
         }
 
@@ -264,7 +282,7 @@ class Orders extends Component
 
         if ($this->orderIdToDisplay) {
             $orderToDisplay = Order::query()
-                ->with('orderDetails.product.model.brand', 'supplier')
+                ->with('orderDetails.product.model.brand', 'supplier.person')
                 ->find($this->orderIdToDisplay);
 
             $orderDetails = $orderToDisplay->orderDetails;

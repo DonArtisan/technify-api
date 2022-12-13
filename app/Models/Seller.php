@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -24,11 +26,9 @@ class Seller extends Authenticatable implements HasMedia
 
     protected $fillable = [
         'carnet',
-        'email',
-        'first_name',
         'hired_at',
-        'last_name',
         'password',
+        'seller_id',
     ];
 
     protected $casts = [
@@ -37,8 +37,8 @@ class Seller extends Authenticatable implements HasMedia
 
     public function name(): Attribute
     {
-        return Attribute::make(
-            get: fn ($_, $attributes) => $attributes['first_name'].' '.$attributes['last_name']
+        return Attribute::get(
+            fn () => trim(sprintf('%s %s', $this->person->first_name, $this->person->last_name))
         );
     }
 
@@ -58,5 +58,15 @@ class Seller extends Authenticatable implements HasMedia
     public function orders(): MorphMany
     {
         return $this->morphMany(Order::class, 'orderable');
+    }
+
+    public function person(): BelongsTo
+    {
+        return $this->belongsTo(Person::class);
+    }
+
+    public function sales(): HasMany
+    {
+        return $this->hasMany(ProductSale::class, 'seller_id');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Customer;
+use App\Models\Person;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
@@ -22,19 +23,21 @@ class Customers extends Component
     public bool $showModal = false;
 
     public array $data = [
-        'address',
         'dni',
+        'email',
         'first_name',
+        'home_address',
         'last_name',
-        'phone',
+        'phone_number',
     ];
 
     protected array $rules = [
-        'data.address' => ['nullable'],
         'data.dni' => ['required'],
+        'data.email' => ['required'],
         'data.first_name' => ['required'],
+        'data.home_address' => ['nullable'],
         'data.last_name' => ['required'],
-        'data.phone' => ['nullable'],
+        'data.phone_number' => ['nullable'],
     ];
 
     public ?Customer $customerToEdit = null;
@@ -43,16 +46,17 @@ class Customers extends Component
     {
         $this->validate();
 
-        $data = Arr::only($this->data, [
-            'address',
+        $personData = Arr::only($this->data, [
+            'home_address',
             'dni',
+            'email',
             'first_name',
             'last_name',
-            'phone',
+            'phone_number',
         ]);
 
         if ($this->isEdit) {
-            $this->customerToEdit->update($data);
+            $this->customerToEdit->person()->update($personData);
 
             $this->reset();
 
@@ -61,7 +65,9 @@ class Customers extends Component
             return;
         }
 
-        Customer::create($data);
+        $person = Person::create($personData);
+
+        $person->customer()->create();
 
         $this->reset();
 
@@ -80,12 +86,13 @@ class Customers extends Component
         $this->isEdit = true;
         $this->showModal = true;
 
-        $this->data = $customer->only([
-            'address',
+        $this->data = $customer->person->only([
             'dni',
+            'email',
+            'home_address',
             'first_name',
             'last_name',
-            'phone',
+            'phone_number',
         ]);
     }
 
@@ -104,8 +111,11 @@ class Customers extends Component
     public function render(): View
     {
         $customers = Customer::query()
+            ->with('person')
             ->when($this->search, function (Builder $query, $search) {
-                $query->where('first_name', 'ilike', "%$search%");
+                $query->whereHas('person', function ($query) use ($search) {
+                    $query->where('first_name', 'ilike', "%$search%");
+                });
             })
             ->latest()
             ->paginate();

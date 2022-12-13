@@ -12,14 +12,14 @@ return new class () extends Migration {
      */
     public function up()
     {
-        Schema::create('order_details', function (Blueprint $table) {
+        Schema::create('people', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained('orders');
-            $table->foreignId('product_id')->constrained('products');
-            $table->decimal('price');
-            $table->unsignedInteger('quantity');
-            $table->integer('gain');
-            $table->integer('unit_price_with_gain');
+            $table->string('dni')->nullable()->unique();
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('phone_number')->unique();
+            $table->String('home_address')->nullable();
+            $table->string('email')->unique();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('order_details');
+        Schema::dropIfExists('people');
     }
 };

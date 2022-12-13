@@ -15,15 +15,13 @@ return new class () extends Migration {
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('discount_id')->nullable();
-            $table->foreign('discount_id')->references('id')->on('discounts');
-            $table->string('name');
-            $table->string('handle');
-            $table->string('description');
-            $table->foreignId('model_id')->constrained('models');
-            $table->unsignedBigInteger('color_id')->nullable();
-            $table->foreign('color_id')->references('id')->on('colors');
             $table->foreignId('category_id')->constrained('categories');
+            $table->foreignId('color_id')->nullable()->constrained('colors');
+            $table->foreignId('discount_id')->nullable()->constrained('discounts');
+            $table->foreignId('model_id')->constrained('models');
+            $table->string('name');
+            $table->string('description');
+            $table->string('handle');
             $table->timestamps();
         });
 

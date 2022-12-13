@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Enums\DeliveryStatus;
 use App\Http\Stats\SalesStats;
 use App\Models\Customer;
 use App\Models\Model;
@@ -56,6 +57,22 @@ class Sales extends Component
 
     public float $total = 0;
 
+    public bool $isDelivery = false;
+
+    public string $deliveryTypeAddress = '';
+
+    public array $deliveryInfo = [
+        'address',
+        'date',
+    ];
+
+    public function updatedIsDelivery($value)
+    {
+        if ($value) {
+            $this->deliveryInfo['date'] = now()->addDays(7)->toDateString();
+        }
+    }
+
     public function calculate()
     {
         $modelsSelected = Model::query()
@@ -76,13 +93,14 @@ class Sales extends Component
     public function save(): void
     {
         /** @var Seller|User $seller */
-        $user = Auth::user();
+        $sellerId = Auth::id();
 
         try {
             DB::beginTransaction();
 
             /** @var Sale $sale */
             $sale = $this->customerSelected->sales()->create([
+                'seller_id' => $sellerId,
                 'amount' => collect($this->quantities)->sum(),
                 'tax' => 15,
                 'total' => $this->total,
@@ -115,6 +133,19 @@ class Sales extends Component
 
             SalesStats::increase(1, $sale->created_at);
 
+            if ($this->isDelivery) {
+                $deliveryData['status'] = DeliveryStatus::PENDING;
+                $deliveryData['delivery_date'] = $this->deliveryInfo['date'];
+
+                if ($this->deliveryTypeAddress === 'custom') {
+                    $deliveryData['delivery_place'] = $this->deliveryInfo['address'];
+                } else {
+                    $deliveryData['delivery_place'] = $this->customerSelected->person->home_address;
+                }
+
+                $sale->delivery()->create($deliveryData);
+            }
+
             DB::commit();
         } catch (\Throwable $exception) {
             DB::rollBack();
@@ -128,7 +159,7 @@ class Sales extends Component
 
         $this->reset();
 
-        $this->dispatchBrowserEvent('wire::message', ['message' => 'order guardada.']);
+        $this->dispatchBrowserEvent('wire::message', ['message' => 'venta guardada.']);
     }
 
     public function showAddModal(): void
@@ -173,7 +204,7 @@ class Sales extends Component
     public function render(): View
     {
         $sales = Sale::query()
-            ->with('buyerable')
+            ->with('buyerable.person', 'seller.person')
             ->when($this->salesType, function ($query, $salesType) {
                 $query->where('buyerable_type', $salesType);
             })
@@ -222,10 +253,11 @@ class Sales extends Component
         if ($this->saleIdToDisplay) {
             $saleToDisplay = Sale::query()
                 ->with(
-                    'buyerable',
+                    'buyerable.person',
                     'saleDetails.product.model.brand',
                     'saleDetails.product.stock',
                     'saleDetails.product.price',
+                    'delivery'
                 )
                 ->find($this->saleIdToDisplay);
 
@@ -236,7 +268,10 @@ class Sales extends Component
 
         if ($this->customerSearch) {
             $customers = Customer::query()
-                ->where('first_name', 'ilike', "%$this->customerSearch%")
+                ->with('person')
+                ->whereHas('person', function ($query) {
+                    $query->where('first_name', 'ilike', "%$this->customerSearch%");
+                })
                 ->get();
         }
 

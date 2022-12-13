@@ -3,8 +3,10 @@
 namespace Database\Factories;
 
 use App\Http\Stats\SalesStats;
+use App\Models\Person;
 use App\Models\ProductSale;
 use App\Models\ProductSaleDetail;
+use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,31 +20,30 @@ class ProductSaleFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
-        $buyerable = $this->buyerable();
+//        [$buyerable] = $this->buyerable();
 
         return [
-            'buyerable_id' => $buyerable::factory(),
+            'buyerable_id' => User::factory()->for(Person::factory()),
             'buyerable_type' => 'user',
             'amount' => 0,
+            'seller_id' => Seller::factory()->for(Person::factory()),
             'tax' => 0.15,
             'total' => 0,
             'created_at' => $this->faker->dateTimeThisYear(),
         ];
     }
 
-    public function buyerable()
-    {
-        return $this->faker->randomElement([
-            User::class,
-        ]);
-    }
+//    public function buyerable()
+//    {
+//        return $this->faker->randomElement([
+//            User::class,
+//        ]);
+//    }
 
-    public function configure()
+    public function configure(): self
     {
-        logger('what');
-
         return $this->afterCreating(function (ProductSale $sale) {
             $r = rand(1, 3);
             for ($i = 0; $i < $r; $i++) {

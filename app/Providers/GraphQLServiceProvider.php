@@ -16,6 +16,7 @@ class GraphQLServiceProvider extends ServiceProvider
     {
         $enums = [
             \App\Enums\ProductStatus::class,
+            \App\Enums\DeliveryStatus::class,
         ];
 
         foreach ($enums as $enum) {

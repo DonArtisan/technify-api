@@ -2,13 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Price>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Delivery>
  */
-class PriceFactory extends Factory
+class DeliveryFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,8 +17,6 @@ class PriceFactory extends Factory
     public function definition()
     {
         return [
-            'price' => $this->faker->numberBetween(10, 100),
-            'product_id' => Product::factory(),
             //
         ];
     }

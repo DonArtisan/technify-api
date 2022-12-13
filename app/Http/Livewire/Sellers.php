@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Person;
 use App\Models\Seller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,12 +30,18 @@ class Sellers extends Component
         'hired_at',
         'last_name',
         'password',
+        'home_address',
+        'dni',
+        'phone_number',
     ];
 
     protected array $rules = [
         'data.first_name' => ['required'],
-        'data.email' => ['required', 'email', 'unique:users,email', 'unique:sellers,email'],
+        'data.email' => ['required', 'email', 'unique:people,email'],
         'data.hired_at' => ['required', 'before_or_equal:today'],
+        'data.dni' => ['required'],
+        'data.home_address' => ['required'],
+        'data.phone_number' => ['required'],
         'data.last_name' => ['required'],
         'data.password' => ['required'],
     ];
@@ -45,18 +52,19 @@ class Sellers extends Component
     {
         if ($this->isEdit) {
             $this->validate([
-                'data.first_name' => ['required'],
-                'data.hired_at' => ['required', 'before_or_equal:today'],
-                'data.last_name' => ['required'],
+                ...$this->rules,
+                'data.password' => ['sometimes'],
+                'data.email' => ['required'],
             ]);
 
-            $data = Arr::only($this->data, ['first_name', 'last_name', 'email']);
+            $personData = Arr::only($this->data, ['first_name', 'last_name', 'email', 'dni', 'phone_number', 'home_address']);
 
-            if ($this->data['password']) {
+            if (isset($this->data['password'])) {
                 $data['password'] = bcrypt($this->data['password']);
+                $this->sellerToEdit->update($data);
             }
 
-            $this->sellerToEdit->update($data);
+            $this->sellerToEdit->person()->update($personData);
 
             $this->reset();
 
@@ -67,11 +75,13 @@ class Sellers extends Component
 
         $this->validate();
 
-        $data = Arr::only($this->data, ['first_name', 'last_name', 'hired_at', 'email']);
+        $data = Arr::only($this->data, ['first_name', 'last_name', 'email', 'dni', 'phone_number', 'home_address']);
+
+        $person = Person::create($data);
 
         /** @var Seller $seller */
-        $seller = Seller::create([
-            ...$data,
+        $seller = $person->seller()->create([
+            'hired_at' => $this->data['hired_at'],
             'carnet' => getRandomCarnet(),
             'password' => bcrypt($this->data['password']),
         ]);
@@ -92,6 +102,7 @@ class Sellers extends Component
             return;
         }
 
+        $seller->person()->delete();
         $seller->delete();
 
         $this->dispatchBrowserEvent('wire::message', ['message' => 'usuario borrado.']);
@@ -111,12 +122,16 @@ class Sellers extends Component
         $this->isEdit = true;
         $this->showModal = true;
 
-        $this->data = $seller->only([
-            'email',
+        $this->data = $seller->person->only([
+            'dni',
             'first_name',
-            'hired_at',
             'last_name',
+            'home_address',
+            'email',
+            'phone_number',
         ]);
+
+        $this->data['hired_at'] = $seller->hired_at->toDateString();
     }
 
     public function showUserModal(): void
@@ -134,8 +149,11 @@ class Sellers extends Component
     public function render(): View
     {
         $users = Seller::query()
+            ->with('person')
             ->when($this->search, function (Builder $query, $search) {
-                $query->where('first_name', 'ilike', "%$search%");
+                $query->whereHas('person', function ($query) use ($search) {
+                    $query->where('first_name', 'ilike', "%$search%");
+                });
             })
             ->latest()
             ->paginate();

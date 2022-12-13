@@ -27,10 +27,10 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([ProductSeeder::class]);
-        User::factory()->count(20)->create();
         Seller::factory()->count(10)->create();
         Supplier::factory()->count(20)->create();
         ProductSale::factory()->count(5)->create();
         Customer::factory()->count(10)->create();
+        User::factory()->count(6)->create();
     }
 }

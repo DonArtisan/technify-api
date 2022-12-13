@@ -14,9 +14,7 @@ return new class () extends Migration {
     {
         Schema::create('sellers', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('email')->unique();
+            $table->foreignId('person_id')->constrained('people');
             $table->string('password');
             $table->string('carnet')->unique();
             $table->date('hired_at');

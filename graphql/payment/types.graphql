@@ -1,10 +1,14 @@
 type ProductSale @model(class: "App\\Models\\ProductSale") {
     buyerableType: String! @rename(attribute: "buyerable_type")
     buyerableId: ID! @globalId
+    seller: Seller @belongsTo
     amount: Float!
     tax: Float!
     total: Float!
+    delivery: Delivery @hasOne
     productDetails: [ProductDetail!]! @hasMany
+    createdAt: DateTime! @rename(attribute: "created_at")
+    updatedAt: DateTime! @rename(attribute: "updated_at")
 }
 
 type ProductDetail @model(class: "App\\Models\\ProductSaleDetail") {
@@ -13,6 +17,17 @@ type ProductDetail @model(class: "App\\Models\\ProductSaleDetail") {
     quantity: Int!
     price: Float!
     productSale: ProductSale! @belongsTo
+    createdAt: DateTime! @rename(attribute: "created_at")
+    updatedAt: DateTime! @rename(attribute: "updated_at")
+}
+
+type Delivery @model(class: "App\\Models\\Delivery") {
+    id: ID! @globalId
+    productSale: ProductSale! @belongsTo
+    deliveryDate: Date! @rename(attribute: "delivery_date")
+    deliveryPlace: String! @rename(attribute: "delivery_place")
+    createdAt: DateTime! @rename(attribute: "created_at")
+    updatedAt: DateTime! @rename(attribute: "updated_at")
 }
 
 type ProductSaleCreatePayload {
@@ -22,5 +37,10 @@ type ProductSaleCreatePayload {
 
 type ClientSecretPayload {
     clientSecret: String
+    userErrors: [UserError]
+}
+
+type DeliveryCreatePayload {
+    delivery: Delivery
     userErrors: [UserError]
 }

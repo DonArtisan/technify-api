@@ -14,12 +14,8 @@ return new class () extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->unique();
+            $table->foreignId('person_id')->constrained('people');
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('first_name');
-            $table->boolean('is_admin')->default(0);
-            $table->boolean('is_blocked')->default(0);
-            $table->string('last_name');
             $table->string('password');
             $table->string('handle');
             $table->rememberToken();

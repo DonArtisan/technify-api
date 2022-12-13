@@ -3,7 +3,7 @@
 namespace App\GraphQL\Mutations;
 
 use App\Http\Stats\UserStats;
-use App\Models\User;
+use App\Models\Person;
 use Error;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
@@ -19,15 +19,15 @@ class UserRegisterMutation extends BaseMutation
     public function handle(mixed $root, array $args): array
     {
         try {
-            $user = User::create(
-                array_merge(
-                    Arr::only(
-                        $args['input'],
-                        ['first_name', 'last_name', 'email']
-                    ),
-                    ['password' => Hash::make($args['input']['password'])],
+            $person = Person::create(
+                Arr::only(
+                    $args['input'],
+                    ['first_name', 'last_name', 'email', 'dni', 'phone_number', 'home_address']
                 )
             );
+
+            $user = $person->user()->create(['password' => Hash::make($args['input']['password'])]);
+
             UserStats::increase(1);
         } catch (Throwable $error) {
             throw new Error($error);
